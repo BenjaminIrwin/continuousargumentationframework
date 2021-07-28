@@ -13,7 +13,7 @@ function graphMapping(){
 	for(var n in nodeList){
 
 		if(nodeList[n].type=='increase' || nodeList[n].type=='decrease'){
-			if(checkNonIssueSource(nodeList[n])){
+			if(checkNonProposalSource(nodeList[n])){
 				var item={};
 				item['id']=nodeList[n].id;
 				item['label']=nodeList[n].name;
@@ -157,13 +157,13 @@ function freezeGraph(thisMatrixId){
         });
 }
 
-function checkNonIssueSource(node){
+function checkNonProposalSource(node){
 
 
 	var targetList = node.targetList;
 
 	for(var n in targetList){
-		if(targetList[n].type!='issue'){
+		if(targetList[n].type!='proposal'){
 			return false;
 		}
 	}

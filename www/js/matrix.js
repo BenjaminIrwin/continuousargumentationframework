@@ -353,7 +353,7 @@ function printDescendants(element,parent,counter){
 }
 
 function pickTheColor(type){
-      if (type=='issue') {
+      if (type=='proposal') {
         return '#428BCA';
     }
     else if (type=='increase') {

@@ -53,7 +53,7 @@ function modalEditNode(node){
     var id = node.id;
     var type = node.type;
 
-    if (type=='issue') {
+    if (type=='proposal') {
         color = '#428BCA';
         button = 'btn-primary';
     }
@@ -405,7 +405,7 @@ function selectState(type){
    
     var msg = '<select class="form-control">';
 
-    if(type=='issue'){
+    if(type=='proposal'){
         msg += '<option id="basic">Basic</option>';
         msg += '<option id="resolved">Resolved</option>';
         msg += '<option id="rejected">Rejected</option>';

@@ -130,7 +130,7 @@ function getIssueList(){
 	var issueList=[];
 
 	for(var n in nodeList){
-		if(nodeList[n].type=='issue'){
+		if(nodeList[n].type=='proposal'){
 			issueList.push(nodeList[n]);
 		}
 	}

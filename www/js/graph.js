@@ -3,7 +3,7 @@ var decimals=6;
 function checkIfTree(){
 
 	for(n in nodeList){
-		if(nodeList[n].type=='issue'){
+		if(nodeList[n].type=='proposal'){
 			var visited=[];
 			visited[n]=nodeList[n];
 			return traversal(nodeList[n],visited);
@@ -125,7 +125,7 @@ function computeAllValues(message){
 
         for (var n in nodeList){
 
-			if(nodeList[n].type === 'increase' || nodeList[n].type === 'decrease' || nodeList[n].type === 'issue') {
+			if(nodeList[n].type === 'increase' || nodeList[n].type === 'decrease' || nodeList[n].type === 'proposal') {
 				nodeList[n].baseValue = '0.5';
 			}
 

@@ -55,7 +55,7 @@ function matrixMapping(tableId){
 
 	var tableNumberId=tableId.substr(6,tableId.length);
 	var issueName=$('#'+tableNumberId).html();
-	var issueId=addSimpleNode(issueName,0.5,'issue',x,y);
+	var issueId=addSimpleNode(issueName,0.5,'proposal',x,y);
 
 	initialY+=ySpan;
 	var y=initialY;

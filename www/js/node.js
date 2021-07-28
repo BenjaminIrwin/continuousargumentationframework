@@ -84,8 +84,8 @@ function initializeNode(){
     console.log(this.type);
 
     var type = this.type
-    // if(this.type === 'decrease' || this.type === 'increase') {
-    //     type = 'answer'
+    // if(this.type === 'proposal') {
+    //     type = 'issue';
     // }
 
   // Creating new div.

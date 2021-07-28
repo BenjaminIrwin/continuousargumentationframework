@@ -290,7 +290,7 @@ function editPosition(node, x, y){
 
 function setNodeColor(type){
 
-  if (type=='issue') {
+  if (type=='proposal') {
         color = '#428BCA';
         button = 'btn-primary';
     }
@@ -310,7 +310,7 @@ function setNodeColor(type){
 }
 
 function getNodeColor(type){
-      if (type=='issue') {
+      if (type=='proposal') {
         return'#428BCA';
     }
     else if (type=='answer') {
@@ -501,7 +501,7 @@ function checkOverlap(){
 
 function getRightColor(type){
 
-    if (type=='issue') {
+    if (type=='proposal') {
         return '#428BCA';
     }
     else if (type=='answer') {

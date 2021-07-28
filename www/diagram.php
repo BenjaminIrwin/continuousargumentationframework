@@ -141,7 +141,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   color: black;
 }
 
-#issue {
+#proposal {
   position: absolute;
   left: 100px;
   top: 100px;
@@ -381,7 +381,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <br>
 
 <div class="container node-buttons">
-    <button class="addIssue btn btn-primary" id="bbb" onClick="modalInitNode('issue');">Add issue</button>
+    <button class="addProposal btn btn-primary" id="bbb" onClick="modalInitNode('proposal');">Add proposal</button>
     <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
     <button class="addDecrease btn btn-danger" onClick="modalInitNode('decrease');">Add decrease argument</button>
     <button class="addPro btn btn-warning" onClick="modalInitNode('pro');">Add pro argument</button>
@@ -464,7 +464,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <div class="container diagram" style="height: 650px;">
 <div style="display: none;">
 
-  <div id="issue" class="item" style="text-align: center;"><!-- Single button -->
+  <div id="proposal" class="item" style="text-align: center;"><!-- Single button -->
 <div class="btn-group" id="dropdown-button">
   <div type="button" class="dropdown-toggle" data-toggle="dropdown">
     <span class="glyphicon glyphicon-cog"></span>
