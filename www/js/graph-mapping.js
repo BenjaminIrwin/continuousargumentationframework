@@ -12,7 +12,7 @@ function graphMapping(){
 	// Add variants and effects without cells.
 	for(var n in nodeList){
 
-		if(nodeList[n].type=='answer'){
+		if(nodeList[n].type=='increase' || nodeList[n].type=='decrease'){
 			if(checkNonIssueSource(nodeList[n])){
 				var item={};
 				item['id']=nodeList[n].id;
@@ -224,12 +224,12 @@ function returnDominantEffect(results){
 	return val;
 }
 
-function checkCorrectLevel(node,answersList){
+function checkCorrectLevel(node,amendmentList){
 
-	console.log("AnswersList: "+JSON.stringify(answersList));
-	for(var j=0; j<answersList.length; j++){
+	console.log("AmendmentList: "+JSON.stringify(amendmentList));
+	for(var j=0; j<amendmentList.length; j++){
 		// alert(nodeList[answersList[j].id].name);
-		if(checkEdgeExistence(node,answersList[j].id)){
+		if(checkEdgeExistence(node,amendmentList[j].id)){
 			console.log("THIS"+node.name+"\n");
 			return true;
 		}

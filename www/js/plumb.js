@@ -264,6 +264,7 @@ function loadNodes(){
 
                 var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 
+                console.log(node);
                 
                 node.initializeNode();
 
@@ -423,17 +424,21 @@ function setNodeColor(type){
         color = '#428BCA';
         button = 'btn-primary';
     }
-    else if (type=='answer') {
-        color = '#E3972F';
-        button = 'btn-warning';
-    }
-    else if (type=='pro') {
-        color = '#53AD54';
+    else if (type==='decrease') {
+        color = '#D24642';
         button = 'btn-success';
     }
-    else if (type=='con') {
-        color = '#D24642';
-        button = 'btn-danger';
+      else if (type ==='increase') {
+          color = '#53AD54';
+          button = 'btn-danger';
+      }
+    else if (type==='pro') {
+        color = 'rgba(83,173,84,0.7)';
+        button = 'btn-warning';
+    }
+    else if (type==='con') {
+        color = 'rgba(210,70,66,0.7)';
+        button = 'btn-warning';
     }
 
 }
@@ -442,9 +447,12 @@ function getNodeColor(type){
       if (type=='issue') {
         return'#428BCA';
     }
-    else if (type=='answer') {
+    else if (type=='increase') {
         return '#E3972F';
     }
+      else if (type=='decrease') {
+          return '#D24642';
+      }
     else if (type=='pro') {
         return '#53AD54';
     }
@@ -672,7 +680,10 @@ function getRightColor(type){
     if (type=='issue') {
         return '#428BCA';
     }
-    else if (type=='answer') {
+    else if (type=='increase') {
+        return '#E3972F';
+    }
+    else if (type=='decrease') {
         return '#E3972F';
     }
     else if (type=='pro') {

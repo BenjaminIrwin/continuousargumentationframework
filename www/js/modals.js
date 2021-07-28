@@ -57,7 +57,7 @@ function modalEditNode(node){
         color = '#428BCA';
         button = 'btn-primary';
     }
-    else if (type=='answer') {
+    else if (type=='increase' || type=='decrease') {
         color = '#E3972F';
         button = 'btn-warning';
     }
@@ -411,7 +411,7 @@ function selectState(type){
         msg += '<option id="rejected">Rejected</option>';
         msg += '<option id="insoluble">Insoluble</option>';
     }
-    else if(type=='answer'){
+    else if(type=='increase' || type=='decrease'){
         msg += '<option id="basic">Basic</option>';
         msg += '<option id="accepted">Accepted</option>';
         msg += '<option id="rejected">Rejected</option>';
@@ -427,33 +427,6 @@ function selectState(type){
         msg += '<option id="basic">Basic</option>';
         msg += '<option id="dominant">Dominant</option>';
         msg += '<option id="fails">Fails</option>';
-    }
-    msg += '</select>';
-    return msg;
-}
-
-function selectType(type) {
-    var msg = '<select class="form-control">';
-
-    if(type=='issue'){
-        msg += '<option id="basic">Answer</option>';
-        msg += '<option id="resolved">Pro</option>';
-        msg += '<option id="rejected">Con</option>';       
-    }
-    else if(type=='answer'){
-        msg += '<option id="basic">Issue</option>';
-        msg += '<option id="accepted">Pro</option>';
-        msg += '<option id="rejected">Con</option>';
-    }
-    else if(type=='pro'){
-        msg += '<option id="basic">Issue</option>';
-        msg += '<option id="dominant">Answer</option>';
-        msg += '<option id="fails">Con</option>';
-    }
-    else if(type=='con'){
-        msg += '<option id="basic">Issue</option>';
-        msg += '<option id="dominant">Answer</option>';
-        msg += '<option id="fails">Pro</option>';
     }
     msg += '</select>';
     return msg;

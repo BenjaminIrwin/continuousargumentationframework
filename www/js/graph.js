@@ -64,23 +64,23 @@ function CS(nodeList){
 	var decreaseTotal= 0;
 
 	for(var n in nodeList){
-		if(nodeList[n].type==='answer'){
+		if(nodeList[n].type==='increase'){
 
 			++increaseCount;
 			increaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 
 		}
 
-		if(nodeList[n].type==='answer'){
+		if(nodeList[n].type==='decrease'){
 			++decreaseCount;
 			decreaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
 	}
 
 	var increaseAverage = increaseTotal/increaseCount;
-	// var decreaseAverage = decreaseTotal/decreaseCount;
+	var decreaseAverage = decreaseTotal/decreaseCount;
 
-	return increaseAverage;
+	return increaseAverage - decreaseAverage;
 	//Compute all values or get from DB
 	//Calculate for each increase amendment and decrease amendment
 	//Calculate overall score
@@ -108,16 +108,16 @@ function computeAllValues(message){
 
 
 	if(message){
-		var answerList1=[];
+		var amendmentList1=[];
 
 		for(var n in nodeList){
-			if(nodeList[n].type=='answer'){
-				answerList1.push(nodeList[n]);
+			if(nodeList[n].type==='increase'||nodeList[n].type==='decrease'){
+				amendmentList1.push(nodeList[n]);
 			}
 		}
 
                 var nAlg = 1;
-		var msg1 = rankNodes(answerList1, nAlg);
+		var msg1 = rankNodes(amendmentList1, nAlg);
                 
                 msg1+='</ul>';
                 
@@ -125,7 +125,7 @@ function computeAllValues(message){
 
         for (var n in nodeList){
 
-			if(nodeList[n].type === 'answer' || nodeList[n].type === 'issue') {
+			if(nodeList[n].type === 'increase' || nodeList[n].type === 'decrease' || nodeList[n].type === 'issue') {
 				nodeList[n].baseValue = '0.5';
 			}
 
@@ -147,23 +147,23 @@ function computeAllValues(message){
         
         if(message){
 
-		var answerList2=[];
+		var amendmentList2=[];
 
 		for(var n in nodeList){
-			if(nodeList[n].type=='answer'){
-				answerList2.push(nodeList[n]);
+			if(nodeList[n].type=='increase'||nodeList[n].type=='decrease'){
+				amendmentList2.push(nodeList[n]);
 			}
 		}
 
                 var nAlg = 2;
-		var msg2 = rankNodes(answerList2, nAlg);
+		var msg2 = rankNodes(amendmentList2, nAlg);
 	
         
                 msg2+='</ul>';
        
                 //bootbox.alert(msg1+msg2);
 
-                $('#compute-values-modal').find('.modal-title').html("Answer ranking");
+                $('#compute-values-modal').find('.modal-title').html("Amendment ranking");
 
                 $('#compute-values-modal').find('.modal-body').html(msg1+msg2);
 

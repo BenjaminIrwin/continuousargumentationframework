@@ -163,18 +163,19 @@ function addSimpleNode(name,baseValue,type,x,y){
 function addSimpleEdge(sourceId,targetId){
 console.log("Add simple edge");
 	    $.ajax({
-            type: "POST",
-            url: "add-edge.php",
-            data: "did="+debateId+"&s="+JSON.parse(sourceId).nodeid+"&t="+JSON.parse(targetId).nodeid,
-            async: false,
-            success: function(dat) {
-            	console.log("Edge added")
-            },
-            error: function(error) {
-            	console.log("Error adding edge");
-            }
-
+			type: "POST",
+			url: "add-edge.php",
+			data: "did=" + debateId + "&s=" + JSON.parse(sourceId).nodeid + "&t=" + JSON.parse(targetId).nodeid,
+			async: false,
+			success: function (dat) {
+				console.log("Edge added")
+			},
+			error: function (error) {
+				console.log("Error adding edge");
+			}
+		})
 }
+
 
 function normalizeValues(table){
 

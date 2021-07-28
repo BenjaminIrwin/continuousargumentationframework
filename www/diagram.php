@@ -382,10 +382,10 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
 <div class="container node-buttons">
     <button class="addIssue btn btn-primary" id="bbb" onClick="modalInitNode('issue');">Add issue</button>
-    <button class="addAnswer btn btn-warning" onClick="modalInitNode('answer');">Add answer</button>
-    <button class="addAnswer btn btn-warning" onClick="modalInitNode('answer');">Add answer</button>
-    <button class="addPro btn btn-success" onClick="modalInitNode('pro');">Add pro argument</button>
-    <button class="addCon btn btn-danger" onClick="modalInitNode('con');">Add con argument</button>
+    <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
+    <button class="addDecrease btn btn-danger" onClick="modalInitNode('decrease');">Add decrease argument</button>
+    <button class="addPro btn btn-warning" onClick="modalInitNode('pro');">Add pro argument</button>
+    <button class="addCon btn btn-warning" onClick="modalInitNode('con');">Add con argument</button>
 
     <div class="pull-right graph-operations">
     <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>
@@ -477,21 +477,22 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
       <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Answer</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
     </ul>
   </li>
   
-  <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit state</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Resolved</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Insoluble</a></li>
-    </ul>
-  </li>
+<!--  <li class="dropdown-submenu">-->
+<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+<!--    <ul class="dropdown-menu">-->
+<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Resolved</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Insoluble</a></li>-->
+<!--    </ul>-->
+<!--  </li>-->
   
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
@@ -513,7 +514,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
   </div>
 
-  <div id="answer" class="item" style="text-align: center;"><!-- Single button -->
+  <div id="increase" class="item" style="text-align: center;"><!-- Single button -->
 <div class="btn-group" id="dropdown-button">
   <div type="button" class="dropdown-toggle" data-toggle="dropdown">
     <span class="glyphicon glyphicon-cog"></span>
@@ -528,22 +529,23 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
       <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Answer</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
     </ul>
   </li>
   
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit state</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Accepted</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Likely</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Unlikely</a></li>
-    </ul>
-  </li>
+<!--    <li class="dropdown-submenu">-->
+<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+<!--    <ul class="dropdown-menu">-->
+<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Accepted</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Likely</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Unlikely</a></li>-->
+<!--    </ul>-->
+<!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -563,6 +565,57 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
   </div>
 
+    <div id="decrease" class="item" style="text-align: center;"><!-- Single button -->
+        <div class="btn-group" id="dropdown-button">
+            <div type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-cog"></span>
+            </div>
+            <ul class="dropdown-menu" role="menu">
+                <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
+
+
+                <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
+
+                <li class="dropdown-submenu">
+                    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
+                    <ul class="dropdown-menu">
+                        <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+                        <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
+                        <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
+                        <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
+                        <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
+                    </ul>
+                </li>
+
+                <!--    <li class="dropdown-submenu">-->
+                <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+                <!--    <ul class="dropdown-menu">-->
+                <!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+                <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Accepted</a></li>-->
+                <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
+                <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Likely</a></li>-->
+                <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Unlikely</a></li>-->
+                <!--    </ul>-->
+                <!--  </li>-->
+
+                <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
+                <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
+                <li class="divider dropdown-divider"></li>
+                <li><a id="delete-node-button" class="delete-node-button" href="javascript:void(0)" onClick="deleteNode(this)">Delete node</a></li>
+            </ul>
+        </div>
+        <div class="ep"></div>
+        <div type="button" class="dropdown-toggle wormhole-label" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-link"></span>
+        </div>
+        <ul class="dropdown-menu dropdown-wormholes" role="menu">
+        </ul>
+
+        <img class="ep" src="gallery/Light.png" style="display:block;"></img>
+        <span id="name" class="name-label" title="Issue" onDblClick="clickLabel(this);">Issue</span>
+        <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
+    </div>
+
   <div id="pro" class="item" style="text-align: center;"><!-- Single button -->
 <div class="btn-group" id="dropdown-button">
   <div type="button" class="dropdown-toggle" data-toggle="dropdown">
@@ -576,20 +629,21 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
       <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Answer</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
     </ul>
   </li>
   
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit state</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>
-    </ul>
-  </li>
+<!--    <li class="dropdown-submenu">-->
+<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+<!--    <ul class="dropdown-menu">-->
+<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
+<!--    </ul>-->
+<!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -622,20 +676,21 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
       <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Answer</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
+      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
     </ul>
   </li>
   
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit state</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>
-      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>
-    </ul>
-  </li>
+<!--    <li class="dropdown-submenu">-->
+<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+<!--    <ul class="dropdown-menu">-->
+<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
+<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
+<!--    </ul>-->
+<!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>

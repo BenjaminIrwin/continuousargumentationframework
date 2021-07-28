@@ -356,9 +356,12 @@ function pickTheColor(type){
       if (type=='issue') {
         return '#428BCA';
     }
-    else if (type=='answer') {
+    else if (type=='increase') {
         return '#E3972F';
     }
+      else if (type=='decrease') {
+          return '#E3972F';
+      }
     else if (type=='pro') {
         return '#53AD54';
     }

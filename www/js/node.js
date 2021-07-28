@@ -80,9 +80,18 @@ function displayInfo(){
 }
 
 function initializeNode(){
-  
+
+    console.log(this.type);
+
+    var type = this.type
+    // if(this.type === 'decrease' || this.type === 'increase') {
+    //     type = 'answer'
+    // }
+
   // Creating new div.
-  $('<div class="item" id="' + this.id + '"  style="text-align: center;">').fadeIn(300).appendTo(".diagramm").html($(("#"+this.type))[0].innerHTML);
+    let value = $(("#"+type))[0].innerHTML;
+
+    $('<div class="item" id="' + this.id + '"  style="text-align: center;">').fadeIn(300).appendTo(".diagramm").html(value);
 
   // Creating function button.
   $('#' + this.id).find("#function-button").attr('onclick', 'nodeList["'+this.id+'"].printTheFunction()');
