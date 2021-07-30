@@ -251,7 +251,7 @@ function editNode(node){
               node.editInfo(decodeURIComponent(newName), decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValue), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment));
 
               // Modifying node image.
-              $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-'+newState.toLowerCase()+'.png');
+              $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-basic.png');
             }
             });
 }
@@ -439,7 +439,7 @@ function setState(element){
             cache: false,
             success: function(dat) {
               // Modifying node image.
-              $('#'+nodeId).find('img').attr('src','gallery/'+nodeList[nodeId].type+'-'+nState.toLowerCase()+'.png');
+              $('#'+nodeId).find('img').attr('src','gallery/'+nodeList[nodeId].type+'-basic.png');
             }
             });
 

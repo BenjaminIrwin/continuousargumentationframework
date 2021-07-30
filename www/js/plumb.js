@@ -66,6 +66,8 @@ loadNodes();
 
 function addNode(attachment_path){
 
+    console.log('here we are');
+
 // Modal initialized in modal.js file.
   var id = $("#node-modal").find(".id-modal > b").html();
   var name = encodeURIComponent($("#node-modal").find(".name-modal > input").val());
@@ -79,19 +81,40 @@ function addNode(attachment_path){
   if(attachment_path !== '') {
       attachment += ", "+encodeURIComponent(attachment_path);
   }
- 
-  if (name==""){
+
+    console.log('HERE WE ARE' + typeValue);
+
+
+    if(type === 'proposal' && typeValue === '') {
+      bootbox.alert('Proposal invalid. You must provide a proposed forecast');
+      return;
+  }
+
+    //Check here if proposal already exists
+
+    console.log(1111111 + nodeList);
+
+
+    if (name==""){
     name = 'Node '+type;
   }
 
-  if (baseValue==""){
-    
+    console.log(2);
+
+    if(type === 'proposal') {
+        console.log(2.5 + type);
+
+        baseValue = "0.5";
+    }
+        console.log(3);
+
+
     var result = getDefaultBaseValue(thisDebateId);
     var defaultBaseValue = result.success(function(data){
-        
+
         var result = JSON.parse(data);
         baseValue = result.basevalue;
-        
+
         if (computedValueQuad==""){
             computedValueQuad = '0';
           }
@@ -112,10 +135,14 @@ function addNode(attachment_path){
 
           //console.log(x+" "+y);
 
-          $.ajax({
+        let data1 = "did="+thisDebateId+"&n="+name+"&bv="+baseValue+"&cvq="+computedValueQuad+"&cvdfq="+computedValueDFQuad+"&t="+type+"&tv="+typeValue+"&s="+state+"&a="+attachment+"&x="+x+"&y="+y;
+
+        console.log(data1);
+
+        $.ajax({
                     type: "POST",
                     url: "add-node.php",
-                    data: "did="+thisDebateId+"&n="+name+"&bv="+baseValue+"&cvq="+computedValueQuad+"&cvdfq="+computedValueDFQuad+"&t="+type+"&tv="+typeValue+"&s="+state+"&a="+attachment+"&x="+x+"&y="+y,
+                    data: data1,
                     cache: false,
                     success: function(dat) {
                         console.log('hello');
@@ -149,10 +176,8 @@ function addNode(attachment_path){
                 });
 
             });
-    
+
     //console.log("def base value "+baseValue);
-    
-  }
 /*
   if (computedValueQuad==""){
     computedValueQuad = '0';
@@ -362,7 +387,7 @@ function editNode(node, new_attachment_path){
               node.editInfo(decodeURIComponent(newName), decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValueQuad), decodeURIComponent(newComputedValueDFQuad), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment),decodeURIComponent(modifiedBy));
               
               // Modifying node image.
-              $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-'+newState.toLowerCase()+'.png');
+              $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-basic.png');
             }
             });
 }
@@ -577,7 +602,7 @@ function setState(element){
             cache: false,
             success: function(dat) {
               // Modifying node image.
-              $('#'+nodeId).find('img').attr('src','gallery/'+nodeList[nodeId].type+'-'+nState.toLowerCase()+'.png');
+              $('#'+nodeId).find('img').attr('src','gallery/'+nodeList[nodeId].type+'-basic.png');
             }
             });
 

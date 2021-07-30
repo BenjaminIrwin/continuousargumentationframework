@@ -325,7 +325,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 </nav>
 
 <div class="container">
-  <a href="index.php" style="float: right;"> Back </a>
+  <a href="debates.php?id=<?php echo $debateid ?>" style="float: right;"> Back </a>
 </div>
 <br>
 <div class="container">
@@ -395,7 +395,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <?php
     // PARTICIPANTS //
     $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.username, rights.accessright FROM rights INNER JOIN "
-        . "users ON rights.userid=users.id WHERE rights.questionid=(select questionid from debates where '$debateid')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+        . "users ON rights.userid=users.id WHERE rights.questionid=(select questionid from debates where '$debateid' limit 1)") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
     
     $title = '<b>Participants</b>';
     $str='';

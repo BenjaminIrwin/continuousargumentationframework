@@ -5,7 +5,7 @@ function addDebate(){
 
 	// Modal initialized in modal.js file.
 //  var id = $("#debate-modal").find(".id-modal > b").html();
-  var questionid = $("#debate-modal").find(".questionid-modal > b").html();
+  var questionId = $("#debate-modal").find(".questionid-modal > b").html();
   var name = $("#debate-modal").find(".name-modal > input").val();
   var defaultBaseValue = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
   var participants = $("#debate-modal").find(".participants-modal > input").val();
@@ -28,7 +28,7 @@ $.ajax({
             success: function(dat) {
               var id = dat;
 
-              var debate = new Debate(id,ownerId,name,defaultBaseValue,participants,typeValue);
+              var debate = new Debate(id,questionId,name,defaultBaseValue,participants,typeValue);
 
               var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
                   msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';

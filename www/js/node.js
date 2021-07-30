@@ -116,7 +116,7 @@ function initializeNode(){
 
   // Setting state image.
   if(this.state!=''){
-    $('#' + this.id).find('img').attr('src','gallery/'+this.type+'-'+this.state.toLowerCase()+'.png');
+    $('#' + this.id).find('img').attr('src','gallery/'+this.type+'-basic.png');
   }
 
   // Making the new div draggable.

@@ -122,7 +122,7 @@ function pushStateEdit(data){
 	 nodeList[data.nodeid].state = data.state;
          nodeList[data.nodeid].modifiedby = data.modifiedby;
          nodeList[data.nodeid].editStateInfo(decodeURIComponent(data.state), decodeURIComponent(data.modifiedby));
-	 $('#'+data.nodeid).find('img').attr('src','gallery/'+nodeList[data.nodeid].type+'-'+data.state.toLowerCase()+'.png');
+	 $('#'+data.nodeid).find('img').attr('src','gallery/'+nodeList[data.nodeid].type+'-basic.png');
 }
 
 function pushWormhole(data){

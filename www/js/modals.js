@@ -2,6 +2,8 @@ var attachment_path = '';
 
 function modalInitNode(type){
 
+    console.log('initiating proposal node...');
+
     setNodeColor(type);
     
     $('#node-modal').find('.modal-title').html("Insert information about the new " + type + " node.");
@@ -13,12 +15,20 @@ function modalInitNode(type){
     msg += "<li class='type-modal' style='display: none;'>Type: &nbsp; <b>"+type+"</b><br></li>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'/></li><br>";
 
+    console.log('1');
+
+
     if(type === 'proposal') {
+        console.log('2');
+
         msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
     } else {
         msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
         msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
     }
+
+    console.log('3');
+
 
     msg += "<li class='attachment-modal'>Attachment: &nbsp; \n\ <input id=\"url_attachment\" type='text' class='form-control' placeholder='Put here a valid URL'></input>\n\
                 <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
@@ -30,12 +40,21 @@ function modalInitNode(type){
     
     msg += "</ul>";
 
+    console.log('4');
+
+
     $('#node-modal').find('.modal-body').html(msg);
-    
+
+    console.log('5');
+
+
     $('#upload_attachment').click(function() {
         attachment_path = submitAttachment();
     });
- 
+
+    console.log('6');
+
+
     $('#node-modal').find('.btn:eq(1)').attr('onClick', 'addNode(attachment_path)');
     
     $('#node-modal').find('.btn:eq(1)').focus();
@@ -44,6 +63,9 @@ function modalInitNode(type){
     // Appling color styles.
     $('#node-modal').find('.modal-header').css('background-color',color);
     $('#node-modal').find('.btn:eq(1)').attr('class','btn '+button);
+
+    console.log('7');
+
 
     $('#node-modal').modal('show');
 

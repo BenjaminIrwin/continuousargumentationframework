@@ -21,14 +21,23 @@ $debateid = $_POST['did'];
 
 $name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['n']); 
 $basevalue = $_POST['bv'];
-$computedvaluequad = $_POST['cvq'];
+
 $computedvaluedfquad = $_POST['cvdfq'];
+if($computedvaluedfquad) {
+    $computedvaluedfquad = "0";
+}
+
 $type = $_POST['t'];
 $typevalue = $_POST['tv'];
-$state = $_POST['s'];
+if($typevalue == 'undefined') {
+    $typevalue = "0";
+}
+$state = 'basic';
 $attachment = $_POST['a'];
 $x = $_POST['x'];
 $y = $_POST['y'];
+
+
 
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into nodes (debateid, name, type, typevalue, state, attachment, x, y, createdby) Values ($debateid, '$name', '$type', '$typevalue', '$state', '$attachment', '$x', '$y', '$createdby')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
@@ -50,7 +59,6 @@ $data['debateid']=$debateid;
 $data['nodeid']=$nodeid;
 $data['name']=$name;
 $data['basevalue']=$basevalue;
-$data['computedvaluequad']=$computedvaluequad;
 $data['computedvaluedfquad']=$computedvaluedfquad;
 $data['type']=$type;
 $data['typevalue']=$typevalue;
