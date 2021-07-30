@@ -10,7 +10,7 @@ session_start();
 $connection=dbConnect();
 
 $userid = $_SESSION['id'];
-$debateid = $_POST['did'];
+$questionid = $_POST['qid'];
 $user=$_POST['searchQuery']; $user=trim($user);
     
     
@@ -58,7 +58,7 @@ if(empty($result[0])) {
 else {
 
     $sql1 = "SELECT users.id, users.username, rights.accessright FROM users LEFT JOIN rights "
-            . "ON users.id=rights.userid AND rights.debateid='$debateid' WHERE users.username='$result[0]'";
+            . "ON users.id=rights.userid AND rights.questionid='$questionid' WHERE users.username='$result[0]'";
 
     $str = "";
     $i=1;

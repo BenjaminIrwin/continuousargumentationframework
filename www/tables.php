@@ -261,8 +261,7 @@ function deleteVariant(element){
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header container">
-      <a class="navbar-brand" href="debates.php">Debates</a>
-      <a class="navbar-brand" href="tables.php">Tables</a>
+      <a class="navbar-brand" href="questions.php">Questions</a>
       <a class="navbar-brand" href="logout.php">Logout</a>
     </div>
   </div>

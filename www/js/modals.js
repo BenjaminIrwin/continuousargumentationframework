@@ -164,7 +164,7 @@ function editNodeFromModal(id){
     nodeList[id].editInfo(newName, newBaseValue, newComputedValueQuad, newComputedValueDFQuad, newTypeValue, newState, newAttachment);
 }
 
-function modalInitDebate(ownerid){
+function modalInitDebate(questionid){
 
     var id = $(".debate").length;
 
@@ -176,7 +176,7 @@ function modalInitDebate(ownerid){
     var msg = "<h3> Info </h3>";
     msg += "<ul style='list-style-type: none;'>";
     msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
-    msg += "<li class='ownerid-modal' style='display: block;'>ownerid: &nbsp; <b>"+ownerid+"</b></li><br>";
+    msg += "<li class='questionid-modal' style='display: block;'>questionid: &nbsp; <b>"+questionid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
     msg += "<li class='defaultbasevalue-modal'>Default base value: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
 //    msg += "<li class='participants-modal'>Participants: &nbsp; <input type='text' class='form-control' placeholder='Participants'></input></li><br>";
@@ -193,6 +193,62 @@ function modalInitDebate(ownerid){
     makeItDraggable('#debate-modal');
     
     $('#debate-modal').modal('show');
+}
+
+function modalInitQuestion(ownerid){
+
+    var id = $(".question").length;
+
+    color = '#5BC0DE';
+    button = 'btn-info';
+
+    $('#question-modal').find('.modal-title').html("Insert information about the new question.");
+
+    var msg = "<h3> Info </h3>";
+    msg += "<ul style='list-style-type: none;'>";
+    msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
+    msg += "<li class='ownerid-modal' style='display: block;'>ownerid: &nbsp; <b>"+ownerid+"</b></li><br>";
+    msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
+    msg += "</ul>";
+    $('#question-modal').find('.modal-body').html(msg);
+
+    $('#question-modal').find('.btn:eq(1)').attr('onClick', 'addQuestion();');
+
+    // Appling color styles.
+    $('#question-modal').find('.modal-header').css('background-color',color);
+    $('#question-modal').find('.btn:eq(1)').attr('class','btn '+button);
+
+    makeItDraggable('#question-modal');
+
+    $('#question-modal').modal('show');
+}
+
+function modalEditQuestion(question){
+
+    var id = question.id;
+
+    color = '#5BC0DE';
+    button = 'btn-info';
+
+    $('#question-modal').find('.modal-title').html("Insert information about the question " + id + " .");
+
+    var msg = "<h3> Edit </h3>";
+    msg += "<ul style='list-style-type: none;'>";
+    msg += "<li class='name-modal'>Name: <input type='text' class='form-control'value='"+question.name+"'></input></li><br>";
+    // msg += "<li class='defaultbasevalue-modal'>Default base value: &nbsp; <input type='text' class='form-control' value='"+question.defaultBaseValue+"'></input></li><br>";
+    msg += "</ul>";
+    $('#question-modal').find('.modal-body').html(msg);
+
+    // Appling color styles.
+    $('#question-modal').find('.modal-header').css('background-color',color);
+    $('#question-modal').find('.btn:eq(1)').attr('class','btn '+button);
+
+
+    // Function editQuestion implemented in question-manager.js.
+    $('#question-modal').find('.btn:eq(1)').attr('onClick', 'editQuestion(questionList['+id+'])' );
+    makeItDraggable('#question-modal');
+    $('#question-modal').modal('show');
+
 }
 
 function modalEditDebate(debate){
@@ -225,19 +281,19 @@ function modalEditDebate(debate){
 
 }
 
-function modalAccess(debateId, debateName){
+function modalAccess(questionId, questionName){
 
     color = '#5BC0DE';
     button = 'btn-info';
 
-    $('#access-modal').find('.modal-title').html("Change access rights for "+debateName+".");
-    
+    $('#access-modal').find('.modal-title').html("Change access rights for "+questionName+".");
+
     var msg = "<div class='table-responsive'><div><input id='search-input' style='text' class='form-control' placeholder='Search'></input>\n\
-                <button id='btn_search' class='btn btn-default' onClick='filterUsers("+debateId+")'>Search</button>\n\
+                <button id='btn_search' class='btn btn-default' onClick='filterUsers("+questionId+")'>Search</button>\n\
                 <button id='btn_load' class='btn btn-default'>All</button>\n\
                 </div>\n\
                 <table id='id_table' class='table'>";
-    
+
     $('#access-modal').find('.modal-body').html(msg);
     $('#access-modal').find('.btn:eq(1)').attr('onClick', '');
     $('#access-modal').find('.btn:eq(2)').attr('onClick', '');
@@ -245,69 +301,69 @@ function modalAccess(debateId, debateName){
     // Appling color styles.
     $('#access-modal').find('.modal-header').css('background-color',color);
     $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
-    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+debateId+')');
+    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+questionId+')');
     $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
-    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+debateId+')');
-    
+    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+questionId+')');
+
     $('#btn_load').click(function() {
-        loadUsers(debateId);
+        loadUsers(questionId);
     });
-    
+
     makeItDraggable('#access-modal');
     $('#access-modal').modal('show');
-          
+
 }
 
-function loadUsers(debateId){
+function loadUsers(questionId){
     color = '#5BC0DE';
     button = 'btn-info';
 
-    $('#access-modal').find('.modal-title').html("Change access rights");// for "+debateName+".");
-    
-    var msg = "<div class='table-responsive'><div><input id='search-input' style='text' class='form-control' placeholder='Search'></input><button id='btn_search' class='btn btn-default' onClick='filterUsers("+debateId+")'>Search</button></div><table id='id_table' class='table'>";
+    $('#access-modal').find('.modal-title').html("Change access rights");// for "+questionName+".");
+
+    var msg = "<div class='table-responsive'><div><input id='search-input' style='text' class='form-control' placeholder='Search'></input><button id='btn_search' class='btn btn-default' onClick='filterUsers("+questionId+")'>Search</button></div><table id='id_table' class='table'>";
     msg += "<tr><th><b>Name</b></th><th><b>Read</b></th><th><b>Read and Write</b></th>";
 
     // AJAX call for pupolation of users list.
-        $.ajax({
-            type: "POST",
-            url: "load-users.php",
-            data: "did="+debateId,
-            cache: false,
-            success: function(dat) {
-                var obj = JSON.parse(dat);
-                for (var i = 0; i < obj.length; i++){
+    $.ajax({
+        type: "POST",
+        url: "load-users.php",
+        data: "qid="+questionId,
+        cache: false,
+        success: function(dat) {
+            var obj = JSON.parse(dat);
+            for (var i = 0; i < obj.length; i++){
 
-                  if (obj[i].accessright=='w'){
-                      msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td></tr>";
-
-                  }
-                  else if (obj[i].accessright=='r'){
-                      msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td></tr>";
-
-                  }
-                  else{
-                      msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td></tr>";
-                  }
+                if (obj[i].accessright=='w'){
+                    msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td></tr>";
 
                 }
+                else if (obj[i].accessright=='r'){
+                    msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td></tr>";
 
-                msg += "</table></div>";
+                }
+                else{
+                    msg += "<tr class='access-row' rel="+obj[i].id+"><td><b>"+obj[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td></tr>";
+                }
 
-              $('#access-modal').find('.modal-body').html(msg);
-              $('#access-modal').find('.btn:eq(1)').attr('onClick', '');
-
-              // Appling color styles.
-              $('#access-modal').find('.modal-header').css('background-color',color);
-              $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
-              $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+debateId+')');
-
-              $('#access-modal').modal('show');
             }
-            });
+
+            msg += "</table></div>";
+
+            $('#access-modal').find('.modal-body').html(msg);
+            $('#access-modal').find('.btn:eq(1)').attr('onClick', '');
+
+            // Appling color styles.
+            $('#access-modal').find('.modal-header').css('background-color',color);
+            $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
+            $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+questionId+')');
+
+            $('#access-modal').modal('show');
+        }
+    });
 
 }
 
-function filterUsers(debateId){
+function filterUsers(questionId){
 
     $('.access-row').fadeOut();
     var searchString = $('#search-input').val();
@@ -317,85 +373,84 @@ function filterUsers(debateId){
         $('.access-row').fadeIn(100);
     }
     else {
-       
+
         // search users
-            $.ajax({
-                url:"filter-users.php",
-                type:"POST",
-                data: "searchQuery="+searchString+"&did="+debateId,
-                cache: false,
+        $.ajax({
+            url:"filter-users.php",
+            type:"POST",
+            data: "searchQuery="+searchString+"&qid="+questionId,
+            cache: false,
 
-                success: function(dat){
-                           
-                           var result = JSON.parse(dat);
-                           //console.log("result "+result);
-                           
-                           if(result.success==0) {
-                               bootbox.alert("No user found with this username");
-                               loadUsers(debateId);
-                           }
-                           else if(result.success==1){
-                                var users = result.users;
-                                                               
-                                color = '#5BC0DE';
-                                button = 'btn-info';
+            success: function(dat){
 
-                                $('#access-modal').find('.modal-title').html("Change access rights");// for "+debateName+".");
+                var result = JSON.parse(dat);
 
-                                var msg = "<div class='table-responsive'><div>\n\
+                if(result.success==0) {
+                    bootbox.alert("No user found with this username");
+                    loadUsers(questionId);
+                }
+                else if(result.success==1){
+                    var users = result.users;
+
+                    color = '#5BC0DE';
+                    button = 'btn-info';
+
+                    $('#access-modal').find('.modal-title').html("Change access rights");// for "+questionName+".");
+
+                    var msg = "<div class='table-responsive'><div>\n\
                                             <input id='search-input' style='text' class='form-control' placeholder='Search'></input>\n\
-                                            <button id='btn_search' class='btn btn-default' onClick='filterUsers("+debateId+")'>Search</button>\n\
+                                            <button id='btn_search' class='btn btn-default' onClick='filterUsers("+questionId+")'>Search</button>\n\
                                             <button id='btn_load' class='btn btn-default'>All</button>\n\
                                             </div>\n\
                                            <table id='id_table' class='table'>";
-                                msg += "<tr><th><b>Name</b></th><th><b>Read</b></th><th><b>Read and Write</b></th>";
-                                
-                                for (var i = 0; i < users.length; i++){
-                                        
-                                  if (users[i].accessright=='o'){
-                                      
-                                  }
-                                  else if (users[i].accessright=='w'){
-                                      msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td></tr>";
+                    msg += "<tr><th><b>Name</b></th><th><b>Read</b></th><th><b>Read and Write</b></th>";
 
-                                  }
-                                  else if (users[i].accessright=='r'){
-                                      msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td></tr>";
+                    for (var i = 0; i < users.length; i++){
 
-                                  }
-                                  else{
-                                      msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+debateId+",this)'/></td></tr>";
-                                  }
+                        if (users[i].accessright=='o'){
 
-                                }
+                        }
+                        else if (users[i].accessright=='w'){
+                            msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td></tr>";
 
-                                msg += "</table></div>";
+                        }
+                        else if (users[i].accessright=='r'){
+                            msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' checked onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td></tr>";
 
-                              $('#access-modal').find('.modal-body').html(msg);
-                              $('#access-modal').find('.btn:eq(1)').attr('onClick', '');
-                              $('#access-modal').find('.btn:eq(2)').attr('onClick', '');
+                        }
+                        else{
+                            msg += "<tr class='access-row' rel="+users[i].id+"><td><b>"+users[i].username+"</b></td><td><input type='checkbox' class='read-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td><td><input type='checkbox' class='readwrite-right' style='float: left;' onClick='addRight("+questionId+",this)'/></td></tr>";
+                        }
 
-                              // Appling color styles.
-                              $('#access-modal').find('.modal-header').css('background-color',color);
-                              $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
-                              $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+debateId+')');
-                              $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
-                              $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+debateId+')');
-                              
-                              
-                              $('#btn_load').click(function() {
-                                  loadUsers(debateId);
-                              });
-                              
-                              makeItDraggable('#access-modal');
-                              $('#access-modal').modal('show');
-                            }
-                                         
+                    }
 
+                    msg += "</table></div>";
+
+                    $('#access-modal').find('.modal-body').html(msg);
+                    $('#access-modal').find('.btn:eq(1)').attr('onClick', '');
+                    $('#access-modal').find('.btn:eq(2)').attr('onClick', '');
+
+                    // Appling color styles.
+                    $('#access-modal').find('.modal-header').css('background-color',color);
+                    $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
+                    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+questionId+')');
+                    $('#access-modal').find('.btn:eq(1)').attr('class','btn '+button);
+                    $('#access-modal').find('.btn:eq(1)').attr('onClick','addRights('+questionId+')');
+
+
+                    $('#btn_load').click(function() {
+                        loadUsers(questionId);
+                    });
+
+                    makeItDraggable('#access-modal');
+                    $('#access-modal').modal('show');
                 }
-        
-            });
-    
+
+
+            }
+
+        });
+
     }
 }
 

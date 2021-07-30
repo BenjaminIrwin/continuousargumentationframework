@@ -35,7 +35,7 @@ while ($r1 = mysqli_fetch_array($sqldata1)) {
 
 $_SESSION['debate'] = $debateid;
 
-$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND debateid='$debateid' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND questionid='$debateid' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 if (mysqli_num_rows($sqldata2)<=0){
   echo "Forbidden.";
@@ -299,8 +299,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header container">
-      <a class="navbar-brand" href="debates.php">Debates</a>
-      <a class="navbar-brand" href="tables.php">Tables</a>
+      <a class="navbar-brand" href="questions.php">Questions</a>
       <a class="navbar-brand" href="logout.php">Logout</a>
     </div>
   </div>
@@ -338,7 +337,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
     <?php
 
-    $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT debates.id, debates.name, rights.accessright FROM debates LEFT JOIN rights ON debates.id=rights.debateid WHERE rights.userid = '$userid' ORDER BY accessright ASC") or die();
+    $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT debates.id, debates.name, rights.accessright FROM debates LEFT JOIN rights ON debates.id=rights.questionid WHERE rights.userid = '$userid' ORDER BY accessright ASC") or die();
 
     while($r = mysqli_fetch_assoc($sqldata)) {
 
@@ -396,7 +395,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <?php
     // PARTICIPANTS //
     $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.username, rights.accessright FROM rights INNER JOIN "
-        . "users ON rights.userid=users.id WHERE rights.debateid='$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+        . "users ON rights.userid=users.id WHERE rights.questionid=(select questionid from debates where '$debateid')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
     
     $title = '<b>Participants</b>';
     $str='';

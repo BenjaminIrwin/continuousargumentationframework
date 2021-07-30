@@ -5,7 +5,7 @@ function addDebate(){
 
 	// Modal initialized in modal.js file.
 //  var id = $("#debate-modal").find(".id-modal > b").html();
-  var ownerId = $("#debate-modal").find(".ownerId-modal > b").html();
+  var questionid = $("#debate-modal").find(".questionid-modal > b").html();
   var name = $("#debate-modal").find(".name-modal > input").val();
   var defaultBaseValue = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
   var participants = $("#debate-modal").find(".participants-modal > input").val();
@@ -23,7 +23,7 @@ if (defaultBaseValue=="") {
 $.ajax({
             type: "POST",
             url: "add-debate.php",
-            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
+            data: "qid="+questionId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
             cache: false,
             success: function(dat) {
               var id = dat;
@@ -108,11 +108,11 @@ $.ajax({
 
 }
 
-function loadDebates(){
+function loadDebates(questionid){
   $.ajax({
             type: "POST",
             url: "load-debates.php",
-            data: "",
+            data: "qid="+questionid,
             cache: false,
             success: function(dat) {
 
@@ -122,15 +122,13 @@ function loadDebates(){
               for (var i = 0; i < obj.length; i++) {
 
                 var id = obj[i].id;
-                var ownerId = obj[i].ownerid;
+                var questionid = obj[i].questionid;
                 var name = obj[i].name;
                 var defaultBaseValue = obj[i].defaultbasevalue;
                 var participants = obj[i].participants;
                 var typeValue = obj[i].typevalue;
 
-                var right = obj[i].accessright;
-
-                var debate = new Debate(id,ownerId,name,defaultBaseValue,participants,typeValue);
+                var debate = new Debate(id,questionid,name,defaultBaseValue,participants,typeValue);
 
               var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
                   msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
@@ -140,29 +138,12 @@ function loadDebates(){
                   msg += '</button>';
                   msg += '<ul class="dropdown-menu" role="menu">';
                   msg += '<li><a href="#" onClick="debateList['+id+'].displayInfo();">Info</a></li>';
-                  msg += '<li><a id="modal-edit-debate" href="#" onClick="modalEditDebate(debateList['+id+'])">Edit</a></li>';
-                  msg += '<li><a id="modal-access-button" href="#" onClick="modalAccess('+id+',debateList['+id+'].name)">Access control</a></li>';
-                  msg += '<li><a id="unsubscribe-debate" href="#" onClick="unsubscribeDebate(debateList['+id+'])">Unsubscribe</a></li>';
                   msg += '<li class="divider"></li>';
                   msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
                   msg += '</ul>';
                 msg += '</li><br><br></div>';
 
-              $("#debate-list-"+right).append(msg);
-
-              // Hiding button in fuction of the right value.
-              if (right!='o'){
-                $('#debate'+id).find('#modal-access-button').fadeOut(100);
-                $('#debate'+id).find('.divider').fadeOut(100);
-                $('#debate'+id).find('#delete-debate-button').fadeOut(100);
-              }
-
-              if(right!='o' && right!='w'){
-                $('#debate'+id).find('#modal-edit-debate').fadeOut(100);
-              }
-              if(right=='o') {
-                  $('#debate'+id).find('#unsubscribe-debate').fadeOut(100);
-              }
+              $("#debate-list").append(msg);
 
               debateList[id] = debate;
 

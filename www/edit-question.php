@@ -14,12 +14,14 @@ if (!isset($_SESSION['id'])) {
 }
 
 $userid = $_SESSION['id'];
+$username = $_SESSION['username'];
 
-$did = $_POST['did'];
+$id = $_POST['id'];
+$name = $_POST['n'];
 
 
-$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rights WHERE questionid='$did' AND userid='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
+$sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE questions SET name='$name' WHERE id=$id") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 

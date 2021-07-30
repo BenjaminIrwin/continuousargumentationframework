@@ -1,4 +1,4 @@
-function addRight(debateId, element){
+function addRight(questionId, element){
 
 	var userId = $(element).closest('tr').attr('rel');
 	var right;
@@ -23,7 +23,7 @@ function addRight(debateId, element){
 	  $.ajax({
             type: "POST",
             url: "save-right.php",
-            data: "uid="+userId+"&did="+debateId+"&r="+right,
+            data: "uid="+userId+"&qid="+questionId+"&r="+right,
             cache: false,
             success: function(dat) {
 

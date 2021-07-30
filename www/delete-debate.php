@@ -24,7 +24,7 @@ $id = $_POST['id'];
 $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM debates WHERE id=$id AND ownerid='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 $sql2 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM nodes WHERE debateid=$id") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 $sql3 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM edges WHERE debateid=$id") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-$sql4 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rights WHERE debateid='$id'") or die (mysqli_error($GLOBALS["___mysqli_ston"]));
+$sql4 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM rights WHERE questionid='$id'") or die (mysqli_error($GLOBALS["___mysqli_ston"]));
 $sql5 = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM mapping WHERE debateid='$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);

@@ -14,10 +14,10 @@ if (!isset($_SESSION['id'])) {
 }
 
 $owner = $_POST['uid'];
-$debateid = $_POST['did'];
+$questionid = $_POST['qid'];
 
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.username, rights.accessright FROM rights INNER JOIN "
-        . "users ON rights.userid=users.id WHERE rights.debateid='$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+        . "users ON rights.userid=users.id WHERE rights.questionid='$questionid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 /*SELECT Customers.CustomerName, Orders.OrderID
 FROM Customers

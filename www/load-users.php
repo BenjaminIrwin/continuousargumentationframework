@@ -14,11 +14,11 @@ if (!isset($_SESSION['id'])) {
 }
 
 $userid = $_SESSION['id'];
-$debateid = $_POST['did'];
+$questionid = $_POST['qid'];
 
 
 $sqldata1 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.id, users.username, rights.accessright FROM users LEFT JOIN rights "
-        . "ON users.id=rights.userid AND rights.debateid='$debateid' WHERE users.id!='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+        . "ON users.id=rights.userid AND rights.questionid='$questionid' WHERE users.id!='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata1)) {

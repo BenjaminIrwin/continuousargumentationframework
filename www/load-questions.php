@@ -15,9 +15,9 @@ if (!isset($_SESSION['id'])) {
 
 $userid = $_SESSION['id'];
 
-$questionid = $_POST['qid'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT debates.id,debates.name,debates.defaultbasevalue,debates.participants,debates.typevalue FROM debates WHERE questionId = '$questionid' ORDER BY debates.name ASC") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT questions.id,questions.ownerid,questions.name, rights.accessright FROM questions LEFT JOIN rights ON questions.id=rights.questionid AND rights.userid=$userid ORDER BY questions.name ASC") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {

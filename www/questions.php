@@ -13,14 +13,14 @@ if (!isset($_SESSION['id'])) {
   die();
 }
 
+$id = $_SESSION['id'];
 
-$qid = $_GET["id"];
+$sql = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From users Where id='$id'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
-$sql = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From questions Where id=$qid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-
-$s = mysqli_fetch_array($sql);
-
-$questionname = $s["name"];
+while ($s = mysqli_fetch_array($sql)) {
+  $id = $s['id'];
+  $name = $s['username'];
+}
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);
 
@@ -28,7 +28,7 @@ $questionname = $s["name"];
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title><?php echo $questionname; ?></title>
+    <title>Questions</title>
         <script src="js/jquery-1.11.1.js"></script>
         <script src="js/go-debug.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -43,10 +43,10 @@ $questionname = $s["name"];
         <script src="js/bootbox.min.js"></script>
 
 
-        <script src="js/debate-manager.js"></script>
+        <script src="js/question-manager.js"></script>
         <script src="js/modals.js"></script>
 
-        <script src="js/debate.js"></script>
+        <script src="js/question.js"></script>
 
         <script src="js/access-manager.js"></script>
 
@@ -111,7 +111,7 @@ $questionname = $s["name"];
     </style>
 
 
-  <div id="debate-modal" class="modal fade">
+  <div id="question-modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -144,11 +144,18 @@ $questionname = $s["name"];
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+
+
 <script>
 
 $(document).ready(function(){
-    console.log('QUESTION ID' + <?php echo $qid; ?>);
-    loadDebates(<?php echo $qid; ?>);
+    console.log("test2");
+
+    loadQuestions();
+
+    console.log("test3");
+
 });
 
 </script>
@@ -165,22 +172,26 @@ $(document).ready(function(){
     </div>
   </div>
     <div class="jumbotron">
-  <div class="container"><h1><?php echo $questionname; ?></h1></div>
+  <div class="container"><h1>Questions</h1></div>
 </div>
 </nav>
 
 
 <div class="container">
 
-<button class="addIssue btn btn-info" onClick="modalInitDebate('<?php echo $qid; ?>');">Add debate</button><br><br><br>
+<button class="addIssue btn btn-info" onClick="modalInitQuestion('<?php echo $id; ?>');">Add question</button><br><br><br>
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-  <li role="presentation" class="active"><a href="#debate-list" role="tab" data-toggle="tab">Debates</a></li>
+  <li role="presentation" class="active"><a href="#question-list-o" role="tab" data-toggle="tab">Owned</a></li>
+  <li role="presentation"><a href="#question-list-w" role="tab" data-toggle="tab">Write</a></li>
+  <li role="presentation"><a href="#question-list-r" role="tab" data-toggle="tab">Read</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="debate-list"><br></div>
+  <div role="tabpanel" class="tab-pane fade in active" id="question-list-o"><h3> Owned questions </h3><br></div>
+  <div role="tabpanel" class="tab-pane fade" id="question-list-w"><h3> Writing questions </h3><br></div>
+  <div role="tabpanel" class="tab-pane fade" id="question-list-r"><h3> Reading questions </h3><br></div>
 </div>
 
 </div>
@@ -216,7 +227,6 @@ $(document).ready(function(){
   $(this).tab('show')
 });*/
   </script>
-
 
   <!--  <div id="myDiagramDiv"
      style="width:800px; height:600px; background-color: #DAE4E4;"></div> -->
