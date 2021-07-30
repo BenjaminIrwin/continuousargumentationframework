@@ -159,7 +159,6 @@ function freezeGraph(thisMatrixId){
 
 function checkNonProposalSource(node){
 
-
 	var targetList = node.targetList;
 
 	for(var n in targetList){

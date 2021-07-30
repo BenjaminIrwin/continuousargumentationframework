@@ -7,6 +7,7 @@
 .btn-default,
 .btn-primary,
 .btn-success,
+.btn-success-pale,
 .btn-info,
 .btn-warning,
 .btn-danger {
@@ -14,27 +15,43 @@
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
 }
+.btn-danger-pale {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+}
 .btn-default:active,
 .btn-primary:active,
 .btn-success:active,
+.btn-success-pale:active,
 .btn-info:active,
 .btn-warning:active,
 .btn-danger:active,
+.btn-danger-pale:active,
 .btn-default.active,
 .btn-primary.active,
 .btn-success.active,
+.btn-success-pale.active,
 .btn-info.active,
 .btn-warning.active,
 .btn-danger.active {
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
           box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
+.btn-danger-pale.active {
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
 .btn-default .badge,
 .btn-primary .badge,
 .btn-success .badge,
+.btn-success-pale .badge,
 .btn-info .badge,
 .btn-warning .badge,
 .btn-danger .badge {
+  text-shadow: none;
+}
+.btn-danger-pale .badge {
   text-shadow: none;
 }
 .btn:active,
@@ -118,6 +135,31 @@
   background-color: #419641;
   background-image: none;
 }
+.btn-success-pale {
+  background-image: -webkit-linear-gradient(top, rgba(92, 184, 92, 0.4) 0%, rgba(65, 150, 65, 0.4) 100%);
+  background-image:      -o-linear-gradient(top, rgba(92, 184, 92, 0.4) 0%, rgba(65, 150, 65, 0.4) 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(92, 184, 92, 0.4)), to(rgba(65, 150, 65, 0.4)));
+  background-image:         linear-gradient(to bottom, rgba(92, 184, 92, 0.4) 0%, rgba(65, 150, 65, 0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5cb85c', endColorstr='#ff419641', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: rgba(62, 143, 62, 0.4);
+}
+.btn-success-pale:hover,
+.btn-success-pale:focus {
+  background-color: rgba(65, 150, 65, 0.4);
+  background-position: 0 -15px;
+}
+.btn-success-pale:active,
+.btn-success-pale.active {
+  background-color: rgba(65, 150, 65, 0.4);
+  border-color: rgba(62, 143, 62, 0.4);
+}
+.btn-success-pale:disabled,
+.btn-success-pale[disabled] {
+  background-color: rgba(65, 150, 65, 0.4);
+  background-image: none;
+}
 .btn-info {
   background-image: -webkit-linear-gradient(top, #5bc0de 0%, #2aabd2 100%);
   background-image:      -o-linear-gradient(top, #5bc0de 0%, #2aabd2 100%);
@@ -191,6 +233,31 @@
 .btn-danger:disabled,
 .btn-danger[disabled] {
   background-color: #c12e2a;
+  background-image: none;
+}
+.btn-danger-pale {
+  background-image: -webkit-linear-gradient(top, rgba(217, 83, 79, 0.4) 0%, rgba(193, 46, 42, 0.4) 100%);
+  background-image:      -o-linear-gradient(top, rgba(217, 83, 79, 0.4) 0%, rgba(193, 46, 42, 0.4) 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(217, 83, 79, 0.4)), to(rgba(193, 46, 42, 0.4)));
+  background-image:         linear-gradient(to bottom, rgba(217, 83, 79, 0.4) 0%, rgba(193, 46, 42, 0.4) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc12e2a', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: rgba(185, 44, 40, 0.4);
+}
+.btn-danger-pale:hover,
+.btn-danger-pale:focus {
+  background-color: rgba(193, 46, 42, 0.4);
+  background-position: 0 -15px;
+}
+.btn-danger-pale:active,
+.btn-danger-pale.active {
+  background-color: rgba(193, 46, 42, 0.4);
+  border-color: rgba(185, 44, 40, 0.4);
+}
+.btn-danger-pale:disabled,
+.btn-danger-pale[disabled] {
+  background-color: rgba(193, 46, 42, 0.4);
   background-image: none;
 }
 .thumbnail,

@@ -12,12 +12,14 @@ function modalInitNode(type){
     
     msg += "<li class='type-modal' style='display: none;'>Type: &nbsp; <b>"+type+"</b><br></li>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'/></li><br>";
-    msg += "<li class='basevalue-modal'>Base value: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
-    msg += "<li class='computedvalue-quad-modal'>Computed value Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
-    msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
-    msg += "<li class='typevalue-modal'>Tag: &nbsp; <input type='text' class='form-control' placeholder='"+thisUsername+"'></input></li><br>";
-    msg += "<li class='state-modal'>State: &nbsp; "+selectState(type)+"</li><br>";
-    
+
+    if(type === 'proposal') {
+        msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+    } else {
+        msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+        msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
+    }
+
     msg += "<li class='attachment-modal'>Attachment: &nbsp; \n\ <input id=\"url_attachment\" type='text' class='form-control' placeholder='Put here a valid URL'></input>\n\
                 <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
                             <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000000\">Or upload a file: \n\
@@ -78,11 +80,12 @@ function modalEditNode(node){
 //    msg += "<li class='type-modal'>Type: &nbsp; <b>"+type+"</b></li><br>";    
     
     msg += "<li class='name-modal'>Content: <input type='text' class='form-control' value=\""+node.name+"\"></input></li><br>";
-    msg += "<li class='basevalue-modal'>Base value: &nbsp; <input type='text' class='form-control' value='"+node.baseValue+"'></input></li><br>";
-    msg += "<li class='computedvalue-quad-modal'>Computed value Quad: &nbsp; <input type='text' class='form-control' value='"+node.computedValueQuad+"'></input></li><br>";
-    msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' value='"+node.computedValueDFQuad+"'></input></li><br>";
-    msg += "<li class='typevalue-modal'>Tags: &nbsp; <input type='text' class='form-control' value='"+node.typeValue+"'></input></li><br>";
-   
+    if(type === 'proposal') {
+        msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+    } else {
+        msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+        msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
+    }
     msg += "<li class='attachment-modal'>Attachment: &nbsp; <input id=\"url_attachment\" type='text' class='form-control' value='"+node.attachment+"'></input></li><br> \n\
                 <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
                             <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000000\">Or upload a file: \n\

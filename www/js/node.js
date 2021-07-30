@@ -44,7 +44,6 @@ function displayInfo(){
     msg += "<li>Id: &nbsp; <b>"+this.id+"</b></li>";
     msg += "<li>Content: &nbsp; <b style='word-wrap: break-word; height:100%;'>"+this.name+"</b></li>";
     msg += "<li>Base value: &nbsp; <b>"+this.baseValue+"</b></li>";
-    msg += "<li>Computed value Quad: &nbsp; <b>"+this.computedValueQuad+"</b></li>";
     msg += "<li>Computed value DF-Quad: &nbsp; <b>"+this.computedValueDFQuad+"</b></li>";
     msg += "<li>Type: &nbsp; <b>"+this.type+"</b></li>";
     if(this.createdBy!=''){
@@ -84,9 +83,6 @@ function initializeNode(){
     console.log(this.type);
 
     var type = this.type
-    // if(this.type === 'proposal') {
-    //     type = 'issue';
-    // }
 
   // Creating new div.
     let value = $(("#"+type))[0].innerHTML;
@@ -111,7 +107,7 @@ function initializeNode(){
     if (text.length>labelLength) {
       text = text.substring(0,labelLength-1)+"...";
     }
-
+//HERE FOR PERCENTAGE
   $('#' + this.id + ' > #name').html(this.name);
   $('#' + this.id + ' > #name').attr('title',this.name);
 

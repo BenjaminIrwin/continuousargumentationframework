@@ -384,13 +384,14 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <button class="addProposal btn btn-primary" id="bbb" onClick="modalInitNode('proposal');">Add proposal</button>
     <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
     <button class="addDecrease btn btn-danger" onClick="modalInitNode('decrease');">Add decrease argument</button>
-    <button class="addPro btn btn-warning" onClick="modalInitNode('pro');">Add pro argument</button>
-    <button class="addCon btn btn-warning" onClick="modalInitNode('con');">Add con argument</button>
+    <button class="addPro btn btn-success-pale" onClick="modalInitNode('pro');">Add pro argument</button>
+    <button class="addCon btn btn-danger-pale" onClick="modalInitNode('con');">Add con argument</button>
+<!--    <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>-->
+<!--    <button class="addCon btn btn-warning" onClick="modalInitNode('con');">Add con argument</button>-->
 
-    <div class="pull-right graph-operations">
+    <div class="pull-left graph-operations">
     <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>
-    <button class="btn btn-default" onClick="graphMapping()">Map the graph</button>
-    <button class="btn btn-default" onClick="buildNaturalText()">Convert to natural text</button>
+    <li class='name-modal'>Forecast: <input type='text' class='form-control' placeholder='Forecast'/></li><br>
 
     <?php
     // PARTICIPANTS //
@@ -476,7 +477,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <li class="dropdown-submenu">
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
@@ -528,7 +529,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <li class="dropdown-submenu">
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
@@ -579,7 +580,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
                 <li class="dropdown-submenu">
                     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
                     <ul class="dropdown-menu">
-                        <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+                        <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
                         <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
                         <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
                         <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
@@ -628,7 +629,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <li class="dropdown-submenu">
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
@@ -675,7 +676,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <li class="dropdown-submenu">
     <a tabindex="-1" href="javascript:void(0)">Edit type</a>
     <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Issue</a></li>
+      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
       <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
