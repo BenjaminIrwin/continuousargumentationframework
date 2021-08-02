@@ -127,10 +127,34 @@ function loadDebates(questionid){
                 var defaultBaseValue = obj[i].defaultbasevalue;
                 var participants = obj[i].participants;
                 var typeValue = obj[i].typevalue;
+                var open = obj[i].open;
+                var close = obj[i].close;
 
                 var debate = new Debate(id,questionid,name,defaultBaseValue,participants,typeValue);
 
+
+              //      <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
+
               var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
+
+              let now = new Date();
+
+              if(Date.parse(close) > now) {
+                  console.log('ID:'+id+' is in the future');
+                  msg += '<button type="button" class="btn btn-success" onClick="parent.location=\'diagram.php?id='+id+'\'">' + ' ' + name+'</button>';
+                  msg += '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">';
+                  msg += '<span class="caret"></span>';
+                  msg += '<span class="sr-only">Toggle Dropdown</span>';
+                  msg += '</button>';
+                  msg += '<ul class="dropdown-menu" role="menu">';
+                  msg += '<li><a href="#" onClick="debateList['+id+'].displayInfo();">Info</a></li>';
+                  msg += '<li class="divider"></li>';
+                  msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
+                  msg += '</ul>';
+                  msg += '</li><br><br></div>';
+
+              } else {
+                  console.log('ID:'+id+' is not in the future');
                   msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
                   msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
                   msg += '<span class="caret"></span>';
@@ -141,7 +165,8 @@ function loadDebates(questionid){
                   msg += '<li class="divider"></li>';
                   msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
                   msg += '</ul>';
-                msg += '</li><br><br></div>';
+                  msg += '</li><br><br></div>';
+              }
 
               $("#debate-list").append(msg);
 
@@ -241,4 +266,156 @@ function unsubscribeDebate(debate) {
         }
       });
    
+}
+
+function getDebateScoreChart(questionId, questionOpen, questionClose, initialForecast){
+
+    // x-axis label and label in tooltip
+    var X_AXIS = 'Date';
+
+// y-axis label and label in tooltip
+    var Y_AXIS = 'Forecast (%)';
+
+// Should y-axis start from 0? `true` or `false`
+    var BEGIN_AT_ZERO = true;
+
+// `true` to show the grid, `false` to hide
+    var SHOW_GRID = true;
+
+// `true` to show the legend, `false` to hide
+    var SHOW_LEGEND = true;
+
+    $.ajax({
+        type: "POST",
+        url: "load-debate-scores.php",
+        data: "qid="+questionId,
+        cache: false,
+        success: function(data) {
+            var obj = JSON.parse(data);
+            var msg = "";
+
+            var forecastDate = [];
+            var groupForecast = [];
+            var userForecast = [];
+
+
+            for (var i = 0; i < obj.length; i++) {
+                forecastDate[i] = obj[i].close;
+                groupForecast[i] = obj[i].groupforecast;
+                if(obj[i].userforecast === null) {
+                    userForecast[i] = obj[i].groupforecast;
+                } else {
+                    userForecast[i] = obj[i].userforecast;
+                }
+            }
+
+            forecastDate.unshift(questionOpen);
+            groupForecast.unshift(initialForecast);
+            userForecast.unshift(initialForecast);
+
+
+            var datasets = [];
+            datasets.push(
+                {
+                    label: 'You', // column name
+                    data: userForecast, // data in that column
+                    fill: false // `true` for area charts, `false` for regular line charts
+                }
+            )
+
+            datasets.push(
+                {
+                    label: 'Group', // column name
+                    data: groupForecast, // data in that column
+                    fill: false // `true` for area charts, `false` for regular line charts
+                }
+            )
+
+            console.log(datasets);
+
+            // Get container for the chart
+            var ctx = document.getElementById('chart-container').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+
+                data: {
+                    labels: forecastDate,
+                    datasets: datasets,
+                },
+
+                options: {
+                    // title: {
+                    //     display: true,
+                    //     text: TITLE,
+                    //     fontSize: 14,
+                    // },
+                    legend: {
+                        display: SHOW_LEGEND,
+                    },
+                    maintainAspectRatio: false,
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                max: questionClose
+                            },
+                            distribution: 'series',
+                            scaleLabel: {
+                                display: X_AXIS !== '',
+                                labelString: X_AXIS,
+                            },
+                            gridLines: {
+                                display: SHOW_GRID,
+                            },
+                            ticks: {
+                                maxTicksLimit: 10,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }],
+                        yAxes: [{
+                            stacked: false, // `true` for stacked area chart, `false` otherwise
+                            beginAtZero: true,
+                            scaleLabel: {
+                                display: Y_AXIS !== '',
+                                labelString: Y_AXIS
+                            },
+                            gridLines: {
+                                display: SHOW_GRID,
+                            },
+                            ticks: {
+                                maxTicksLimit: 10,
+                                beginAtZero: BEGIN_AT_ZERO,
+                                callback: function(value, index, values) {
+                                    return value.toLocaleString()
+                                }
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        displayColors: false,
+                        callbacks: {
+                            label: function(tooltipItem, all) {
+                                return all.datasets[tooltipItem.datasetIndex].label
+                                    + ': ' + tooltipItem.yLabel.toLocaleString();
+                            }
+                        }
+                    },
+                    plugins: {
+                        colorschemes: {
+                            /*
+                              Replace below with any other scheme from
+                              https://nagix.github.io/chartjs-plugin-colorschemes/colorchart.html
+                            */
+                            scheme: 'brewer.DarkTwo5'
+                        }
+                    }
+                }
+            });
+
+        }
+    });
+
 }

@@ -188,6 +188,14 @@ function editNodeFromModal(id){
 
 function modalInitDebate(questionid){
 
+    console.log('1234' + debateList);
+
+    for (var i = 0; i < debateList.length; i++) {
+        if(Date.parse(debateList[i].close) > Date.now()) {
+            bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.')
+        }
+    }
+
     var id = $(".debate").length;
 
     color = '#5BC0DE';

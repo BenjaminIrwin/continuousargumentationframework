@@ -21,6 +21,9 @@ $sql = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From questions Where i
 $s = mysqli_fetch_array($sql);
 
 $questionname = $s["name"];
+$open = $s["open"];
+$close = $s["close"];
+$initialForecast = $s["initialForecast"];
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);
 
@@ -154,6 +157,7 @@ $questionname = $s["name"];
 
 $(document).ready(function(){
     console.log('QUESTION ID' + <?php echo $qid; ?>);
+    getDebateScoreChart(<?php echo $qid; ?>, '<?php echo $open; ?>', '<?php echo $close; ?>', <?php echo $initialForecast; ?>);
     loadDebates(<?php echo $qid; ?>);
 });
 
@@ -183,7 +187,7 @@ $(document).ready(function(){
           <canvas id="chart-container" style="height: 400px; width: 100%"></canvas>
       </div>
 
-      <script src="js/chart.js"></script>
+<!--      <script src="js/chart.js"></script>-->
 
 
 <button class="addIssue btn btn-info" onClick="modalInitDebate('<?php echo $qid; ?>');">Add debate</button><br><br><br>
@@ -194,7 +198,7 @@ $(document).ready(function(){
 
 <!-- Tab panes -->
 <div class="tab-content">
-  <div role="tabpanel" class="tab-pane fade in active" id="debate-list"><br></div>
+    <div role="tabpanel" class="tab-pane fade in active" id="debate-list"><br></div>
 </div>
 
 </div>
