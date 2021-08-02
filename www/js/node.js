@@ -80,8 +80,6 @@ function displayInfo(){
 
 function initializeNode(){
 
-    console.log(this.type);
-
     var type = this.type
 
   // Creating new div.

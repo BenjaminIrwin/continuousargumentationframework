@@ -295,7 +295,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <script>
 
           $(document).ready(function(){
-              getCountdownTimer(Date.parse('<?php echo $close; ?>'));
+              getDebateCountdownTimer(Date.parse('<?php echo $close; ?>'));
           });
 
       </script>
