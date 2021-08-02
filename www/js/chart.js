@@ -70,28 +70,26 @@ $(document).ready(function() {
                             display: SHOW_GRID,
                         },
                         ticks: {
-                            beginAtZero: true,
-                            min: 0,
-                            max: 100,
-                            stepSize: 20,
+                            maxTicksLimit: 10,
+                            callback: function (value, index, values) {
+                                return value.toLocaleString();
+                            }
                         }
                     }],
                     yAxes: [{
                         stacked: false, // `true` for stacked area chart, `false` otherwise
-                        beginAtZero: true,
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMin: 0, //min
+                            suggestedMax: 100, //max
+                            stepSize: 10,
+                        },
                         scaleLabel: {
                             display: Y_AXIS !== '',
                             labelString: Y_AXIS
                         },
                         gridLines: {
                             display: SHOW_GRID,
-                        },
-                        ticks: {
-                            maxTicksLimit: 10,
-                            beginAtZero: BEGIN_AT_ZERO,
-                            callback: function(value, index, values) {
-                                return value.toLocaleString()
-                            }
                         }
                     }]
                 },

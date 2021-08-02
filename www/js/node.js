@@ -115,6 +115,14 @@ function initializeNode(){
   // Setting state image.
   if(this.state!=''){
     $('#' + this.id).find('img').attr('src','gallery/'+this.type+'-basic.png');
+    if(type=="proposal") {
+        $('#'+this.id).css('height','150px')
+        $('#' + this.id).find('img').before("<span style='text-align:center;font-size:60px;'>75</span>")
+        $('#' + this.id).find('img').css('height', '29%')
+        $('#' + this.id).find('ep').css('box-shadow', 'none')
+
+        $('#'+this.id+" .name-label").css('margin-top','45px')
+    }
   }
 
   // Making the new div draggable.

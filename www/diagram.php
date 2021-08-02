@@ -139,6 +139,8 @@ while($r3=mysqli_fetch_array($sqldata3)){
   z-index: 3;
 }
 
+.ep{ box-shadow: none !important; }
+
 .item span, .item textarea {
   color: black;
 }
@@ -315,8 +317,12 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
 <div class="jumbotron">
   <div class="container"  style="margin-left: 20px;">
-  <h1><?php echo $name.'</br>';?>
+      <img src="gallery/left-arrow.png" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
+
+      <h1 style="float:left; text-align:center; margin-top: 0px; width: 89%;"><?php echo $name.'</br>';?>
   </h1>
+      <img src="gallery/right-arrow.png" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
+      <br style="clear:both;">
       <h5>
           <p id="demo"></p>
       </h5>
@@ -390,7 +396,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
     <div class="pull-left graph-operations">
     <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>
-    <li class='name-modal'>Forecast: <input type='text' class='form-control' placeholder='Forecast'/></li><br>
+
 
     <?php
     // PARTICIPANTS //
@@ -421,7 +427,10 @@ while($r3=mysqli_fetch_array($sqldata3)){
             </a>
         </button>";
 
+?>
+        <li class='name-modal'>Forecast: <input type='text' class='form-control' placeholder='Forecast'/></li><br>
 
+        <?php
     
     // MAPPING //
     // Only the user who create the mapping can see the mapping.
