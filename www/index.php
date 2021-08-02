@@ -94,7 +94,7 @@ Problems deciding? With Arg&Dec you can engage in debates with yourself or other
   <?php
 
     if(isset($_SESSION['id'])){
-      header("Location: debates.php");
+      header("Location: questions.php");
     }
     else{
       echo "

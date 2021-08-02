@@ -34,6 +34,12 @@ $questionname = $s["name"];
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
         <script src="jsPlumb-master/dist/js/dom.jsPlumb-1.6.4.js"></script>
+      <!-- Load Chart.js -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+      <script src="https://unpkg.com/chartjs-plugin-colorschemes@0.4.0/dist/chartjs-plugin-colorschemes.min.js"></script>
+
+      <!-- Load PapaParse to read csv files -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- Optional theme -->
@@ -170,7 +176,15 @@ $(document).ready(function(){
 </nav>
 
 
-<div class="container">
+
+
+  <div class="container">
+      <div>
+          <canvas id="chart-container" style="height: 400px; width: 100%"></canvas>
+      </div>
+
+      <script src="js/chart.js"></script>
+
 
 <button class="addIssue btn btn-info" onClick="modalInitDebate('<?php echo $qid; ?>');">Add debate</button><br><br><br>
 <!-- Nav tabs -->
