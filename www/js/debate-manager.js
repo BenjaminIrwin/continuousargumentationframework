@@ -108,6 +108,65 @@ $.ajax({
 
 }
 
+function isDebateOpen() {
+
+    var open = false;
+
+    $.ajax({
+        type: "POST",
+        url: "load-debate.php",
+        async: false,
+        cache: false,
+        success: function(dat) {
+
+            var obj = JSON.parse(dat);
+            var msg = "";
+
+            for (var i = 0; i < obj.length; i++) {
+
+                let closingDate = Date.parse(obj[i].close);
+
+                if(closingDate > Date.now()) {
+                    open = true;
+                    return;
+                }
+            }
+        }
+
+    });
+    return open;
+}
+
+function isADebateOpen(questionId) {
+
+    var open = false;
+
+    $.ajax({
+        type: "POST",
+        url: "load-debates.php",
+        data: "qid="+questionId,
+        async: false,
+        cache: false,
+        success: function(dat) {
+
+            var obj = JSON.parse(dat);
+            var msg = "";
+
+            for (var i = 0; i < obj.length; i++) {
+
+                let closingDate = Date.parse(obj[i].close);
+
+                if(closingDate > Date.now()) {
+                    open = true;
+                    return;
+                }
+            }
+        }
+
+    });
+    return open;
+}
+
 function loadDebates(questionid){
   $.ajax({
             type: "POST",

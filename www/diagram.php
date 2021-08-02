@@ -31,6 +31,7 @@ while ($r1 = mysqli_fetch_array($sqldata1)) {
   $defaultBaseValue = $r1['defaultbasevalue'];
   $participants = $r1['participants'];
   $typeValue = $r1['typevalue'];
+  $close = $r1['close'];
 }
 
 $_SESSION['debate'] = $debateid;
@@ -86,6 +87,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
         <script src="js/debate-manager.js"></script>
         <script src="js/debate.js"></script>
+        <script src="js/countdown.js"></script>
 
         <script src="js/node.js"></script>
         <script src="js/edge.js"></script>
@@ -290,6 +292,14 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+      <script>
+
+          $(document).ready(function(){
+              getCountdownTimer(Date.parse('<?php echo $close; ?>'));
+          });
+
+      </script>
+
   </head>
   
 
@@ -307,18 +317,8 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <div class="container"  style="margin-left: 20px;">
   <h1><?php echo $name.'</br>';?>
   </h1>
-      <h5> 
-          <?php 
-                $sql = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT lastmodified, lastmodifiedby FROM debates WHERE id='$debateid'");
-                while($r = mysqli_fetch_array($sql)) {
-                    $lastModified = $r['lastmodified'];
-                    $lastModifiedBy = $r['lastmodifiedby'];
-                }
-                if($lastModified!='' && $lastModifiedBy!='') {
-                    echo 'Last modified on '.$lastModified.' by '.$lastModifiedBy; 
-                }
-                
-        ?>
+      <h5>
+          <p id="demo"></p>
       </h5>
 </div>
 </div>
@@ -380,11 +380,11 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <br>
 
 <div class="container node-buttons">
-    <button class="addProposal btn btn-primary" id="bbb" onClick="modalInitNode('proposal');">Add proposal</button>
-    <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
-    <button class="addDecrease btn btn-danger" onClick="modalInitNode('decrease');">Add decrease argument</button>
-    <button class="addPro btn btn-success-pale" onClick="modalInitNode('pro');">Add pro argument</button>
-    <button class="addCon btn btn-danger-pale" onClick="modalInitNode('con');">Add con argument</button>
+    <button class="addProposal btn btn-primary" id="bbb" onClick="modalInitNode('proposal', '<?php echo $close; ?>');">Add proposal</button>
+    <button class="addIncrease btn btn-success" onClick="modalInitNode('increase', '<?php echo $close; ?>');">Add increase argument</button>
+    <button class="addDecrease btn btn-danger" onClick="modalInitNode('decrease', '<?php echo $close; ?>');">Add decrease argument</button>
+    <button class="addPro btn btn-success-pale" onClick="modalInitNode('pro', '<?php echo $close; ?>');">Add pro argument</button>
+    <button class="addCon btn btn-danger-pale" onClick="modalInitNode('con', '<?php echo $close; ?>');">Add con argument</button>
 <!--    <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>-->
 <!--    <button class="addCon btn btn-warning" onClick="modalInitNode('con');">Add con argument</button>-->
 

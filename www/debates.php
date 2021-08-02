@@ -157,8 +157,8 @@ $initialForecast = $s["initialForecast"];
 
 $(document).ready(function(){
     console.log('QUESTION ID' + <?php echo $qid; ?>);
-    getDebateScoreChart(<?php echo $qid; ?>, '<?php echo $open; ?>', '<?php echo $close; ?>', <?php echo $initialForecast; ?>);
     loadDebates(<?php echo $qid; ?>);
+    getDebateScoreChart(<?php echo $qid; ?>, '<?php echo $open; ?>', '<?php echo $close; ?>', <?php echo $initialForecast; ?>);
 });
 
 </script>

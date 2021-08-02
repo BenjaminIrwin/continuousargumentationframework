@@ -1,8 +1,16 @@
 var attachment_path = '';
 
-function modalInitNode(type){
+function modalInitNode(type, debateCloseDate){
 
-    console.log('initiating proposal node...');
+    console.log(debateCloseDate);
+
+    let closingDate = Date.parse(debateCloseDate);
+
+    if(closingDate < Date.now()) {
+        bootbox.alert('This update framework is closed and therefore now immutable.');
+        return;
+    }
+
 
     setNodeColor(type);
     
@@ -73,6 +81,13 @@ function modalInitNode(type){
 
 function modalEditNode(node){
     //var attachment_path = resetVariable(attachment_path);
+
+    console.log(isDebateOpen());
+
+    if(isDebateOpen() === true) {
+        bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.');
+        return;
+    }
     
     var id = node.id;
     var type = node.type;
@@ -94,7 +109,7 @@ function modalEditNode(node){
         button = 'btn-danger';
     }
 
-    $('#node-modal').find('.modal-title').html("Insert information about the node " + id + " .");
+    $('#node-modal').find('.modal-title').html("Insert information about node " + id + " .");
 
     var msg = "<h3> Edit </h3>";
     msg += "<ul style='list-style-type: none;'>";
@@ -188,12 +203,11 @@ function editNodeFromModal(id){
 
 function modalInitDebate(questionid){
 
-    console.log('1234' + debateList);
+    console.log(isADebateOpen(questionid));
 
-    for (var i = 0; i < debateList.length; i++) {
-        if(Date.parse(debateList[i].close) > Date.now()) {
-            bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.')
-        }
+    if(isADebateOpen(questionid) === true) {
+        bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.');
+        return;
     }
 
     var id = $(".debate").length;

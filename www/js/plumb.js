@@ -312,6 +312,12 @@ function loadNodes(){
 }
 
 function deleteNode(element){
+
+    if(isDebateOpen() === true) {
+        bootbox.alert('This update framework is closed and therefore now immutable.');
+        return;
+    }
+
   var node = element.parentNode.parentNode.parentNode.parentNode;
   bootbox.confirm("<h3>Delete node " + nodeList[node.id].name + "?</h3>", function(result){
         if(result){
@@ -427,6 +433,12 @@ function editComputedValueDFQuad(node, newComputedValue){
 
 function editPosition(node, x, y){
 
+    // if(isDebateOpen() === true) {
+    //     bootbox.alert('This update framework is closed and therefore now immutable.');
+    //     return;
+    // }
+
+
   // If position haven't changed do nothing.
   if (node.x==x && node.y == y){ return; }
       $.ajax({
@@ -488,6 +500,13 @@ function getNodeColor(type){
 }
 
 function addEdge(sourceId, targetId){
+
+    if(isDebateOpen() === true) {
+        bootbox.alert('This update framework is closed and therefore now immutable.');
+        return;
+    }
+
+
     $.ajax({
             type: "POST",
             url: "add-edge.php",
@@ -548,21 +567,26 @@ function loadEdges(){
 
 function deleteEdge(id){
 
-            $.ajax({
-            type: "POST",
-            url: "delete-edge.php",
-            data: "id="+id,
-            cache: false,
-            success: function(dat) {
+    if(isDebateOpen() === true) {
+        bootbox.alert('This update framework is closed and therefore now immutable.');
+        return;
+    }
 
-              // Update node source and target list.
-              delete edgeList[id].source.targetList[edgeList[id].target.id]; // Deleting from source node's target list the target node of the edge.
-              delete edgeList[id].target.sourceList[edgeList[id].source.id]; // Deleting from target node's source list the source node of the edge.
+    $.ajax({
+    type: "POST",
+    url: "delete-edge.php",
+    data: "id="+id,
+    cache: false,
+    success: function(dat) {
 
-              delete edgeList[id];
+      // Update node source and target list.
+      delete edgeList[id].source.targetList[edgeList[id].target.id]; // Deleting from source node's target list the target node of the edge.
+      delete edgeList[id].target.sourceList[edgeList[id].source.id]; // Deleting from target node's source list the source node of the edge.
 
-            }
-            });
+      delete edgeList[id];
+
+    }
+    });
 
 
 }
