@@ -167,6 +167,26 @@ function isADebateOpen(questionId) {
     return open;
 }
 
+function debateModifiedCheck() {
+
+    $.ajax({
+        type: "POST",
+        url: "load-just-modified-debate.php",
+        async: false,
+        cache: false,
+        success: function(dat) {
+
+            if (!$.trim(dat)) {
+                return;
+            } else {
+                window.location.reload(false);
+                // window.location.reload(true);
+            }
+        }
+
+    });
+}
+
 function getPreviousDebate() {
 
     $.ajax({
