@@ -167,6 +167,48 @@ function isADebateOpen(questionId) {
     return open;
 }
 
+function getPreviousDebate() {
+
+    $.ajax({
+        type: "POST",
+        url: "load-last-debate.php",
+        async: false,
+        cache: false,
+        success: function(dat) {
+
+            if (!$.trim(dat)) {
+                return;
+            } else {
+                var obj = JSON.parse(dat);
+                var msg = "";
+                window.location.href = "diagram.php?id=" + obj[0].id;
+            }
+        }
+
+    });
+}
+
+function getNextDebate() {
+
+    $.ajax({
+        type: "POST",
+        url: "load-next-debate.php",
+        async: false,
+        cache: false,
+        success: function(dat) {
+
+            if (!$.trim(dat)) {
+                return;
+            } else {
+                var obj = JSON.parse(dat);
+                var msg = "";
+                window.location.href = "diagram.php?id=" + obj[0].id;
+            }
+        }
+
+    });
+}
+
 function loadDebates(questionid){
   $.ajax({
             type: "POST",

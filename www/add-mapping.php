@@ -43,6 +43,10 @@ else if($returntype=="debate"){
 	}
 }
 
+$username = $_SESSION['username'];
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$debateid'");
+
+
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);
 
 ?>

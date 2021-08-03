@@ -33,4 +33,7 @@ if ($result) {
 
 echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$id'");
+
+
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

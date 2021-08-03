@@ -317,11 +317,11 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
 <div class="jumbotron">
   <div class="container"  style="margin-left: 20px;">
-      <img src="gallery/left-arrow.png" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
+      <img src="gallery/left-arrow.png" onclick="getPreviousDebate()" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
 
       <h1 style="float:left; text-align:center; margin-top: 0px; width: 89%;"><?php echo $name.'</br>';?>
   </h1>
-      <img src="gallery/right-arrow.png" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
+      <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
       <br style="clear:both;">
       <h5>
           <p id="demo"></p>

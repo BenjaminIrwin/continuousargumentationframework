@@ -17,12 +17,17 @@ $userid = $_SESSION['id'];
 
 $debateid = $_SESSION['debate'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE id = '$debateid' ORDER BY close DESC") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE close > (select close from debates where id = $debateid) ORDER BY close ASC limit 1") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {
   $rows[] = $r;
 }
+
+//if (mysqli_num_rows($r) == 0) {
+//    $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates where id = $debateid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+//
+//}
 
 $json_encoded_string = json_encode($rows);
 

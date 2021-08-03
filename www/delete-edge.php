@@ -17,7 +17,8 @@ if (!isset($_SESSION['id'])) {
 
 
 $userid = $_SESSION['id'];
-
+$username = $_SESSION['username'];
+$debateid = $_SESSION['debate'];
 
 
 
@@ -32,6 +33,10 @@ while($r=mysqli_fetch_array($sqldebateid)){
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "DELETE FROM edges WHERE id=$id") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+
+
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$debateid'");
+
 
 $app_id = '104765';
 $app_key = '4a093e77bfac049910cf';
