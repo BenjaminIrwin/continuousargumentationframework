@@ -298,6 +298,30 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
           $(document).ready(function(){
               getDebateCountdownTimer(Date.parse('<?php echo $close; ?>'));
+              debateModifiedCheck();
+              $('#forecast').on('keyup', function(e) {
+                  if (e.keyCode === 13) {
+                      $('#forecastSubmit').click();
+                  }
+              });
+
+              $('#forecastSubmit').click(function() {
+                  var input = document.getElementById('forecast').value;
+                  if(isNaN(parseFloat(input)) && !isFinite(input)) {
+                      bootbox.alert('Only numeric values are accepted as forecast.');
+                      return;
+                  }
+
+                  let forecast = parseFloat(input);
+                  if(!(forecast >= 0 && forecast <= 100)) {
+                      bootbox.alert('Forecast must be a valid percentage (i.e. number between 0 and 100).');
+                      return;
+                  }
+
+                  submitForecast(forecast);
+                  console.log('Submitted! '+ input);
+                  return false;
+              });
           });
 
       </script>
@@ -428,7 +452,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
         </button>";
 
 ?>
-        <li class='name-modal'>Forecast: <input type='text' class='form-control' placeholder='Forecast'/></li><br>
+        <li class='name-modal'>Forecast: <input type='text' id='forecast' class='form-control' placeholder='Forecast'/><input type="submit" id="forecastSubmit" /></li><br>
 
         <?php
     

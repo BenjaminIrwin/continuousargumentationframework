@@ -37,3 +37,4 @@ model.nodeDataArray =
 myDiagram.model = model;
 
 });
+

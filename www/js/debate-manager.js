@@ -137,6 +137,7 @@ function isDebateOpen() {
     return open;
 }
 
+
 function isADebateOpen(questionId) {
 
     var open = false;
@@ -169,22 +170,22 @@ function isADebateOpen(questionId) {
 
 function debateModifiedCheck() {
 
-    $.ajax({
-        type: "POST",
-        url: "load-just-modified-debate.php",
-        async: false,
-        cache: false,
-        success: function(dat) {
+    var x = setInterval(function() {
 
-            if (!$.trim(dat)) {
-                return;
-            } else {
-                window.location.reload(false);
-                // window.location.reload(true);
+        $.ajax({
+            type: "POST",
+            url: "load-just-modified-debate.php",
+            async: false,
+            cache: false,
+            success: function (dat) {
+
+                if(JSON.parse(dat).length !== 0) {
+                    loadNodes();
+                }
             }
-        }
 
-    });
+        });
+    }, 1500)
 }
 
 function getPreviousDebate() {

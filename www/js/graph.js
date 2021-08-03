@@ -1,4 +1,5 @@
 var decimals=6;
+var CONFIDENCE_SCORE;
 
 function checkIfTree(){
 
@@ -86,6 +87,17 @@ function CS(nodeList){
 	//Calculate overall score
 }
 
+function submitForecast(forecast) {
+	computeAllValues(false);
+	var result = getProposedForecast();
+
+	console.log(result);
+
+	var pForecast = result.proposedforecast;
+
+	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
+}
+
 function computeAllValues(message){
 
 	if(!checkIfTree()){
@@ -142,7 +154,7 @@ function computeAllValues(message){
         }
 
         var confidenceScore = CS(nodeList);
-        console.log('CON SCORE:' + confidenceScore);
+		CONFIDENCE_SCORE = confidenceScore;
         editConfidenceScore(thisDebateId, confidenceScore);
         
         if(message){

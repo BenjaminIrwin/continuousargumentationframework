@@ -14,19 +14,21 @@ if (!isset($_SESSION['id'])) {
 }
 
 $userid = $_SESSION['id'];
-$username = $_SESSION['username'];
 $debateid = $_SESSION['debate'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE id = '$debateid' and lastmodifiedby <> '$username' and lastmodified > now() - interval 2 second") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+//$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes n LEFT JOIN user_node_score uns on n.id = uns.node_id and uns.user_id = $userid WHERE debateid = $debateid ORDER BY type ASC") or die();
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes WHERE debateid = $debateid limit 1") or die();
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {
-  $rows[] = $r;
+    $rows[] = $r;
 }
 
 $json_encoded_string = json_encode($rows);
 
-echo $json_encoded_string;
+// manage percent symbol for json encoding
+//$json_encoded_string = escape_percentage_for_json($json_encoded_string);
 
+echo $json_encoded_string;
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

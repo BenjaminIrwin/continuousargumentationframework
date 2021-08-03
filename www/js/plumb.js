@@ -250,6 +250,26 @@ function getDefaultBaseValue(debateId){
         });
  
  }
+
+
+function getProposedForecast(){
+
+    var pForecast = 0;
+
+    $.ajax({
+        type: "POST",
+        url: "get-proposal-node.php",
+        cache: false,
+        success: function(data) {
+            var obj = JSON.parse(data);
+            pForecast = obj[0].typevalue;
+        }
+    });
+
+    console.log(pForecast);
+
+    return pForecast;
+}
  
  
 function loadNodes(){
