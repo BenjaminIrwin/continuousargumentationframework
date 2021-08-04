@@ -11,6 +11,13 @@ function modalInitNode(type, debateCloseDate){
         return;
     }
 
+    if(type === 'proposal') {
+        if(proposalNodeCheck() === true) {
+            bootbox.alert('Proposal node already exists for this update framework.');
+            return;
+        }
+    }
+
 
     setNodeColor(type);
     
@@ -18,17 +25,12 @@ function modalInitNode(type, debateCloseDate){
 
     var msg = "<h3> Info </h3>";
     msg += "<ul style='list-style-type: none;'>";
-//  msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
-    
     msg += "<li class='type-modal' style='display: none;'>Type: &nbsp; <b>"+type+"</b><br></li>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'/></li><br>";
 
-    console.log('1');
 
 
     if(type === 'proposal') {
-        console.log('2');
-
         msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
     } else {
         msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";

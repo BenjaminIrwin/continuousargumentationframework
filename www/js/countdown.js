@@ -1,8 +1,10 @@
-function getDebateCountdownTimer(countDownDate) {
+function getDebateCountdownTimer(endDate) {
 
     var x = setInterval(function() {
 
         var state;
+
+        var countDownDate = new Date(endDate);
 
         // Get today's date and time
         var now = new Date();

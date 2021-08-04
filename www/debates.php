@@ -40,6 +40,7 @@ $initialForecast = $s["initialForecast"];
       <!-- Load Chart.js -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
       <script src="https://unpkg.com/chartjs-plugin-colorschemes@0.4.0/dist/chartjs-plugin-colorschemes.min.js"></script>
+<!--      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 
       <!-- Load PapaParse to read csv files -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"></script>
@@ -184,7 +185,7 @@ $(document).ready(function(){
 
   <div class="container">
       <div>
-          <canvas id="chart-container" style="height: 400px; width: 100%"></canvas>
+          <canvas id="chart-container" style="height: 300px; width: 100%"></canvas>
       </div>
 
 <!--      <script src="js/chart.js"></script>-->

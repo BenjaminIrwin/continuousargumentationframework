@@ -89,13 +89,20 @@ function CS(nodeList){
 
 function submitForecast(forecast) {
 	computeAllValues(false);
-	var result = getProposedForecast();
-
-	console.log(result);
-
-	var pForecast = result.proposedforecast;
+	var pForecast = getProposedForecast();
 
 	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
+
+	if(CONFIDENCE_SCORE < 0 && forecast >= pForecast) {
+		bootbox.alert('Irrational forecast. You have a negative confidence score so must provide a forecast lower than the proposed one.');
+	} else if(CONFIDENCE_SCORE > 0 && forecast <= pForecast) {
+		bootbox.alert('Irrational forecast. You have a positive confidence score so must provide a forecast higher than the proposed one.');
+	} else if((Math.abs(pForecast - forecast)/pForecast) > CONFIDENCE_SCORE) {
+		bootbox.alert('Irrational forecast. The scale of your change to the proposed forecast is not reflected in your confidence score.');
+	} else {
+
+	}
+
 }
 
 function computeAllValues(message){

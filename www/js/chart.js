@@ -1,14 +1,3 @@
-// var TITLE = 'Hartford School District is No Longer Largest in Connecticut';
-
-// x-axis label and label in tooltip
-var X_AXIS = 'Academic Year';
-
-// y-axis label and label in tooltip
-var Y_AXIS = 'Number of Students';
-
-// Should y-axis start from 0? `true` or `false`
-var BEGIN_AT_ZERO = false;
-
 // `true` to show the grid, `false` to hide
 var SHOW_GRID = true;
 
@@ -59,6 +48,7 @@ $(document).ready(function() {
                 legend: {
                     display: SHOW_LEGEND,
                 },
+                responsive: true,
                 maintainAspectRatio: false,
                 scales: {
                     xAxes: [{
@@ -78,19 +68,17 @@ $(document).ready(function() {
                     }],
                     yAxes: [{
                         stacked: false, // `true` for stacked area chart, `false` otherwise
-                        ticks: {
-                            beginAtZero: true,
-                            suggestedMin: 0, //min
-                            suggestedMax: 100, //max
-                            stepSize: 10,
-                        },
-                        scaleLabel: {
-                            display: Y_AXIS !== '',
-                            labelString: Y_AXIS
-                        },
-                        gridLines: {
-                            display: SHOW_GRID,
+                        ticks : {
+                            max : 100,
+                            min : 0
                         }
+                        // scaleLabel: {
+                        //     display: Y_AXIS !== '',
+                        //     labelString: Y_AXIS
+                        // },
+                        // gridLines: {
+                        //     display: SHOW_GRID,
+                        // }
                     }]
                 },
                 tooltips: {

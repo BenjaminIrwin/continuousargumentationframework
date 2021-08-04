@@ -188,6 +188,27 @@ function debateModifiedCheck() {
     }, 1500)
 }
 
+function proposalNodeCheck() {
+
+    var present = false;
+
+    $.ajax({
+        type: "POST",
+        url: "get-proposal-node.php",
+        async: false,
+        cache: false,
+        success: function (dat) {
+
+            if(JSON.parse(dat).length !== 0) {
+                present = true;
+            }
+        }
+
+    });
+
+    return present;
+}
+
 function getPreviousDebate() {
 
     $.ajax({
@@ -482,7 +503,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                             time: {
                                 max: questionClose
                             },
-                            distribution: 'series',
+                            // distribution: 'series',
                             scaleLabel: {
                                 display: X_AXIS !== '',
                                 labelString: X_AXIS,
@@ -508,7 +529,8 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                                 display: SHOW_GRID,
                             },
                             ticks: {
-                                maxTicksLimit: 10,
+                                min: 0,
+                                max: 100,
                                 beginAtZero: BEGIN_AT_ZERO,
                                 callback: function(value, index, values) {
                                     return value.toLocaleString()

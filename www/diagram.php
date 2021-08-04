@@ -297,7 +297,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <script>
 
           $(document).ready(function(){
-              getDebateCountdownTimer(Date.parse('<?php echo $close; ?>'));
+              getDebateCountdownTimer('<?php echo $close; ?>');
               debateModifiedCheck();
               $('#forecast').on('keyup', function(e) {
                   if (e.keyCode === 13) {

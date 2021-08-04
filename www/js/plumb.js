@@ -259,8 +259,33 @@ function getProposedForecast(){
     $.ajax({
         type: "POST",
         url: "get-proposal-node.php",
+        async: false,
         cache: false,
         success: function(data) {
+            console.log('here we go: ' + data);
+
+            var obj = JSON.parse(data);
+            pForecast = obj[0].typevalue;
+        }
+    });
+
+    console.log(pForecast);
+
+    return pForecast;
+}
+
+function editForecast(conscore, forecast, debateid){
+
+    var pForecast = 0;
+
+    $.ajax({
+        type: "POST",
+        url: "edit-user-forecast.php",
+        data: "did="+debateid+"&cs="+conscore+"&f="+forecast,
+        cache: false,
+        success: function(data) {
+            console.log('here we go: ' + data);
+
             var obj = JSON.parse(data);
             pForecast = obj[0].typevalue;
         }
