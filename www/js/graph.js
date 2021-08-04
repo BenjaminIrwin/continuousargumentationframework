@@ -101,6 +101,7 @@ function submitForecast(forecast) {
 		bootbox.alert('Irrational forecast. The scale of your change to the proposed forecast is not reflected in your confidence score.');
 	} else {
 
+		editForecast(CONFIDENCE_SCORE, forecast)
 	}
 
 }

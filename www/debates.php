@@ -15,6 +15,8 @@ if (!isset($_SESSION['id'])) {
 
 
 $qid = $_GET["id"];
+$_SESSION['questionid'] = $qid;
+
 
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From questions Where id=$qid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 

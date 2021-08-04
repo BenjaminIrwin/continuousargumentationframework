@@ -274,26 +274,18 @@ function getProposedForecast(){
     return pForecast;
 }
 
-function editForecast(conscore, forecast, debateid){
-
-    var pForecast = 0;
+function editForecast(conscore, forecast){
 
     $.ajax({
         type: "POST",
         url: "edit-user-forecast.php",
-        data: "did="+debateid+"&cs="+conscore+"&f="+forecast,
+        data: "cs="+conscore+"&f="+forecast,
         cache: false,
         success: function(data) {
-            console.log('here we go: ' + data);
 
-            var obj = JSON.parse(data);
-            pForecast = obj[0].typevalue;
         }
     });
 
-    console.log(pForecast);
-
-    return pForecast;
 }
  
  

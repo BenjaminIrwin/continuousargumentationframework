@@ -115,13 +115,33 @@ function initializeNode(){
   // Setting state image.
   if(this.state!=''){
     $('#' + this.id).find('img').attr('src','gallery/'+this.type+'-basic.png');
+    // if(type=='proposal') {
+    //     $('#' + this.id).find('img').css('margin-top','20px');
+    //     $('#'+this.id+" .name-label").css('margin-top','20px');
+    // }
     if(type=="proposal") {
+
+        let proposedForecast = parseFloat(getProposedForecast());
+        let lastForecast = parseFloat(getLastForecast());
+
+        console.log('PFORECAST: ' + proposedForecast);
+        console.log('LFORECAST: ' + lastForecast);
+        let diff = proposedForecast - lastForecast;
+        let diffString = (diff<0?"":"+") + diff;
+
+        var pForecastSummary = proposedForecast + '%';
+        var forecastDiffSummary = '(' + diffString + ')';
+
         $('#'+this.id).css('height','150px')
-        $('#' + this.id).find('img').before("<span style='text-align:center;font-size:60px;'>75</span>")
+        if(diff < 0) {
+            $('#' + this.id).find('img').before("<span style='text-align:center;font-size:30px;font-weight:bold;color:#E82E25'>" + pForecastSummary + "</span><span style='text-align:center;font-size:13px;color:#E82E25'>" + forecastDiffSummary + "</span>")
+        } else {
+            $('#' + this.id).find('img').before("<span style='text-align:center;font-size:30px;font-weight:bold;color:#17A300'>" + pForecastSummary + "</span><span style='text-align:center;font-size:13px;color:#17A300'>" + forecastDiffSummary + "</span>")
+        }
         $('#' + this.id).find('img').css('height', '29%')
         $('#' + this.id).find('ep').css('box-shadow', 'none')
 
-        $('#'+this.id+" .name-label").css('margin-top','45px')
+        $('#'+this.id+" .name-label").css('margin-top','20px')
     }
   }
 

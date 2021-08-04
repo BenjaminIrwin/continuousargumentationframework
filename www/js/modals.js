@@ -86,8 +86,8 @@ function modalEditNode(node){
 
     console.log(isDebateOpen());
 
-    if(isDebateOpen() === true) {
-        bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.');
+    if(isDebateOpen() !== true) {
+        bootbox.alert('This update framework is closed and therefore now immutable.');
         return;
     }
     

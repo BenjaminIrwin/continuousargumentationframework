@@ -32,6 +32,8 @@ while ($r1 = mysqli_fetch_array($sqldata1)) {
   $participants = $r1['participants'];
   $typeValue = $r1['typevalue'];
   $close = $r1['close'];
+  $questionid = $r1['questionId'];
+
 }
 
 $_SESSION['debate'] = $debateid;
@@ -57,7 +59,6 @@ $sqldata3 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT username FROM users
 while($r3=mysqli_fetch_array($sqldata3)){
   $username=$r3['username'];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -355,7 +356,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 </nav>
 
 <div class="container">
-  <a href="debates.php?id=<?php echo $debateid ?>" style="float: right;"> Back </a>
+  <a href="debates.php?id=<?php echo $questionid?>" style="float: right;"> Back </a>
 </div>
 <br>
 <div class="container">
@@ -388,8 +389,6 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="resizeNodes(2)">200%</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="resizeNodes(1.5)">150%</a></li>
     <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="resizeNodes(1)">100%</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="resizeNodes(0.75)">75%</a></li>
-    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" onClick="resizeNodes(0.5)">50%</a></li>
   </ul>
 </div>
 

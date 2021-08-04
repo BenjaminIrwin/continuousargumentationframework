@@ -16,15 +16,15 @@ if (!isset($_SESSION['id'])) {
 $userid = $_SESSION['id'];
 $username = $_SESSION['username'];
 
-$debateid = $_POST['did'];
+$debateid = $_SESSION['debate'];
 $conscore = $_POST['cs'];
 $forecast = $_POST['f'];
 
-$sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user_debate_scores SET confidence_score='$conscore' and forecast='$forecast' WHERE debateId='$debateid' and userId='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user_debate_scores SET forecast='$forecast' WHERE debateId='$debateid' and userId='$userid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
 // update lastmodified(by) in debates
-$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$id'");
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$debateid'");
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

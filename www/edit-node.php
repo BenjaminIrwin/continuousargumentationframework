@@ -25,7 +25,6 @@ $name = $_POST['n'];
 $basevalue = $_POST['bv'];
 //$computedvaluequad = $_POST['cvq'];
 $computedvaluedfquad = $_POST['cvdfq'];
-$typevalue = $_POST['tv'];
 $state = $_POST['s'];
 $attachment = $_POST['a'];
 
@@ -45,15 +44,15 @@ if($pos === false) {
     
 } else  $modifiedby_str = $modifiedby;
 
-$sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE nodes SET name='$name', typevalue='$typevalue', state='$state', attachment='$attachment', modifiedby='$modifiedby_str' WHERE id='$id'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE nodes SET name='$name', state='$state', attachment='$attachment', modifiedby='$modifiedby_str' WHERE id='$id'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $nodeid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
-$result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM user_node_score WHERE node_id = '$id' and user_id='$userid'");
+$result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM user_node_score WHERE node_id = $id and user_id=$userid");
 
 if ($result) {
     if (mysqli_num_rows($result) > 0) {
-        $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user_node_score SET base_score=$basevalue, computed_df_quad_score=$computedvaluedfquad WHERE user_id='$userid' and node_id='$id' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+        $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user_node_score SET base_score='$basevalue' WHERE user_id='$userid' and node_id='$id'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
     } else {
         $sql3 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_node_score (user_id, node_id, base_score) Values ($userid, '$id', '$basevalue')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
     }
@@ -76,7 +75,6 @@ $data['nodeid']=$id;
 $data['name']=$name;
 $data['basevalue']=$basevalue;
 $data['computedvaluedfquad']=$computedvaluedfquad;
-$data['typevalue']=$typevalue;
 $data['state']=$state;
 $data['attachment']=$attachment;
 $data['createdby']=$username;
