@@ -1,4 +1,4 @@
-<?php
+#!/usr/bin/php<?php
 include 'config.php';
 include 'dbUtilities.php';
 

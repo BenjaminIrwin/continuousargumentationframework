@@ -1,4 +1,4 @@
-<?php
+#!/usr/bin/php<?php
 	ob_start();
 	include "dbUtilities.php";
 	session_start();

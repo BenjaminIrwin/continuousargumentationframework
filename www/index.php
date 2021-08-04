@@ -1,4 +1,4 @@
-<?php
+#!/usr/bin/php<?php
   ob_start();
   include "dbUtilities.php";
   $session_expiration = time() + 3600 * 24 * 2; // +2 days
