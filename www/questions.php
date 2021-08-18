@@ -204,9 +204,9 @@ $(document).ready(function(){
 
   <div class="container">
     <footer>
-  <p>Posted by: Dario Pellegrini</p>
-  <p>Contact information: <a href="mailto:pellegrini.dario.1303@gmail.com">
-  pellegrini.dario.1303@gmail.com</a>.</p>
+  <p>Posted by: Benjamin Irwin</p>
+  <p>Contact information: <a href="mailto:benjamintdirwin@gmail.com">
+  benjamintdirwin@gmail.com@gmail.com</a>.</p>
 </footer>
 
   </div>

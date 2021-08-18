@@ -126,9 +126,9 @@ Problems deciding? With Arg&Dec you can engage in debates with yourself or other
   <div id="footer" style="display: none; z-index:10;">
     <hr class="divider">
     <footer style="padding-left:5px;">
-  <p>Posted by: Dario Pellegrini</p>
-  <p>Contact information: <a href="mailto:pellegrini.dario.1303@gmail.com">
-  pellegrini.dario.1303@gmail.com</a>.</p>
+  <p>Posted by: Benjamin Irwin</p>
+  <p>Contact information: <a href="mailto:benjamintdirwin@gmail.com">
+  benjamintdirwin@gmail.com@gmail.com</a>.</p>
   <p>Code available on Github <a href="https://github.com/dariopellegrini/arganddec" target="_blank">here</a>.</p>
 </footer>
 
