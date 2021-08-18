@@ -3,7 +3,7 @@
 /* Funzione di connessione al DB. */
 
 	function dbConnect(){
-		$connection = ($GLOBALS['___mysqli_ston'] = mysqli_connect('localhost',  'root',  '', 'arganddepxadmin', 3307))
+		$connection = ($GLOBALS['___mysqli_ston'] = mysqli_connect('159.65.50.173',  'root',  'ArgdecDB1520', 'arganddepxadmin'))
 			or die('Errore nella connessione al server del DB: ' . mysqli_error($GLOBALS['___mysqli_ston']));
 		return $connection;
 		}

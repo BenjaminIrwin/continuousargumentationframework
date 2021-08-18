@@ -1,7 +1,7 @@
 <?php
 
-$nomeHost = "arganddepxadmin.mysql.db";
-$nomeUtente = "arganddepxadmin";
+$nomeHost = "159.65.50.173";
+$nomeUtente = "root";
 $password = "ArgdecDB1520";
 $nomeDb = "arganddepxadmin"; 
 
