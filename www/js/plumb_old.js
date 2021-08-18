@@ -101,7 +101,7 @@ function addNode(){
 
   checkOverlap();
 
-  console.log(x+" "+y);
+  //console.log(x+" "+y);
 
   $.ajax({
             type: "POST",

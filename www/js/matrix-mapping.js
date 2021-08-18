@@ -195,7 +195,7 @@ function normalizeValues(table){
     	values[i]=Math.round(values[i] * Math.pow(10,decimals)) / Math.pow(10,decimals);
     }
 
-    console.log(max+" "+min+" "+JSON.stringify(values));
+    //console.log(max+" "+min+" "+JSON.stringify(values));
 
     return values;
 

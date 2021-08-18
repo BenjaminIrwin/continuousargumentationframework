@@ -66,7 +66,7 @@ loadNodes();
 
 function addNode(attachment_path){
 
-    console.log('here we are');
+    //console.log('here we are');
 
 // Modal initialized in modal.js file.
   var id = $("#node-modal").find(".id-modal > b").html();
@@ -82,7 +82,7 @@ function addNode(attachment_path){
       attachment += ", "+encodeURIComponent(attachment_path);
   }
 
-    console.log('HERE WE ARE' + typeValue);
+    //console.log('HERE WE ARE' + typeValue);
 
 
     if(type === 'proposal' && typeValue === '') {
@@ -92,21 +92,21 @@ function addNode(attachment_path){
 
     //Check here if proposal already exists
 
-    console.log(1111111 + nodeList);
+    //console.log(1111111 + nodeList);
 
 
     if (name==""){
     name = 'Node '+type;
   }
 
-    console.log(2);
+    //console.log(2);
 
     if(type === 'proposal') {
-        console.log(2.5 + type);
+        //console.log(2.5 + type);
 
         baseValue = "0.5";
     }
-        console.log(3);
+        //console.log(3);
 
 
     var result = getDefaultBaseValue(thisDebateId);
@@ -137,7 +137,7 @@ function addNode(attachment_path){
 
         let data1 = "did="+thisDebateId+"&n="+name+"&bv="+baseValue+"&cvq="+computedValueQuad+"&cvdfq="+computedValueDFQuad+"&t="+type+"&tv="+typeValue+"&s="+state+"&a="+attachment+"&x="+x+"&y="+y;
 
-        console.log(data1);
+        //console.log(data1);
 
         $.ajax({
                     type: "POST",
@@ -145,9 +145,9 @@ function addNode(attachment_path){
                     data: data1,
                     cache: false,
                     success: function(dat) {
-                        console.log('hello');
+                        //console.log('hello');
 
-                        console.log(dat);
+                        //console.log(dat);
                       var obj = JSON.parse(dat);
                       var id = obj["nodeid"];
                       var createdBy = obj["createdby"];
@@ -158,7 +158,7 @@ function addNode(attachment_path){
                                             decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdBy,modifiedBy);
                       node.initializeNode();
 
-                      console.log(node);
+                      //console.log(node);
                       nodeList[id] = node;
 
                       // Automatic show of the help popover for edges creation.
@@ -262,14 +262,14 @@ function getProposedForecast(){
         async: false,
         cache: false,
         success: function(data) {
-            console.log('here we go: ' + data);
+            //console.log('here we go: ' + data);
 
             var obj = JSON.parse(data);
             pForecast = obj[0].typevalue;
         }
     });
 
-    console.log(pForecast);
+    //console.log(pForecast);
 
     return pForecast;
 }
@@ -305,7 +305,7 @@ function loadNodes(){
 
               for (var i = 0; i < obj.length; i++) {
 
-                  console.log(obj[i]);
+                  //console.log(obj[i]);
 
                 var id = obj[i].id;
 //                var debateId = obj[i].debateId;
@@ -326,7 +326,7 @@ function loadNodes(){
 
                 var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 
-                console.log(node);
+                //console.log(node);
                 
                 node.initializeNode();
 
@@ -348,9 +348,10 @@ function loadNodes(){
 
 }
 
-function deleteNode(element){
+async function deleteNode(element){
 
-    if(isDebateOpen() === true) {
+    const open = await isDebateOpen();
+    if(open === true) {
         bootbox.alert('This update framework is closed and therefore now immutable.');
         return;
     }
@@ -395,7 +396,7 @@ function deleteNode(element){
 
 function editNode(node, new_attachment_path){
     
-    console.log("new att: "+new_attachment_path);
+    //console.log("new att: "+new_attachment_path);
     var id = node.id;
     var newName = $(".name-modal > input").val();
     var newBaseValue = encodeURIComponent($(".basevalue-modal > input").val());
@@ -420,7 +421,7 @@ function editNode(node, new_attachment_path){
             data: "id="+node.id+"&n="+newName+"&bv="+newBaseValue+"&cvq="+newComputedValueQuad+"&cvdfq="+newComputedValueDFQuad+"&tv="+newTypeValue+"&s="+newState+"&a="+newAttachment,
             cache: false,
             success: function(dat) {
-                console.log(dat);
+                //console.log(dat);
               var obj = JSON.parse(dat);
               
               //var nodeid = obj["nodeid"];
@@ -440,7 +441,7 @@ function editComputedValueQuad(node, newComputedValue){
 
   nodeList[node.id].computedValueQuad=newComputedValue;
     let data = "id="+node.id+"&n="+node.name+"&bv="+node.baseValue+"&cvq="+newComputedValue+"&tv="+node.typeValue+"&s="+node.state+"&a="+node.attachment;
-    console.log('data -> ' + data);
+    //console.log('data -> ' + data);
 
     $.ajax({
             type: "POST",
@@ -536,9 +537,10 @@ function getNodeColor(type){
 
 }
 
-function addEdge(sourceId, targetId){
+async function addEdge(sourceId, targetId){
 
-    if(isDebateOpen() === true) {
+    const open = await isDebateOpen();
+    if(open === true) {
         bootbox.alert('This update framework is closed and therefore now immutable.');
         return;
     }
@@ -602,9 +604,10 @@ function loadEdges(){
 
 }
 
-function deleteEdge(id){
+async function deleteEdge(id){
 
-    if(isDebateOpen() === true) {
+    const open = await isDebateOpen();
+    if(open === true) {
         bootbox.alert('This update framework is closed and therefore now immutable.');
         return;
     }

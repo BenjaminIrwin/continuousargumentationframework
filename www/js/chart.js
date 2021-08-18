@@ -17,7 +17,7 @@ $(document).ready(function() {
         var datasets = [];
         for (var i = 1; i < data[0].length; i++) {
 
-            console.log('label: ' + data[0][i] + ', data: ' + data.slice(1).map(function(row) {return row[i]}))
+            //console.log('label: ' + data[0][i] + ', data: ' + data.slice(1).map(function(row) {return row[i]}))
 
             datasets.push(
                 {

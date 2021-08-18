@@ -2,7 +2,7 @@ var attachment_path = '';
 
 function modalInitNode(type, debateCloseDate){
 
-    console.log(debateCloseDate);
+    //console.log(debateCloseDate);
 
     let closingDate = Date.parse(debateCloseDate);
 
@@ -37,7 +37,7 @@ function modalInitNode(type, debateCloseDate){
         msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
     }
 
-    console.log('3');
+    //console.log('3');
 
 
     msg += "<li class='attachment-modal'>Attachment: &nbsp; \n\ <input id=\"url_attachment\" type='text' class='form-control' placeholder='Put here a valid URL'></input>\n\
@@ -50,19 +50,19 @@ function modalInitNode(type, debateCloseDate){
     
     msg += "</ul>";
 
-    console.log('4');
+    //console.log('4');
 
 
     $('#node-modal').find('.modal-body').html(msg);
 
-    console.log('5');
+    //console.log('5');
 
 
     $('#upload_attachment').click(function() {
         attachment_path = submitAttachment();
     });
 
-    console.log('6');
+    //console.log('6');
 
 
     $('#node-modal').find('.btn:eq(1)').attr('onClick', 'addNode(attachment_path)');
@@ -74,7 +74,7 @@ function modalInitNode(type, debateCloseDate){
     $('#node-modal').find('.modal-header').css('background-color',color);
     $('#node-modal').find('.btn:eq(1)').attr('class','btn '+button);
 
-    console.log('7');
+    //console.log('7');
 
 
     $('#node-modal').modal('show');
@@ -84,7 +84,7 @@ function modalInitNode(type, debateCloseDate){
 function modalEditNode(node){
     //var attachment_path = resetVariable(attachment_path);
 
-    console.log(isDebateOpen());
+    //console.log(isDebateOpen());
 
     if(isDebateOpen() !== true) {
         bootbox.alert('This update framework is closed and therefore now immutable.');
@@ -205,7 +205,7 @@ function editNodeFromModal(id){
 
 function modalInitDebate(questionid){
 
-    console.log(isADebateOpen(questionid));
+    //console.log(isADebateOpen(questionid));
 
     if(isADebateOpen(questionid) === true) {
         bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.');
@@ -224,7 +224,7 @@ function modalInitDebate(questionid){
     msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
     msg += "<li class='questionid-modal' style='display: block;'>questionid: &nbsp; <b>"+questionid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
-    msg += "<li class='defaultbasevalue-modal'>Default base value: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+    msg += "<li class='initbaserate-modal'>Initial base rate: &nbsp; <input type='text' class='form-control' placeholder='Base Rate'></input></li><br>";
 //    msg += "<li class='participants-modal'>Participants: &nbsp; <input type='text' class='form-control' placeholder='Participants'></input></li><br>";
     msg += "<li class='typevalue-modal'>Content: &nbsp; <input type='text' class='form-control' placeholder='Type value'></input></li><br>";
     msg += "</ul>";
@@ -255,6 +255,7 @@ function modalInitQuestion(ownerid){
     msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
     msg += "<li class='ownerid-modal' style='display: block;'>ownerid: &nbsp; <b>"+ownerid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
+    msg += "<li class='intial-base-rate-modal'>Base rate: <input type='text' class='form-control' placeholder='Base rate'></input></li><br>";
     msg += "</ul>";
     $('#question-modal').find('.modal-body').html(msg);
 

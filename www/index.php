@@ -89,7 +89,7 @@ Problems deciding? With Arg&Dec you can engage in debates with yourself or other
 </div>
 <div style="text-align:center;">
   <div style="display:inline-block; vertical-align:top;">
-    <img src="gallery/A&D-icon.png" style="width:150px;"/>
+  <img src="gallery/A&D-icon.png" style="width:150px;"/>
   </div>
   <?php
 

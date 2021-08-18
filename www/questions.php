@@ -150,11 +150,11 @@ while ($s = mysqli_fetch_array($sql)) {
 <script>
 
 $(document).ready(function(){
-    console.log("test2");
+    //console.log("test2");
 
     loadQuestions();
 
-    console.log("test3");
+    //console.log("test3");
 
 });
 

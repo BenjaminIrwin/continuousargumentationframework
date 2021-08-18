@@ -7,7 +7,7 @@ function addDebate(){
 //  var id = $("#debate-modal").find(".id-modal > b").html();
   var questionId = $("#debate-modal").find(".questionid-modal > b").html();
   var name = $("#debate-modal").find(".name-modal > input").val();
-  var defaultBaseValue = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
+  var initialBaseRate = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
   var participants = $("#debate-modal").find(".participants-modal > input").val();
   var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
 
@@ -16,19 +16,19 @@ if (name=="") {
     name = "Unknown Debate";
   };
   
-if (defaultBaseValue=="") {
-    defaultBaseValue = 0.5;
+if (initialBaseRate=="") {
+    initialBaseRate = 0.5;
 }
 
 $.ajax({
             type: "POST",
             url: "add-debate.php",
-            data: "qid="+questionId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
+            data: "qid="+questionId+"&n="+name+"&dbv="+initialBaseRate+"&p="+participants+"&tv="+typeValue,
             cache: false,
             success: function(dat) {
               var id = dat;
 
-              var debate = new Debate(id,questionId,name,defaultBaseValue,participants,typeValue);
+              var debate = new Debate(id,questionId,name,initialBaseRate,participants,typeValue);
 
               var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
                   msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
@@ -76,7 +76,7 @@ $.ajax({
             data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
             cache: false,
             success: function(dat) {
-                console.log('hola');
+                //console.log('hola');
                 var id = dat;
               var debate = new Debate(id,ownerId,name,defaultBaseValue,participants,typeValue);
               debateList[id] = debate;
@@ -119,10 +119,12 @@ function getLastForecast() {
         cache: false,
         success: function(dat) {
 
-            if (JSON.parse(dat).length !== 0) {
+            if (JSON.parse(dat).length === 0) {
 
             } else {
                 var obj = JSON.parse(dat);
+                //console.log('last debate');
+                //console.log(obj);
                 forecast = obj[0].finalforecast;
             }
         }
@@ -136,7 +138,7 @@ function getLastForecast() {
             cache: false,
             success: function (dat) {
 
-                if (JSON.parse(dat).length !== 0) {
+                if (JSON.parse(dat).length === 0) {
 
                 } else {
                     var obj = JSON.parse(dat);
@@ -149,32 +151,31 @@ function getLastForecast() {
     return forecast;
 }
 
-function isDebateOpen() {
+async function isDebateOpen() {
 
     var open = false;
 
-    $.ajax({
-        type: "POST",
+    var data = $.ajax({
+        type: "GET",
         url: "load-debate.php",
-        async: false,
-        cache: false,
-        success: function(dat) {
+        cache: false
+    });
 
-            var obj = JSON.parse(dat);
-            var msg = "";
+    data.done(function(dat) {
+        var obj = JSON.parse(dat);
+        var msg = "";
 
-            for (var i = 0; i < obj.length; i++) {
+        for (var i = 0; i < obj.length; i++) {
 
-                let closingDate = Date.parse(obj[i].close);
+            let closingDate = Date.parse(obj[i].close);
 
-                if(closingDate > Date.now()) {
-                    open = true;
-                    return;
-                }
+            if (closingDate > Date.now()) {
+                open = true;
+                return;
             }
         }
-
     });
+
     return open;
 }
 
@@ -324,7 +325,7 @@ function loadDebates(questionid){
               let now = new Date();
 
               if(Date.parse(close) > now) {
-                  console.log('ID:'+id+' is in the future');
+                  //console.log('ID:'+id+' is in the future');
                   msg += '<button type="button" class="btn btn-success" onClick="parent.location=\'diagram.php?id='+id+'\'">' + ' ' + name+'</button>';
                   msg += '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">';
                   msg += '<span class="caret"></span>';
@@ -338,7 +339,7 @@ function loadDebates(questionid){
                   msg += '</li><br><br></div>';
 
               } else {
-                  console.log('ID:'+id+' is not in the future');
+                  //console.log('ID:'+id+' is not in the future');
                   msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
                   msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
                   msg += '<span class="caret"></span>';
@@ -515,7 +516,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                 }
             )
 
-            console.log(datasets);
+            //console.log(datasets);
 
             // Get container for the chart
             var ctx = document.getElementById('chart-container').getContext('2d');

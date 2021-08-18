@@ -124,8 +124,8 @@ function initializeNode(){
         let proposedForecast = parseFloat(getProposedForecast());
         let lastForecast = parseFloat(getLastForecast());
 
-        console.log('PFORECAST: ' + proposedForecast);
-        console.log('LFORECAST: ' + lastForecast);
+        //console.log('PFORECAST: ' + proposedForecast);
+        //console.log('LFORECAST: ' + lastForecast);
         let diff = proposedForecast - lastForecast;
         let diffString = (diff<0?"":"+") + diff;
 

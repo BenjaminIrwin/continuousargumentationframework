@@ -16,10 +16,11 @@ if (!isset($_SESSION['id'])) {
 $userid = $_SESSION['id'];
 
 $name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['n']);
+$baserate = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['br']);
 
 //echo "'<script>console.log(\"$userid\")</script>'";
 
-$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into questions (ownerid,name) Values ($userid,'$name')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into questions (ownerid,name,initialForecast) Values ($userid,'$name','$baserate')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $questionid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 $_SESSION['question']=$questionid;

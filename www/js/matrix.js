@@ -306,7 +306,7 @@ function showDescendants(element){
             success: function (dat) {
                 var obj = JSON.parse(dat);
 
-                console.log(JSON.stringify(obj));
+                //console.log(JSON.stringify(obj));
 
                 htmlDescendants="";
 

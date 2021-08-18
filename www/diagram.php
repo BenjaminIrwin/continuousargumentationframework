@@ -320,7 +320,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
                   }
 
                   submitForecast(forecast);
-                  console.log('Submitted! '+ input);
+                  //console.log('Submitted! '+ input);
                   return false;
               });
           });

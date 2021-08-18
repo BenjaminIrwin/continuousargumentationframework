@@ -7,23 +7,35 @@ function addQuestion(){
 //  var id = $("#question-modal").find(".id-modal > b").html();
   var ownerId = $("#question-modal").find(".ownerId-modal > b").html();
   var name = $("#question-modal").find(".name-modal > input").val();
-  var defaultBaseValue = $("#question-modal").find(".defaultbasevalue-modal > input").val();
   var participants = $("#question-modal").find(".participants-modal > input").val();
+  var baseRate = $("#question-modal").find(".intial-base-rate-modal > input").val();
   var typeValue = $("#question-modal").find(".typevalue-modal > input").val();
 
+    if (baseRate=="") {
+        bootbox.alert('You must specify a base rate when you create a new question!')
+        return;
+    };
 
-if (name=="") {
+    if(isNaN(baseRate)) {
+        bootbox.alert('Base rate must be a number!')
+        return;
+    }
+
+    if(baseRate < 0 || baseRate > 100) {
+        bootbox.alert('Base rate must be a percentage (between 0 and 100)!')
+        return;
+    }
+
+  if (name=="") {
     name = "Unknown Question";
   };
   
-if (defaultBaseValue=="") {
-    defaultBaseValue = 0.5;
-}
+  var defaultBaseValue = 0.5;
 
 $.ajax({
             type: "POST",
             url: "add-question.php",
-            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
+            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue+"&br="+baseRate,
             cache: false,
             success: function(dat) {
               var id = dat;
@@ -76,7 +88,7 @@ $.ajax({
             data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
             cache: false,
             success: function(dat) {
-                console.log('hola');
+                //console.log('hola');
                 var id = dat;
               var question = new Question(id,ownerId,name,defaultBaseValue,participants,typeValue);
               questionList[id] = question;
@@ -146,19 +158,19 @@ function loadQuestions(){
 
               $("#question-list-"+right).append(msg);
 
-              // Hiding button in fuction of the right value.
-              if (right!='o'){
-                $('#question'+id).find('#modal-access-button').fadeOut(100);
-                $('#question'+id).find('.divider').fadeOut(100);
-                $('#question'+id).find('#delete-question-button').fadeOut(100);
-              }
-
-              if(right!='o' && right!='w'){
-                $('#question'+id).find('#modal-edit-question').fadeOut(100);
-              }
-              if(right=='o') {
-                  $('#question'+id).find('#unsubscribe-question').fadeOut(100);
-              }
+              // // Hiding button in fuction of the right value.
+              // if (right!=='o'){
+              //   $('#question'+id).find('#modal-access-button').fadeOut(100);
+              //   $('#question'+id).find('.divider').fadeOut(100);
+              //   $('#question'+id).find('#delete-question-button').fadeOut(100);
+              // }
+              //
+              // if(right!=='o' && right!=='w'){
+              //   $('#question'+id).find('#modal-edit-question').fadeOut(100);
+              // }
+              // if(right==='o') {
+              //     $('#question'+id).find('#unsubscribe-question').fadeOut(100);
+              // }
 
               questionList[id] = question;
 

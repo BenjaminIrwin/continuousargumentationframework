@@ -48,7 +48,7 @@ function getParticipants(debateId,ownerId) {
             cache: false,
             success: function(dat) {
                 
-                console.log(dat);
+                //console.log(dat);
                 $('#participants').html(dat);
        
             }
@@ -65,7 +65,7 @@ function getParticipantsDialog(debateId,ownerId) {
             cache: false,
             success: function(dat) {
                 
-                console.log(dat);
+                //console.log(dat);
                 bootbox.alert(dat);
        
             }
