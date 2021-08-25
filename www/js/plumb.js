@@ -251,28 +251,21 @@ function getDefaultBaseValue(debateId){
  
  }
 
-
-function getProposedForecast(){
+async function getProposedForecast() {
 
     var pForecast = 0;
-
-    $.ajax({
+    var data = await $.ajax({
         type: "POST",
         url: "get-proposal-node.php",
-        async: false,
         cache: false,
-        success: function(data) {
-            //console.log('here we go: ' + data);
-
-            var obj = JSON.parse(data);
-            pForecast = obj[0].typevalue;
-        }
     });
 
-    //console.log(pForecast);
+    var obj = JSON.parse(data);
+    pForecast = obj[0].typevalue;
 
     return pForecast;
 }
+
 
 function editForecast(conscore, forecast){
 
@@ -287,9 +280,48 @@ function editForecast(conscore, forecast){
     });
 
 }
+
+async function refreshNodeList(){
+
+    nodeList=[]
+
+    var dat = await $.ajax({
+        type: "POST",
+        url: "load-nodes.php",
+        data: "did="+thisDebateId,
+        cache: false
+    });
+
+    var obj = JSON.parse(dat);
+
+    for (var i = 0; i < obj.length; i++) {
+
+        var id = obj[i].id;
+//                var debateId = obj[i].debateId;
+        var name = obj[i].name;
+        var baseValue = obj[i].basevalue;
+        var computedValueQuad = obj[i].computedvaluequad;
+        var computedValueDFQuad = obj[i].computedvaluedfquad;
+        var type = obj[i].type;
+        var typeValue = obj[i].typevalue;
+        var state = obj[i].state;
+        var attachment = obj[i].attachment;
+        var x = obj[i].x;
+        var y = obj[i].y;
+        var createdby = obj[i].createdby;
+        var modifiedby = obj[i].modifiedby;
+
+        setNodeColor(type);
+
+        var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
+
+        nodeList[id] = node;
+
+    }
+
+}
  
- 
-function loadNodes(){
+async function loadNodes(){
 
   nodeList=[]
   $('.diagramm').html('');
@@ -393,23 +425,48 @@ async function deleteNode(element){
 
 }
 
+async function editNode(node, new_attachment_path){
 
-function editNode(node, new_attachment_path){
+    var id = node.id;
+    var newBaseValue = encodeURIComponent($(".basevalue-modal > input").val());
+
+    $.ajax({
+        type: "POST",
+        url: "edit-node-score.php",
+        data: "id="+node.id+"&bv="+newBaseValue,
+        cache: false,
+        success: function(dat) {
+            var obj = JSON.parse(dat);
+            //
+            // var modifiedBy = obj["modifiedby"];
+            // $("#"+id+" > #name").html(text);
+            // $("#"+id+" > #name").attr('title',newName);
+            // node.editInfo(decodeURIComponent(newName), decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValueQuad), decodeURIComponent(newComputedValueDFQuad), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment),decodeURIComponent(modifiedBy));
+            $('#' + id).find("#edit-button").attr('onclick', 'modalEditNode(nodeList["' + id + '"], "' + newBaseValue + '")');
+
+            // node.editUserBaseValue(decodeURIComponent(newBaseValue))
+            // Modifying node image.
+            // $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-basic.png');
+        }
+    });
+}
+
+function editNodeOld(node, new_attachment_path){
     
     //console.log("new att: "+new_attachment_path);
     var id = node.id;
-    var newName = $(".name-modal > input").val();
+    // var newName = $(".name-modal > input").val();
     var newBaseValue = encodeURIComponent($(".basevalue-modal > input").val());
     var newComputedValueQuad = $(".computedvalue-quad-modal > input").val();
     var newComputedValueDFQuad = $(".computedvalue-dfquad-modal > input").val();
     var newTypeValue = encodeURIComponent($(".typevalue-modal > input").val());
-    
+
     var newState = nodeList[id].state;
     var newAttachment = encodeURIComponent($("#node-modal").find(".attachment-modal > input#url_attachment").val());
     if(newAttachment.search(new_attachment_path) !== '-1') {
         newAttachment += ", " + encodeURIComponent(new_attachment_path);
     }
-   
+
     var text = newName;
     if (text.length>labelLength) {
         text = text.substring(0,labelLength-1)+"...";
@@ -418,18 +475,16 @@ function editNode(node, new_attachment_path){
     $.ajax({
             type: "POST",
             url: "edit-node.php",
-            data: "id="+node.id+"&n="+newName+"&bv="+newBaseValue+"&cvq="+newComputedValueQuad+"&cvdfq="+newComputedValueDFQuad+"&tv="+newTypeValue+"&s="+newState+"&a="+newAttachment,
+            data: "id="+node.id+"&bv="+newBaseValue+"&cvq="+newComputedValueQuad+"&cvdfq="+newComputedValueDFQuad+"&tv="+newTypeValue+"&s="+newState+"&a="+newAttachment,
             cache: false,
             success: function(dat) {
-                //console.log(dat);
               var obj = JSON.parse(dat);
-              
-              //var nodeid = obj["nodeid"];
+
               var modifiedBy = obj["modifiedby"];
               $("#"+id+" > #name").html(text);
               $("#"+id+" > #name").attr('title',newName);
-              node.editInfo(decodeURIComponent(newName), decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValueQuad), decodeURIComponent(newComputedValueDFQuad), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment),decodeURIComponent(modifiedBy));
-              
+              node.editInfo(decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValueQuad), decodeURIComponent(newComputedValueDFQuad), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment),decodeURIComponent(modifiedBy));
+
               // Modifying node image.
               $('#' + id).find('img').attr('src','gallery/'+nodeList[id].type+'-basic.png');
             }
@@ -454,11 +509,11 @@ function editComputedValueQuad(node, newComputedValue){
 
 }
 
-function editComputedValueDFQuad(node, newComputedValue){
+async function editComputedValueDFQuad(node, newComputedValue){
 
   nodeList[node.id].computedValueDFQuad=newComputedValue;
     let data = "id="+node.id+"&n="+node.name+"&bv="+node.baseValue+"&cvdfq="+newComputedValue+"&tv="+node.typeValue+"&s="+node.state+"&a="+node.attachment;
-    $.ajax({
+    await $.ajax({
             type: "POST",
             url: "edit-node.php",
             data: data,

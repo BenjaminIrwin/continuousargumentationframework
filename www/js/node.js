@@ -32,6 +32,7 @@ function Node(id, name, baseValue, computedValueQuad, computedValueDFQuad, type,
         this.editStateInfo = editStateInfo;
         this.getSupporters = getSupporters;
         this.getAttackers = getAttackers;
+        this.editUserBaseValue = editUserBaseValue;
         this.printTheFunction = printTheFunction;
 
 }
@@ -78,7 +79,8 @@ function displayInfo(){
 
 }
 
-function initializeNode(){
+
+async function initializeNode(){
 
     var type = this.type
 
@@ -94,7 +96,9 @@ function initializeNode(){
   $('#' + this.id).find("#info-button").attr('onclick', 'nodeList["'+this.id+'"].displayInfo()');
 
   // Creating edit button.
-  $('#' + this.id).find("#edit-button").attr('onclick', 'modalEditNode(nodeList["' + this.id + '"])');
+    if(type === 'pro' || type === 'con') {
+        $('#' + this.id).find("#edit-button").attr('onclick', 'modalEditNode(nodeList["' + this.id + '"], "' + this.baseValue + '")');
+    }
 
   // Creating wormhole copy and paste buttons.
   $('#' + this.id).find("#wormhole-copy-button").attr('onclick', 'copyWormhole(' + this.id + ')');
@@ -113,19 +117,22 @@ function initializeNode(){
   $('#' + this.id).offset({ left: this.x, top: this.y });
 
   // Setting state image.
-  if(this.state!=''){
+  if(this.state!==''){
     $('#' + this.id).find('img').attr('src','gallery/'+this.type+'-basic.png');
     // if(type=='proposal') {
     //     $('#' + this.id).find('img').css('margin-top','20px');
     //     $('#'+this.id+" .name-label").css('margin-top','20px');
     // }
-    if(type=="proposal") {
+    if(type==="proposal") {
 
-        let proposedForecast = parseFloat(getProposedForecast());
-        let lastForecast = parseFloat(getLastForecast());
+        const pF = await getProposedForecast();
+        const proposedForecast = parseFloat(pF);
 
-        //console.log('PFORECAST: ' + proposedForecast);
-        //console.log('LFORECAST: ' + lastForecast);
+        const lF = await getLastForecast();
+        const lastForecast = parseFloat(lF);
+
+        console.log('PROPOSED: ' + proposedForecast + ' LAST: ' + lastForecast);
+
         let diff = proposedForecast - lastForecast;
         let diffString = (diff<0?"":"+") + diff;
 
@@ -219,6 +226,10 @@ function editInfo(name, baseValue, computedValueQuad, computedValueDFQuad, typeV
   this.attachment = attachment;
   this.modifiedBy = modifiedBy;
     
+}
+
+function editUserBaseValue(baseValue) {
+    this.baseValue = baseValue;
 }
 
 function editStateInfo(state, modifiedBy) {

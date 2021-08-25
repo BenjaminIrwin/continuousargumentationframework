@@ -81,16 +81,14 @@ function modalInitNode(type, debateCloseDate){
 
 }
 
-function modalEditNode(node){
-    //var attachment_path = resetVariable(attachment_path);
+async function modalEditNode(node, baseValue){
 
-    //console.log(isDebateOpen());
-
-    if(isDebateOpen() !== true) {
+    const open = await isDebateOpen();
+    if(open === true) {
         bootbox.alert('This update framework is closed and therefore now immutable.');
         return;
     }
-    
+
     var id = node.id;
     var type = node.type;
 
@@ -111,27 +109,26 @@ function modalEditNode(node){
         button = 'btn-danger';
     }
 
-    $('#node-modal').find('.modal-title').html("Insert information about node " + id + " .");
+    $('#node-modal').find('.modal-title').html("Vote on node " + id + ".");
 
-    var msg = "<h3> Edit </h3>";
-    msg += "<ul style='list-style-type: none;'>";
+    // var msg = "<h3> Edit </h3>";
+    var msg = "<ul style='list-style-type: none;'>";
 //    msg += "<li class='id-modal'>Id: &nbsp; <b>"+id+"</b></li><br>";
 //    msg += "<li class='type-modal'>Type: &nbsp; <b>"+type+"</b></li><br>";    
     
-    msg += "<li class='name-modal'>Content: <input type='text' class='form-control' value=\""+node.name+"\"></input></li><br>";
+    // msg += "<li class='name-modal'>Content: <input type='text' class='form-control' value=\""+node.name+"\"></input></li><br>";
     if(type === 'proposal') {
         msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
-    } else {
-        msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
-        msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
+    } else if (type === 'pro' || type === 'con'){
+        msg += "<li id=voteInput class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder=" + baseValue + "></input></li><br>";
     }
-    msg += "<li class='attachment-modal'>Attachment: &nbsp; <input id=\"url_attachment\" type='text' class='form-control' value='"+node.attachment+"'></input></li><br> \n\
-                <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
-                            <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000000\">Or upload a file: \n\
-                            <input name=\"userfile\" type=\"file\" accept=\"application/pdf, application/x-pdf, application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf\"></br> \n\
-                            <input id=\"upload_new_attachment\" type=\"button\" value=\"Submit\">\n\
-                </form>\n\
-            </li>";
+    // msg += "<li class='attachment-modal'>Attachment: &nbsp; <input id=\"url_attachment\" type='text' class='form-control' value='"+node.attachment+"'></input></li><br> \n\
+    //             <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
+    //                         <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000000\">Or upload a file: \n\
+    //                         <input name=\"userfile\" type=\"file\" accept=\"application/pdf, application/x-pdf, application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf\"></br> \n\
+    //                         <input id=\"upload_new_attachment\" type=\"button\" value=\"Submit\">\n\
+    //             </form>\n\
+    //         </li>";
     
     msg += "</ul>";
     
@@ -203,9 +200,15 @@ function editNodeFromModal(id){
     nodeList[id].editInfo(newName, newBaseValue, newComputedValueQuad, newComputedValueDFQuad, newTypeValue, newState, newAttachment);
 }
 
-function modalInitDebate(questionid){
+async function modalInitDebate(questionid){
 
-    //console.log(isADebateOpen(questionid));
+    const questionOpen = await isQuestionOpen();
+    console.log('QUESTION OPEN? ' + questionOpen);
+
+    if(questionOpen !== true) {
+        bootbox.alert('Question is not open!');
+        return;
+    }
 
     if(isADebateOpen(questionid) === true) {
         bootbox.alert('An update framework is already ongoing! Please add relevant argumentation there, or wait for it to finish.');
@@ -224,9 +227,10 @@ function modalInitDebate(questionid){
     msg += "<li class='id-modal' style='display: none;'>Id: &nbsp; <b>"+id+"</b><br></li>";
     msg += "<li class='questionid-modal' style='display: block;'>questionid: &nbsp; <b>"+questionid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
-    msg += "<li class='initbaserate-modal'>Initial base rate: &nbsp; <input type='text' class='form-control' placeholder='Base Rate'></input></li><br>";
 //    msg += "<li class='participants-modal'>Participants: &nbsp; <input type='text' class='form-control' placeholder='Participants'></input></li><br>";
     msg += "<li class='typevalue-modal'>Content: &nbsp; <input type='text' class='form-control' placeholder='Type value'></input></li><br>";
+    msg += "<li class='Opening date'>Opening date: <input type='text' class='form-control' id='openDate' placeholder='Opening date'></input></li><br>";
+    msg += "<li class='Closing date'>Closing date: <input type='text' class='form-control' id='closeDate' placeholder='Closing date'></input></li><br>";
     msg += "</ul>";
     $('#debate-modal').find('.modal-body').html(msg);
 
@@ -237,8 +241,12 @@ function modalInitDebate(questionid){
     $('#debate-modal').find('.btn:eq(1)').attr('class','btn '+button);
     
     makeItDraggable('#debate-modal');
-    
+
     $('#debate-modal').modal('show');
+
+
+    $('#openDate').flatpickr({enableTime: true, dateFormat: "Y-m-d H:i"});
+    $('#closeDate').flatpickr({enableTime: true, dateFormat: "Y-m-d H:i"});
 }
 
 function modalInitQuestion(ownerid){
@@ -256,10 +264,13 @@ function modalInitQuestion(ownerid){
     msg += "<li class='ownerid-modal' style='display: block;'>ownerid: &nbsp; <b>"+ownerid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
     msg += "<li class='intial-base-rate-modal'>Base rate: <input type='text' class='form-control' placeholder='Base rate'></input></li><br>";
+    msg += "<li class='Opening date'>Opening date: <input type='text' class='form-control' id='openDate' placeholder='Opening date'></input></li><br>";
+    msg += "<li class='Closing date'>Closing date: <input type='text' class='form-control' id='closeDate' placeholder='Closing date'></input></li><br>";
     msg += "</ul>";
     $('#question-modal').find('.modal-body').html(msg);
 
     $('#question-modal').find('.btn:eq(1)').attr('onClick', 'addQuestion();');
+
 
     // Appling color styles.
     $('#question-modal').find('.modal-header').css('background-color',color);
@@ -268,6 +279,9 @@ function modalInitQuestion(ownerid){
     makeItDraggable('#question-modal');
 
     $('#question-modal').modal('show');
+    $('#openDate').flatpickr({enableTime: true, dateFormat: "Y-m-d H:i"});
+    $('#closeDate').flatpickr({enableTime: true, dateFormat: "Y-m-d H:i"});
+
 }
 
 function modalEditQuestion(question){

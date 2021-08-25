@@ -14,9 +14,8 @@ if (!isset($_SESSION['id'])) {
 }
 
 $userid = $_SESSION['id'];
-
 $debateid = $_GET['id'];
-
+$_SESSION['debate']=$debateid;
 if (isset($_GET['nid'])){
   $nodeid = $_GET['nid'];
 }
@@ -36,9 +35,9 @@ while ($r1 = mysqli_fetch_array($sqldata1)) {
 
 }
 
-$_SESSION['debate'] = $debateid;
+$_SESSION['questionid'] = $questionid;
 
-$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND questionid='$debateid' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND questionid='$questionid' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 if (mysqli_num_rows($sqldata2)<=0){
   echo "Forbidden.";
@@ -64,7 +63,8 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <html lang="en">
   <head>
     <title><?php echo $name; ?></title>
-        <script src="js/jquery-1.11.1.js"></script>
+        <script src="js/jquery-3.6.0.min.js"></script>
+
         <script src="js/go-debug.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
@@ -320,7 +320,6 @@ while($r3=mysqli_fetch_array($sqldata3)){
                   }
 
                   submitForecast(forecast);
-                  //console.log('Submitted! '+ input);
                   return false;
               });
           });
@@ -420,37 +419,6 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <div class="pull-left graph-operations">
     <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>
 
-
-    <?php
-    // PARTICIPANTS //
-    $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.username, rights.accessright FROM rights INNER JOIN "
-        . "users ON rights.userid=users.id WHERE rights.questionid=(select questionid from debates where '$debateid' limit 1)") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-    
-    $title = '<b>Participants</b>';
-    $str='';
-    while($row = mysqli_fetch_array($sql1)) {
-        if($row["accessright"]=='o') {
-            $accessright = 'owner';
-        }
-        else if($row["accessright"]=='r') {
-            $accessright = 'read only';
-        }
-        else if($row["accessright"]=='w') {
-            $accessright = 'read and modify';
-        }
-        
-        $str.=$row['username'].' - '.$accessright.' </br> '; 
-    }
-
-    echo "<button class='btn btn-default'
-            <a href=\"javascript:void(0)\" class=\"pull-right\" tabindex=\"-1\" role=\"button\" 
-                data-toggle=\"popover\" data-placement=\"left\" data-trigger=\"hover\"  data-html=true title='$title'
-                data-content='$str'>
-                <img src=\"gallery/participants.png\" style=\"width:20px;\" />
-            </a>
-        </button>";
-
-?>
         <li class='name-modal'>Forecast: <input type='text' id='forecast' class='form-control' placeholder='Forecast'/><input type="submit" id="forecastSubmit" /></li><br>
 
         <?php
@@ -503,18 +471,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu" role="menu">
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-    <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
 
-  <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
-    </ul>
-  </li>
   
 <!--  <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
@@ -553,20 +510,6 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu" role="menu">
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-
-
-    <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
-
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
-    </ul>
-  </li>
   
 <!--    <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
@@ -605,20 +548,6 @@ while($r3=mysqli_fetch_array($sqldata3)){
             <ul class="dropdown-menu" role="menu">
                 <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-
-                <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
-
-                <li class="dropdown-submenu">
-                    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
-                    <ul class="dropdown-menu">
-                        <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
-                        <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
-                        <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
-                        <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
-                        <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
-                    </ul>
-                </li>
-
                 <!--    <li class="dropdown-submenu">-->
                 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
                 <!--    <ul class="dropdown-menu">-->
@@ -654,19 +583,9 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <span class="glyphicon glyphicon-cog"></span>
   </div>
   <ul class="dropdown-menu" role="menu">
-    <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-    <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
-
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
-    </ul>
-  </li>
+      <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Vote</a></li>
+      <li class="divider dropdown-divider"></li>
+      <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
   
 <!--    <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
@@ -701,20 +620,10 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <span class="glyphicon glyphicon-cog"></span>
   </div>
   <ul class="dropdown-menu" role="menu">
-    <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-    <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
+      <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Vote</a></li>
+      <li class="divider dropdown-divider"></li>
+      <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-    <li class="dropdown-submenu">
-    <a tabindex="-1" href="javascript:void(0)">Edit type</a>
-    <ul class="dropdown-menu">
-      <li><a tabindex="-1" href="javascript:void(0)" onClick="setType(this)">Proposal</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Increase</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Decrease</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Pro</a></li>
-      <li><a href="javascript:void(0)" onClick="setType(this)">Con</a></li>
-    </ul>
-  </li>
-  
 <!--    <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
 <!--    <ul class="dropdown-menu">-->

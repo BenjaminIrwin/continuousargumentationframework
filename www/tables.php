@@ -30,7 +30,8 @@ $matrixid=$_GET['id'];
 <html lang="en">
 <title>Tables</title>
   <head>
-        <script src="js/jquery-1.11.1.js"></script>
+        <script src="js/jquery-3.6.0.min.js"></script>
+
         <script src="js/go-debug.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>

@@ -13,9 +13,9 @@ if (!isset($_SESSION['id'])) {
 	die();
 }
 
-$debateid = $_SESSION['debate'];
+$questionid = $_SESSION['questionid'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM questions WHERE id in (select questionId from debates where id = '$debateid')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM questions WHERE id = '$questionid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {

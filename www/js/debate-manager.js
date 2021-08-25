@@ -7,23 +7,33 @@ function addDebate(){
 //  var id = $("#debate-modal").find(".id-modal > b").html();
   var questionId = $("#debate-modal").find(".questionid-modal > b").html();
   var name = $("#debate-modal").find(".name-modal > input").val();
-  var initialBaseRate = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
   var participants = $("#debate-modal").find(".participants-modal > input").val();
   var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
+    var openDate = $("#openDate").val();
+    var closeDate = $("#closeDate").val();
 
+    if (closeDate=="") {
+        bootbox.alert('You must specify a closing date when you create a new debate!')
+        return;
+    };
+
+    if (openDate=="") {
+        bootbox.alert('You must specify an opening date when you create a new debate!')
+        return;
+    };
 
 if (name=="") {
     name = "Unknown Debate";
   };
   
-if (initialBaseRate=="") {
-    initialBaseRate = 0.5;
-}
+
+    var initialBaseRate = 0.5;
+
 
 $.ajax({
             type: "POST",
             url: "add-debate.php",
-            data: "qid="+questionId+"&n="+name+"&dbv="+initialBaseRate+"&p="+participants+"&tv="+typeValue,
+            data: "qid="+questionId+"&n="+name+"&dbv="+initialBaseRate+"&p="+participants+"&tv="+typeValue+"&od="+openDate+"&cd="+closeDate,
             cache: false,
             success: function(dat) {
               var id = dat;
@@ -48,8 +58,9 @@ $.ajax({
                 // The end 'o' means in owner tab, because is been created by this user and owned by him or her.
               $("#debate-list-o").append(msg);
               debateList[id] = debate;
-                        }
-            });
+
+            }
+    });
 
 }
 
@@ -108,47 +119,96 @@ $.ajax({
 
 }
 
-function getLastForecast() {
+async function getLastForecast() {
 
     var forecast = 0;
 
-    $.ajax({
-        type: "POST",
+    const data = await $.ajax({
+        type: "GET",
         url: "load-last-debate.php",
-        async: false,
-        cache: false,
-        success: function(dat) {
-
-            if (JSON.parse(dat).length === 0) {
-
-            } else {
-                var obj = JSON.parse(dat);
-                //console.log('last debate');
-                //console.log(obj);
-                forecast = obj[0].finalforecast;
-            }
-        }
+        cache: false
     });
 
-    if(forecast === 0) {
-        $.ajax({
-            type: "POST",
+    const obj = JSON.parse(data);
+
+    if(obj.length === 0) {
+        const data1 = await $.ajax({
+            type: "GET",
             url: "load-this-question.php",
-            async: false,
-            cache: false,
-            success: function (dat) {
-
-                if (JSON.parse(dat).length === 0) {
-
-                } else {
-                    var obj = JSON.parse(dat);
-                    forecast = obj[0].initialForecast;
-                }
-            }
+            cache: false
         });
+
+        const obj1 = JSON.parse(data1);
+
+        if (obj1.length !== 0) {
+            forecast = obj1[0].initialForecast;
+        }
+    } else {
+        forecast = obj[0].finalforecast;
     }
 
     return forecast;
+    //
+    // for (var i = 0; i < obj.length; i++) {
+    //
+    //     const closingDate = Date.parse(obj[i].close);
+    //     const openingDate = Date.parse(obj[i].open);
+    //
+    //     if (closingDate > Date.now() && openingDate < Date.now()) {
+    //         return true;
+    //     }
+    // }
+    // return false;
+    //
+    //
+    // console.log(1);
+    //
+    // data.done(function(dat) {
+    //     console.log(2);
+    //
+    //     if (JSON.parse(dat).length === 0) {
+    //
+    //         console.log(3);
+    //
+    //
+    //         var data = $.ajax({
+    //             type: "GET",
+    //             url: "load-this-question.php",
+    //             cache: false
+    //         });
+    //
+    //         console.log(4);
+    //
+    //         data.done(function(dat) {
+    //             if (JSON.parse(dat).length === 0) {
+    //
+    //                 console.log(5);
+    //
+    //
+    //             } else {
+    //
+    //                 console.log(6);
+    //
+    //                 var obj = JSON.parse(dat);
+    //                 forecast = obj[0].initialForecast;
+    //             }
+    //         });
+    //     } else {
+    //
+    //         console.log(7);
+    //
+    //
+    //         var obj = JSON.parse(dat);
+    //
+    //         console.log('FINAL: ' + obj[0].finalforecast);
+    //
+    //         forecast = obj[0].finalforecast;
+    //     }
+    // });
+    //
+    // // console.log('FINAL FINAL: ' + forecast);
+    //
+    // return forecast;
 }
 
 async function isDebateOpen() {
@@ -179,6 +239,53 @@ async function isDebateOpen() {
     return open;
 }
 
+async function isQuestionOpen() {
+
+    const data = await $.ajax({
+            type: "GET",
+            url: "load-this-question.php",
+            cache: false
+    });
+    const obj = JSON.parse(data);
+
+    for (var i = 0; i < obj.length; i++) {
+
+        const closingDate = Date.parse(obj[i].close);
+        const openingDate = Date.parse(obj[i].open);
+
+        if (closingDate > Date.now() && openingDate < Date.now()) {
+            return true;
+        }
+    }
+    return false;
+
+    // var open;
+    //
+    // var data = $.ajax({
+    //     type: "GET",
+    //     url: "load-this-question.php",
+    //     cache: false
+    // });
+    //
+    // data.done(function(dat) {
+    //     var obj = JSON.parse(dat);
+    //     var msg = "";
+    //
+    //     for (var i = 0; i < obj.length; i++) {
+    //
+    //         let closingDate = Date.parse(obj[i].close);
+    //         let openingDate = Date.parse(obj[i].open);
+    //
+    //         if (closingDate > Date.now() && openingDate < Date.now()) {
+    //             open = true;
+    //         } else {
+    //             open = false;
+    //         }
+    //     }
+    // });
+    //
+    // return open;
+}
 
 function isADebateOpen(questionId) {
 
@@ -212,22 +319,21 @@ function isADebateOpen(questionId) {
 
 function debateModifiedCheck() {
 
-    var x = setInterval(function() {
-
-        $.ajax({
-            type: "POST",
-            url: "load-just-modified-debate.php",
-            async: false,
-            cache: false,
-            success: function (dat) {
-
-                if(JSON.parse(dat).length !== 0) {
-                    loadNodes();
-                }
-            }
-
-        });
-    }, 1500)
+    // var x = setInterval(function() {
+    //
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "load-just-modified-debate.php",
+    //         cache: false,
+    //         success: function (dat) {
+    //
+    //             if(JSON.parse(dat).length !== 0) {
+    //                 loadNodes();
+    //             }
+    //         }
+    //
+    //     });
+    // }, 1500)
 }
 
 function proposalNodeCheck() {
@@ -412,17 +518,14 @@ function editDebate(debate){
             });
 }
 
-function editConfidenceScore(debateId, confidenceScore){
+async function editConfidenceScore(debateId, confidenceScore){
 
-    $.ajax({
+    await $.ajax({
         type: "POST",
         url: "edit-confidence-score.php",
         data: "id="+ debateId +"&c="+confidenceScore,
         cache: false,
         success: function(dat) {
-
-            // $("#debate"+debate.id+" > .debate > .btn:eq(0)").html(newName);
-            // debate.editInfo(newName, newDefaultBaseValue, newParticipants, newTypeValue);
 
         }
     });

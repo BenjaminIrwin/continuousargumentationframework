@@ -10,9 +10,23 @@ function addQuestion(){
   var participants = $("#question-modal").find(".participants-modal > input").val();
   var baseRate = $("#question-modal").find(".intial-base-rate-modal > input").val();
   var typeValue = $("#question-modal").find(".typevalue-modal > input").val();
+  var openDate = $("#openDate").val();
+  var closeDate = $("#closeDate").val();
+
+
 
     if (baseRate=="") {
         bootbox.alert('You must specify a base rate when you create a new question!')
+        return;
+    };
+
+    if (closeDate=="") {
+        bootbox.alert('You must specify a closing date when you create a new question!')
+        return;
+    };
+
+    if (openDate=="") {
+        bootbox.alert('You must specify an opening date when you create a new question!')
         return;
     };
 
@@ -35,7 +49,7 @@ function addQuestion(){
 $.ajax({
             type: "POST",
             url: "add-question.php",
-            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue+"&br="+baseRate,
+            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue+"&br="+baseRate+"&od="+openDate+"&cd="+closeDate,
             cache: false,
             success: function(dat) {
               var id = dat;

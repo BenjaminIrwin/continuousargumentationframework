@@ -34,7 +34,8 @@ $initialForecast = $s["initialForecast"];
 <html lang="en">
   <head>
     <title><?php echo $questionname; ?></title>
-        <script src="js/jquery-1.11.1.js"></script>
+        <script src="js/jquery-3.6.0.min.js"></script>
+
         <script src="js/go-debug.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
@@ -53,7 +54,8 @@ $initialForecast = $s["initialForecast"];
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootbox.min.js"></script>
-
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
         <script src="js/debate-manager.js"></script>
         <script src="js/modals.js"></script>
@@ -216,7 +218,7 @@ $(document).ready(function(){
     <footer>
   <p>Posted by: Benjamin Irwin</p>
   <p>Contact information: <a href="mailto:benjamintdirwin@gmail.com">
-  benjamintdirwin@gmail.com@gmail.com</a>.</p>
+  benjamintdirwin@gmail.com</a>.</p>
 </footer>
 
   </div>

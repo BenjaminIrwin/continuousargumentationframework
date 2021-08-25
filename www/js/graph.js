@@ -66,10 +66,8 @@ function CS(nodeList){
 
 	for(var n in nodeList){
 		if(nodeList[n].type==='increase'){
-
 			++increaseCount;
 			increaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
-
 		}
 
 		if(nodeList[n].type==='decrease'){
@@ -78,18 +76,27 @@ function CS(nodeList){
 		}
 	}
 
-	var increaseAverage = increaseTotal/increaseCount;
-	var decreaseAverage = decreaseTotal/decreaseCount;
+	var increaseAverage;
+	var decreaseAverage;
+
+	if(increaseCount === 0) {
+		increaseAverage = 0;
+	} else {
+		increaseAverage = increaseTotal/increaseCount;
+	}
+
+	if(decreaseCount === 0) {
+		decreaseAverage = 0;
+	} else {
+		decreaseAverage = decreaseTotal/decreaseCount;
+	}
 
 	return increaseAverage - decreaseAverage;
-	//Compute all values or get from DB
-	//Calculate for each increase amendment and decrease amendment
-	//Calculate overall score
 }
 
-function submitForecast(forecast) {
-	computeAllValues(false);
-	var pForecast = getProposedForecast();
+async function submitForecast(forecast) {
+	await computeAllValues(false);
+	var pForecast = await getProposedForecast();
 
 	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
 
@@ -97,16 +104,17 @@ function submitForecast(forecast) {
 		bootbox.alert('Irrational forecast. You have a negative confidence score so must provide a forecast lower than the proposed one.');
 	} else if(CONFIDENCE_SCORE > 0 && forecast <= pForecast) {
 		bootbox.alert('Irrational forecast. You have a positive confidence score so must provide a forecast higher than the proposed one.');
-	} else if((Math.abs(pForecast - forecast)/pForecast) > CONFIDENCE_SCORE) {
+	} else if((Math.abs(pForecast - forecast)/pForecast) > Math.abs(CONFIDENCE_SCORE)) {
 		bootbox.alert('Irrational forecast. The scale of your change to the proposed forecast is not reflected in your confidence score.');
 	} else {
-
 		editForecast(CONFIDENCE_SCORE, forecast)
+		bootbox.alert('Successful forecast of ' + forecast + '%.');
+
 	}
 
 }
 
-function computeAllValues(message){
+async function computeAllValues(message){
 
 	if(!checkIfTree()){
 		bootbox.alert('<h3>This is not a decision tree.</h3>');
@@ -114,18 +122,12 @@ function computeAllValues(message){
 	
         }
 
-//
-// 	for (var n in nodeList){
-// 		var result = SF1(nodeList[n]);
-// 		var nresult = Math.round(result * Math.pow(10,decimals)) / Math.pow(10,decimals);
-// //		alert(nodeList[n].name+": "+nresult);
-// 		console.log(n + ':' + nresult);
-// 		editComputedValueQuad(nodeList[n], nresult);
-// 	}
-//
-// 	console.log(2);
-// 	console.log(nodeList);
+	console.log(nodeList);
 
+	// await loadNodes()
+	await refreshNodeList()
+
+	console.log(nodeList);
 
 	if(message){
 		var amendmentList1=[];
@@ -158,12 +160,13 @@ function computeAllValues(message){
 			}
 			var result = SF2(nodeList[n]);
             var nresult = Math.round(result * Math.pow(10,decimals)) / Math.pow(10,decimals);
-			editComputedValueDFQuad(nodeList[n], nresult);
+			await editComputedValueDFQuad(nodeList[n], nresult);
         }
 
-        var confidenceScore = CS(nodeList);
+        const confidenceScore = CS(nodeList);
+        console.log('CONFIDENCE SCORE: ' + confidenceScore);
 		CONFIDENCE_SCORE = confidenceScore;
-        editConfidenceScore(thisDebateId, confidenceScore);
+        await editConfidenceScore(thisDebateId, confidenceScore);
         
         if(message){
 
@@ -180,8 +183,6 @@ function computeAllValues(message){
 	
         
                 msg2+='</ul>';
-       
-                //bootbox.alert(msg1+msg2);
 
                 $('#compute-values-modal').find('.modal-title').html("Amendment ranking");
 
