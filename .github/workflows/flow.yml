@@ -18,9 +18,9 @@ jobs:
     - name: executing remote ssh commands using ssh key
       uses: appleboy/ssh-action@master
       with:
-        host: 159.65.50.173
-        username: root
-        key: -----BEGIN RSA PRIVATE KEY-----
+        host: "159.65.50.173"
+        username: "root"
+        key: "-----BEGIN RSA PRIVATE KEY-----
             MIIEpQIBAAKCAQEA97yzcQq6a5OYM4CQNFNs6buUOioNK4rk8l51mnzX886NOdC2
             G6kjcbG0a4D193kAkjT1stWjIJMBeheBoJkVQx/bgXxh3piDnB/cBDVtcKjLCYA8
             02HyabLaiCP9U8iChiCcYMZMUPfd6sQaRuPzHpCTKVWzDoqJwfOnroYsSHN0U+jq
@@ -46,6 +46,6 @@ jobs:
             haWBcD0CgYEA8YHmxMh/O9soEpfKtyQcnQhqUOnboUaElYC2uKTwK3H1K9HBtEuC
             JaYM7fPuLlikJGXjnLZHXz13/lUAHpwkERkvuygsG2Ux5+ynyPiqnyDp/OirY6Hx
             Rd22VkXGvOtSgf6wqbXMXvTWwOyhD/zp6U+p8IQ0vP8dTPvfYepYjtI=
-            -----END RSA PRIVATE KEY-----
+            -----END RSA PRIVATE KEY-----"
         port: 22
         script: /docker/deploy.sh
