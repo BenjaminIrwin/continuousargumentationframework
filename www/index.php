@@ -84,7 +84,7 @@
     <h4 style="text-align:center;">Argue and Decide</h4>
     <div style="text-align: center; padding-top:10px;">
 
-Problems deciding? With Arg&Dec you can engage in debates with yourself or others (and you can choose who the others may be, as soon as they have a login with Arg & Dec),  you can give tabular presentations of decision problems, and you can  map tabular presentations  onto debates and back. Arg&Dec can score your decisions  by measuring the dialectical strength of opinions in debates and/or by using tabular methods. Just log in and get started!
+Problems deciding? With Arg&Dec you can engage in debates with yourself or others (and you can choose who the others may be, as soon as they have a login with Arg & Dec) , you can give tabular presentations of decision problems, and you can  map tabular presentations  onto debates and back. Arg&Dec can score your decisions  by measuring the dialectical strength of opinions in debates and/or by using tabular methods. Just log in and get started!
 </div>
   </div>
 </div>
