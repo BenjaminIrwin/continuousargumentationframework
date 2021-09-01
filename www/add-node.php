@@ -22,11 +22,6 @@ $debateid = $_POST['did'];
 $name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['n']); 
 $basevalue = $_POST['bv'];
 
-$computedvaluedfquad = $_POST['cvdfq'];
-if($computedvaluedfquad) {
-    $computedvaluedfquad = "0";
-}
-
 $type = $_POST['t'];
 $typevalue = $_POST['tv'];
 if($typevalue == 'undefined') {
@@ -43,7 +38,7 @@ $sql = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into nodes (debateid, na
 
 $nodeid=((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
-$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_node_score (user_id, node_id, base_score, computed_df_quad_score) Values ($userid, '$nodeid', '$basevalue', '$computedvaluedfquad')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_node_score (user_id, node_id, base_score) Values ($userid, '$nodeid', '$basevalue')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 echo json_encode(array("nodeid"=>$nodeid,"createdby"=>$createdby));
 
@@ -59,7 +54,6 @@ $data['debateid']=$debateid;
 $data['nodeid']=$nodeid;
 $data['name']=$name;
 $data['basevalue']=$basevalue;
-$data['computedvaluedfquad']=$computedvaluedfquad;
 $data['type']=$type;
 $data['typevalue']=$typevalue;
 $data['state']=$state;

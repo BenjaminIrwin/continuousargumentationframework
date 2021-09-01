@@ -15,6 +15,7 @@ if (!isset($_SESSION['id'])) {
 
 $userid = $_SESSION['id'];
 $debateid = $_GET['id'];
+$qid = $_SESSION['questionid'];
 $_SESSION['debate']=$debateid;
 if (isset($_GET['nid'])){
   $nodeid = $_GET['nid'];
@@ -23,21 +24,23 @@ else {
   $nodeid='';
 }
 
-$sqldata1 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE id=$debateid") or die();
+$sqldata1 = mysqli_query($GLOBALS["___mysqli_ston"], "select * from debates left join user_debate_scores on id = debateId and userId = $userid where id = $debateid;") or die();
 
 while ($r1 = mysqli_fetch_array($sqldata1)) {
   $name = $r1['name'];
   $defaultBaseValue = $r1['defaultbasevalue'];
   $participants = $r1['participants'];
+  $questionid = $r1['questionId'];
   $typeValue = $r1['typevalue'];
   $close = $r1['close'];
-  $questionid = $r1['questionId'];
+  $currForecast = $r1['forecast'];
+  if($currForecast == null) {
+      $currForecast = "-";
+  }
 
 }
 
-$_SESSION['questionid'] = $questionid;
-
-$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND questionid='$questionid' ") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$userid' AND questionid=$qid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 if (mysqli_num_rows($sqldata2)<=0){
   echo "Forbidden.";
@@ -46,6 +49,7 @@ if (mysqli_num_rows($sqldata2)<=0){
 
 while($r2 = mysqli_fetch_array($sqldata2)){
   $right = $r2['accessright'];
+  $_SESSION['right'] = $right;
 }
 
 if ($right=='n' | $right==""){
@@ -299,6 +303,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
           $(document).ready(function(){
               getDebateCountdownTimer('<?php echo $close; ?>');
+              getMyForecast();
               debateModifiedCheck();
               $('#forecast').on('keyup', function(e) {
                   if (e.keyCode === 13) {
@@ -348,7 +353,10 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
       <br style="clear:both;">
       <h5>
-          <p id="demo"></p>
+          <p>My Forecast: <p id="currentForecast" style="font-weight: bold;"></p></p>
+      </h5>
+      <h5>
+          <p>Status: <p id="demo"></p></p>
       </h5>
 </div>
 </div>
@@ -687,9 +695,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   var thisUserId = <?php echo $userid; ?>;
   var thisDebateId = <?php echo $debateid; ?>;
   var thisUsername = '<?php echo $username; ?>';
-
   var thisRight = '<?php echo $right; ?>';
-
   var thisNodeId = '<?php echo $nodeid; ?>';
 
   </script>

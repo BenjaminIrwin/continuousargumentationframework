@@ -1,33 +1,6 @@
 var decimals=6;
 var CONFIDENCE_SCORE;
 
-function checkIfTree(){
-
-	for(n in nodeList){
-		if(nodeList[n].type=='proposal'){
-			var visited=[];
-			visited[n]=nodeList[n];
-			return traversal(nodeList[n],visited);
-		}
-	}
-
-}
-
-function traversal(node,visited){
-	var sourceList=node.sourceList;
-
-	for(n in sourceList){
-		if(typeof visited[n]!='undefined'){
-			return false;
-		}
-		else{
-			visited[n]=node;
-			return traversal(sourceList[n],visited);
-		}
-	}
-	return true;
-}
-
 function fatt1(v0,v){
 	v0 = parseFloat(v0);
 	v = parseFloat(v);
@@ -57,20 +30,24 @@ function g(v0,va,vs){
 
 }
 
-function CS(nodeList){
+async function CS(nodeList){
 
 	var increaseCount = 0;
 	var increaseTotal = 0;
 	var decreaseCount = 0;
 	var decreaseTotal= 0;
 
+	console.log(1);
+
 	for(var n in nodeList){
 		if(nodeList[n].type==='increase'){
+			console.log(2);
 			++increaseCount;
 			increaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
 
 		if(nodeList[n].type==='decrease'){
+			console.log(3);
 			++decreaseCount;
 			decreaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
@@ -79,23 +56,39 @@ function CS(nodeList){
 	var increaseAverage;
 	var decreaseAverage;
 
+	console.log(4);
+
 	if(increaseCount === 0) {
 		increaseAverage = 0;
+		console.log(5);
+
 	} else {
+		console.log(6);
+
 		increaseAverage = increaseTotal/increaseCount;
 	}
 
 	if(decreaseCount === 0) {
+		console.log(7);
+
 		decreaseAverage = 0;
 	} else {
+		console.log(8);
+
 		decreaseAverage = decreaseTotal/decreaseCount;
 	}
+
+	console.log('INCREASE: ' + increaseAverage)
+	console.log('DECREASE: ' + decreaseAverage)
 
 	return increaseAverage - decreaseAverage;
 }
 
 async function submitForecast(forecast) {
-	await computeAllValues(false);
+	const computed = await computeAllValues(false);
+	if(!computed) {
+		return;
+	}
 	var pForecast = await getProposedForecast();
 
 	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
@@ -105,93 +98,64 @@ async function submitForecast(forecast) {
 	} else if(CONFIDENCE_SCORE > 0 && forecast <= pForecast) {
 		bootbox.alert('Irrational forecast. You have a positive confidence score so must provide a forecast higher than the proposed one.');
 	} else if((Math.abs(pForecast - forecast)/pForecast) > Math.abs(CONFIDENCE_SCORE)) {
-		bootbox.alert('Irrational forecast. The scale of your change to the proposed forecast is not reflected in your confidence score.');
-	} else {
-		editForecast(CONFIDENCE_SCORE, forecast)
-		bootbox.alert('Successful forecast of ' + forecast + '%.');
 
+		var direction;
+		var limit;
+
+		if(CONFIDENCE_SCORE < 0) {
+			direction = 'minimum';
+			limit = (pForecast - (CONFIDENCE_SCORE * pForecast)).toFixed(2);
+		} else {
+			direction = 'maximum'
+			limit = (pForecast + (CONFIDENCE_SCORE * pForecast)).toFixed(2);
+		}
+
+		var msg = 'Irrational forecast. According to your voting, the ' + direction + ' you may forecast is ' + limit + '%.';
+
+		bootbox.alert(msg);
+
+	} else {
+		editForecast(CONFIDENCE_SCORE, forecast);
+		$("#currentForecast").text(forecast + '%');
 	}
 
 }
 
 async function computeAllValues(message){
 
-	if(!checkIfTree()){
-		bootbox.alert('<h3>This is not a decision tree.</h3>');
-		return;
-	
-        }
+	await refreshNodeList();
 
-	console.log(nodeList);
+	for (const n in nodeList) {
 
-	// await loadNodes()
-	await refreshNodeList()
+		if(nodeList[n].type !== 'proposal') {
 
-	console.log(nodeList);
+			console.log(nodeList[n]);
 
-	if(message){
-		var amendmentList1=[];
-
-		for(var n in nodeList){
-			if(nodeList[n].type==='increase'||nodeList[n].type==='decrease'){
-				amendmentList1.push(nodeList[n]);
-			}
-		}
-
-                var nAlg = 1;
-		var msg1 = rankNodes(amendmentList1, nAlg);
-                
-                msg1+='</ul>';
-                
-        }
-
-        for (var n in nodeList){
-
-			if(nodeList[n].type === 'increase' || nodeList[n].type === 'decrease' || nodeList[n].type === 'proposal') {
+			if (nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
 				nodeList[n].baseValue = '0.5';
 			}
 
-			if(nodeList[n].baseValue === 'null') {
-				console.log('ITS NULL!');
-				var alert = '<h3>ALL arguments must be voted on to proceed. Please vote on the following argument:\n' +
-					 + nodeList[n].name + '</h3>';
+			if (nodeList[n].baseValue === 'null') {
+				var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
 				bootbox.alert(alert);
-				return;
+				return false;
 			}
-			var result = SF2(nodeList[n]);
-            var nresult = Math.round(result * Math.pow(10,decimals)) / Math.pow(10,decimals);
-			await editComputedValueDFQuad(nodeList[n], nresult);
-        }
 
-        const confidenceScore = CS(nodeList);
-        console.log('CONFIDENCE SCORE: ' + confidenceScore);
-		CONFIDENCE_SCORE = confidenceScore;
-        await editConfidenceScore(thisDebateId, confidenceScore);
-        
-        if(message){
-
-		var amendmentList2=[];
-
-		for(var n in nodeList){
-			if(nodeList[n].type=='increase'||nodeList[n].type=='decrease'){
-				amendmentList2.push(nodeList[n]);
-			}
+			var result = await SF2(nodeList[n]);
+			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
+			console.log('nresult: ' + nresult);
+			nodeList[n].computedValueDFQuad = nresult;
+			console.log(nodeList[n].computedValueDFQuad + " ++++++ " + nresult);
 		}
+	}
 
-                var nAlg = 2;
-		var msg2 = rankNodes(amendmentList2, nAlg);
-	
-        
-                msg2+='</ul>';
+	console.log(nodeList);
 
-                $('#compute-values-modal').find('.modal-title').html("Amendment ranking");
-
-                $('#compute-values-modal').find('.modal-body').html(msg1+msg2);
-
-                makeItDraggable('#compute-values-modal');
-                $('#compute-values-modal').modal('show');
-        }   
-
+	const confidenceScore = await CS(nodeList);
+	console.log('CONFIDENCE SCORE: ' + confidenceScore);
+	CONFIDENCE_SCORE = confidenceScore;
+	await editConfidenceScore(thisDebateId, confidenceScore);
+	return true;
 }
 
 function Fatt1(v0,S){
@@ -351,7 +315,7 @@ function rankNodes(nodes, nAlg){
 // ******* DF-QUAD ******** //
 // SF2, F, SEQ (c'è già?), c
 
-function c(v0,va,vs){
+async function c(v0,va,vs){
         
         v0=parseFloat(v0);
         va=parseFloat(va);
@@ -376,7 +340,7 @@ function f2(v1,v2) {
     return v1+v2-v1*v2;
 }
 
-function F2(S) {
+async function F2(S) {
     if (S.length==0){
         //console.log("S.length==0");
 	return 0;
@@ -388,16 +352,16 @@ function F2(S) {
      // If last attacker/supporter = 0, shorten array
     else if (S[S.length-1]==0){
         S.pop();
-        return F2(S);
+        return await F2(S);
     }
     // If last attacker/supporter = 1, return 1
     else if (S[S.length-1]==1){
         return 1;
     }
     else if (S.length==2) {
-        var res = f2(S[0],S[1]);
+        var res = await f2(S[0],S[1]);
         //console.log("S.length==2 S0="+S[0]+" S1="+S[1]+" res= " + res);
-        return f2(S[0],S[1]);
+        return await f2(S[0],S[1]);
     }
     else{    
         
@@ -406,18 +370,17 @@ function F2(S) {
         var vn = S.pop();
         //console.log("vn: "+ vn);
         
-        var fat = f2(F2(S),vn);
+        var fat = await f2(F2(S),vn);
         //console.log("fat: " + fat);
         return fat;
         
     }
 }
 
-function SF2(a){
-        //console.log("iniziamo");
-        
-	var Rs = a.getSupporters();
-	var Ra = a.getAttackers();
+async function SF2(a){
+
+	var Rs = await a.getSupporters();
+	var Ra = await a.getAttackers();
 
 	var msg = "";
 
@@ -437,19 +400,20 @@ function SF2(a){
 	var FSseqSupp = [];
 
 	for (var i = 0; i<Rs.length; i++){
-		FSseqSupp.push(SF2(Rs[i]));
+		FSseqSupp.push(await SF2(Rs[i]));
 	}
 
 	var FSseqAtt = [];
 
 	for (var i = 0; i<Ra.length; i++){
-		FSseqAtt.push(SF2(Ra[i]));
+		FSseqAtt.push(await SF2(Ra[i]));
 	}
 
 	//console.log("FSseqSupp for " + a.name + " : " + FSseqSupp.toString());
 	//console.log("FSseqAtt for " + a.name + " : " + FSseqAtt.toString());
 
-	return c(a.baseValue, F2(FSseqAtt), F2(FSseqSupp));
+	console.log('PARAMS: ' + a.baseValue)
+	return await c(a.baseValue, await F2(FSseqAtt), await F2(FSseqSupp));
         
 }
 

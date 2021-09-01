@@ -119,6 +119,37 @@ $.ajax({
 
 }
 
+async function getMyForecast() {
+    var forecast = await getCurrentForecast();
+
+    var fString;
+
+    if(forecast == null) {
+        fString = "-";
+    } else {
+        fString = forecast + "%";
+    }
+
+    document.getElementById("currentForecast").innerHTML = fString;
+}
+
+async function getCurrentForecast() {
+
+    const data = await $.ajax({
+        type: "GET",
+        url: "load-user-debate-score.php",
+        cache: false
+    });
+
+    const obj = JSON.parse(data);
+    if(obj.length === 0) {
+        return null;
+    }
+
+    return obj[0].forecast;
+
+}
+
 async function getLastForecast() {
 
     var forecast = 0;
@@ -147,68 +178,8 @@ async function getLastForecast() {
         forecast = obj[0].finalforecast;
     }
 
-    return forecast;
-    //
-    // for (var i = 0; i < obj.length; i++) {
-    //
-    //     const closingDate = Date.parse(obj[i].close);
-    //     const openingDate = Date.parse(obj[i].open);
-    //
-    //     if (closingDate > Date.now() && openingDate < Date.now()) {
-    //         return true;
-    //     }
-    // }
-    // return false;
-    //
-    //
-    // console.log(1);
-    //
-    // data.done(function(dat) {
-    //     console.log(2);
-    //
-    //     if (JSON.parse(dat).length === 0) {
-    //
-    //         console.log(3);
-    //
-    //
-    //         var data = $.ajax({
-    //             type: "GET",
-    //             url: "load-this-question.php",
-    //             cache: false
-    //         });
-    //
-    //         console.log(4);
-    //
-    //         data.done(function(dat) {
-    //             if (JSON.parse(dat).length === 0) {
-    //
-    //                 console.log(5);
-    //
-    //
-    //             } else {
-    //
-    //                 console.log(6);
-    //
-    //                 var obj = JSON.parse(dat);
-    //                 forecast = obj[0].initialForecast;
-    //             }
-    //         });
-    //     } else {
-    //
-    //         console.log(7);
-    //
-    //
-    //         var obj = JSON.parse(dat);
-    //
-    //         console.log('FINAL: ' + obj[0].finalforecast);
-    //
-    //         forecast = obj[0].finalforecast;
-    //     }
-    // });
-    //
-    // // console.log('FINAL FINAL: ' + forecast);
-    //
-    // return forecast;
+    return parseFloat(forecast);
+
 }
 
 async function isDebateOpen() {
@@ -357,46 +328,45 @@ function proposalNodeCheck() {
     return present;
 }
 
-function getPreviousDebate() {
+async function getPreviousDebate() {
 
-    $.ajax({
+    const dat = await $.ajax({
         type: "POST",
         url: "load-last-debate.php",
-        async: false,
         cache: false,
-        success: function(dat) {
-
-            if (!$.trim(dat)) {
-                return;
-            } else {
-                var obj = JSON.parse(dat);
-                var msg = "";
-                window.location.href = "diagram.php?id=" + obj[0].id;
-            }
-        }
-
     });
+
+    if (!$.trim(dat)) {
+
+    } else {
+        var obj = JSON.parse(dat);
+        var msg = "";
+        window.location.href = "diagram.php?id=" + obj[0].id;
+        // location.reload(true);
+    }
 }
 
-function getNextDebate() {
 
-    $.ajax({
+
+async function getNextDebate() {
+
+    const dat = await $.ajax({
         type: "POST",
         url: "load-next-debate.php",
-        async: false,
         cache: false,
-        success: function(dat) {
-
-            if (!$.trim(dat)) {
-                return;
-            } else {
-                var obj = JSON.parse(dat);
-                var msg = "";
-                window.location.href = "diagram.php?id=" + obj[0].id;
-            }
-        }
-
     });
+
+    if (!$.trim(dat)) {
+
+    } else {
+        var obj = JSON.parse(dat);
+        var msg = "";
+        window.location.href = "diagram.php?id=" + obj[0].id;
+        // location.reload(true);
+
+    }
+
+
 }
 
 function loadDebates(questionid){
@@ -646,7 +616,8 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                         xAxes: [{
                             type: 'time',
                             time: {
-                                max: questionClose
+                                max: questionClose,
+                                unit: 'day',
                             },
                             // distribution: 'series',
                             scaleLabel: {

@@ -13,10 +13,10 @@ if (!isset($_SESSION['id'])) {
 	die();
 }
 
-$userid = $_SESSION['id'];
-$questionid = $_POST['qid'];
+$did = $_SESSION['debate'];
+$uid = $_SESSION['id'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "select id, close, debates.finalforecast as groupforecast, user_debate_scores.forecast as userforecast from debates join user_debate_scores on debates.id = user_debate_scores.debateId and userId = '$userid' and questionId = '$questionid' and close < current_timestamp order by close") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "select * from user_debate_scores where debateId = $did and userId = $uid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {

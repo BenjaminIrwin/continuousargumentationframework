@@ -263,7 +263,7 @@ async function getProposedForecast() {
     var obj = JSON.parse(data);
     pForecast = obj[0].typevalue;
 
-    return pForecast;
+    return parseFloat(pForecast);
 }
 
 
@@ -275,7 +275,7 @@ function editForecast(conscore, forecast){
         data: "cs="+conscore+"&f="+forecast,
         cache: false,
         success: function(data) {
-
+            bootbox.alert('Successful forecast of ' + forecast + '%.');
         }
     });
 
@@ -297,11 +297,8 @@ async function refreshNodeList(){
     for (var i = 0; i < obj.length; i++) {
 
         var id = obj[i].id;
-//                var debateId = obj[i].debateId;
         var name = obj[i].name;
         var baseValue = obj[i].basevalue;
-        var computedValueQuad = obj[i].computedvaluequad;
-        var computedValueDFQuad = obj[i].computedvaluedfquad;
         var type = obj[i].type;
         var typeValue = obj[i].typevalue;
         var state = obj[i].state;
@@ -313,7 +310,7 @@ async function refreshNodeList(){
 
         setNodeColor(type);
 
-        var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
+        var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 
         nodeList[id] = node;
 
@@ -343,8 +340,6 @@ async function loadNodes(){
 //                var debateId = obj[i].debateId;
                 var name = obj[i].name;
                 var baseValue = obj[i].basevalue;
-                var computedValueQuad = obj[i].computedvaluequad;
-                var computedValueDFQuad = obj[i].computedvaluedfquad;
                 var type = obj[i].type;
                 var typeValue = obj[i].typevalue;
                 var state = obj[i].state;
@@ -356,7 +351,9 @@ async function loadNodes(){
 
                 setNodeColor(type);
 
-                var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
+                console.log(obj[i]);
+
+                var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 
                 //console.log(node);
                 
@@ -494,7 +491,7 @@ function editNodeOld(node, new_attachment_path){
 
 function editComputedValueQuad(node, newComputedValue){
 
-  nodeList[node.id].computedValueQuad=newComputedValue;
+  // nodeList[node.id].computedValueQuad=newComputedValue;
     let data = "id="+node.id+"&n="+node.name+"&bv="+node.baseValue+"&cvq="+newComputedValue+"&tv="+node.typeValue+"&s="+node.state+"&a="+node.attachment;
     //console.log('data -> ' + data);
 
@@ -514,13 +511,11 @@ async function editComputedValueDFQuad(node, newComputedValue){
   nodeList[node.id].computedValueDFQuad=newComputedValue;
     let data = "id="+node.id+"&n="+node.name+"&bv="+node.baseValue+"&cvdfq="+newComputedValue+"&tv="+node.typeValue+"&s="+node.state+"&a="+node.attachment;
     await $.ajax({
-            type: "POST",
-            url: "edit-node.php",
-            data: data,
-            cache: false,
-            success: function(dat) {
-            }
-            });
+        type: "POST",
+        url: "edit-node.php",
+        data: data,
+        cache: false
+    });
 
 }
 
@@ -689,8 +684,15 @@ async function deleteEdge(id){
 /*
 The funciton check if the thisRight variable is equal to 'r'. This means that the user can only read the graph. So proceeds with the disabling of tools for graph editing.
 */
-function setRights(){
-  if(thisRight==='r'){
+async function setRights(){
+
+    thisRight = await $.ajax({
+        type: "POST",
+        url: "load-right.php",
+        cache: false,
+    });
+
+    if(thisRight==='r'){
     $('.node-buttons > button').prop('disabled', true);
     $('.name-label').attr('onDblClick','');
     $('.edit-button').hide();
@@ -698,11 +700,6 @@ function setRights(){
     $('.wormhole-paste-button').hide();
     $('.dropdown-divider').hide();
     $('.delete-node-button').hide();
-
-
-
-
-
   }
 }
 

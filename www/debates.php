@@ -16,7 +16,7 @@ if (!isset($_SESSION['id'])) {
 
 $qid = $_GET["id"];
 $_SESSION['questionid'] = $qid;
-
+$uid = $_SESSION['id'];
 
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From questions Where id=$qid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
@@ -26,6 +26,71 @@ $questionname = $s["name"];
 $open = $s["open"];
 $close = $s["close"];
 $initialForecast = $s["initialForecast"];
+
+$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From debates Where questionId=$qid and close < now() and finalforecast is null") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+
+$rows = array();
+while($r = mysqli_fetch_assoc($sql1)) {
+    $rows[] = $r;
+}
+
+for($i=0; $i<count($rows); $i++) {
+
+//    $sqlAllUsers = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From users where id in (select userid from rights where questionid = $qid and accessright = 'o' or accessright = 'r')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+//    while($userR1 = mysqli_fetch_assoc($sqlAllUsers)) {
+//        $userRows[] = $userR1;
+//    }
+//    for($j=0; $j<count($userRows); $j++) {
+//        userRows[j]['brierScore'];
+//    }
+
+    $did = $rows[$i]['id'];
+    $totalBrierScore = 0;
+    $weightedTotal = 0;
+    $sql2 = mysqli_query($GLOBALS["___mysqli_ston"], "Select u.brierScore, s.forecast From users u join user_debate_scores s on u.id = s.userId and debateId = $did") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+    $rows1 = array();
+    while($r1 = mysqli_fetch_assoc($sql2)) {
+        $rows1[] = $r1;
+    }
+    for($j=0; $j<count($rows1); $j++) {
+        $invbrierScore = 1 - $rows1[$j]['brierScore'];
+        if($invbrierScore == null) {
+            $invbrierScore = 0.5;
+        }
+        $forecast = $rows1[$j]['forecast'];
+
+//        echo 'Round'.$j;
+//
+//        echo $invbrierScore;
+//        echo $forecast;
+
+        $totalBrierScore += $invbrierScore;
+        $weightedTotal += $invbrierScore * $forecast;
+    }
+
+//    echo ' debateId '.$did.' weightedTotal: '.$weightedTotal.' totalBrierScore: '.$totalBrierScore.'\n';
+
+    $aggregatedForecast = $weightedTotal/$totalBrierScore;
+
+    $sql = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET finalforecast='$aggregatedForecast' WHERE id=$did") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+
+
+    $sqldata2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM rights WHERE userid='$uid' AND questionid=$qid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+
+    if (mysqli_num_rows($sqldata2)<=0){
+        echo "Forbidden.";
+        die();
+    }
+
+    while($r2 = mysqli_fetch_array($sqldata2)){
+        $right = $r2['accessright'];
+        $_SESSION['right'] = $right;
+
+    }
+}
+
+echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);
 

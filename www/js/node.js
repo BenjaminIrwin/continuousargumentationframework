@@ -1,11 +1,9 @@
-function Node(id, name, baseValue, computedValueQuad, computedValueDFQuad, type, typeValue, state, attachment, sourceList, targetList, x, y, createdBy, modifiedBy){
+function Node(id, name, baseValue, type, typeValue, state, attachment, sourceList, targetList, x, y, createdBy, modifiedBy){
 
 	// Attributes.
 	this.id = id;
 	this.name = name;
 	this.baseValue = baseValue;
-        this.computedValueQuad = computedValueQuad;
-        this.computedValueDFQuad = computedValueDFQuad;
 	this.type = type;
         
 
@@ -125,13 +123,11 @@ async function initializeNode(){
     // }
     if(type==="proposal") {
 
-        const pF = await getProposedForecast();
-        const proposedForecast = parseFloat(pF);
+        const proposedForecast = await getProposedForecast();
 
-        const lF = await getLastForecast();
-        const lastForecast = parseFloat(lF);
+        const lastForecast = await getLastForecast();
 
-        console.log('PROPOSED: ' + proposedForecast + ' LAST: ' + lastForecast);
+        // console.log('PROPOSED: ' + proposedForecast + ' LAST: ' + lastForecast);
 
         let diff = proposedForecast - lastForecast;
         let diffString = (diff<0?"":"+") + diff;
@@ -244,7 +240,7 @@ function editTypeInfo(type, modifiedBy) {
     }
 }
 
-function getSupporters(){
+async function getSupporters(){
   var supporters = [];
 
   for (var s in edgeList){
@@ -257,7 +253,7 @@ function getSupporters(){
   return supporters;
 }
 
-function getAttackers(){
+async function getAttackers(){
   var attackers = [];
 
   for (var a in edgeList){

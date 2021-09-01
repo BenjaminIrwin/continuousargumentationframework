@@ -126,6 +126,7 @@ function freezeGraph(thisMatrixId){
 		node['name']=nodeList[n].name;
 		node['basevalue']=nodeList[n].baseValue;
 		node['computedvaluequad']=nodeList[n].computedValueQuad;
+		node['computedvaluedfquad']=nodeList[n].computedValueDFQuad;
 		node['type']=nodeList[n].type;
 		node['typevalue']=nodeList[n].typeValue;
 		node['state']=nodeList[n].state;
