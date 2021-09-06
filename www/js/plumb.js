@@ -337,9 +337,13 @@ async function refreshNodeList(debateId,userId){
 
         var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 
+        nodes[id] = node;
+
         nodeList[id] = node;
 
     }
+
+    return nodes
 
 }
  

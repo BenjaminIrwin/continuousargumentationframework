@@ -2,7 +2,7 @@ function buildNaturalText(){
 
 	modalNaturalLanguage();
 
-	computeAllValues(null, null);
+	computeAllValues();
 
 	var issueList=getIssueList();
 

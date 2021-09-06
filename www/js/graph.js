@@ -72,11 +72,13 @@ async function CS(nodeList){
 		decreaseAverage = decreaseTotal/decreaseCount;
 	}
 
+	console.log('INCREASE: ' + increaseAverage + '|| DECREASE: ' + decreaseAverage);
+
 	return increaseAverage - decreaseAverage;
 }
 
 async function submitForecast(forecast) {
-	const computed = await computeAllValues(null, null);
+	const computed = await computeAllValues();
 	if(!computed) {
 		return;
 	}
@@ -131,16 +133,16 @@ async function experiment1Helper() {
 
 		for (var i = 0; i < obj.length; i++) {
 
-			var id = obj[i].id;
+			var debateid = obj[i].id;
 			var name = obj[i].name;
 
-			var pForecast = await getProposedForecast(id);
+			var pForecast = await getProposedForecast(debateid);
 			var irrationalForecasts = [];
 
 			var data1 = await $.ajax({
 				type: "POST",
 				url: "load-ghost-forecast.php",
-				data: "did="+id,
+				data: "did="+debateid,
 				cache: false
 			});
 			var obj1 = JSON.parse(data1);
@@ -150,16 +152,20 @@ async function experiment1Helper() {
 				var userid = obj1[j].userid;
 				var forecast = obj1[j].forecast;
 
-				const con_score = await computeAllValues(id, userid);
+				// console.log('DID: ' + debateid + ' UID: ' + userid);
 
-				console.log('DID: ' + id + '\nUID: ' + userid + '\nCON_SCORE: ' + con_score + '\nPROPOSED: ' + pForecast + '\nFORECAST: ' + forecast)
+				// console.log('DID: ' + debateid + '\nUID: ' + userid + '\nCON_SCORE: ' + con_score + '\nPROPOSED: ' + pForecast + '\nFORECAST: ' + forecast)
 
-				if(con_score < 0 && forecast >= pForecast) {
-					irrationalForecasts.push(" H " + forecast);
-				} else if(con_score > 0 && forecast <= pForecast) {
-					irrationalForecasts.push(" L " + forecast);
-				} else if((Math.abs(pForecast - forecast)/pForecast) > Math.abs(con_score)) {
-					irrationalForecasts.push(" S " + forecast);
+				const con_score = await computeAllValuesExp(debateid, userid);
+
+
+					if (con_score < 0 && forecast >= pForecast) {
+						irrationalForecasts.push(" H " + forecast);
+					} else if (con_score > 0 && forecast <= pForecast) {
+						irrationalForecasts.push(" L " + forecast);
+					} else if ((Math.abs(pForecast - forecast) / pForecast) > Math.abs(con_score)) {
+						irrationalForecasts.push(" S " + forecast);
+					}
 				}
 			}
 
@@ -167,46 +173,42 @@ async function experiment1Helper() {
 
 			irrationalForecasts = [];
 		}
-	}
 }
 
-async function computeAllValues(debateId, userId){
+async function computeAllValuesExp(debateId, userId){
 
-	await refreshNodeList(debateId, userId);
-
-	// for (var n in nodeList) {
-	//
-	// 	if(nodeList[n].type !== 'proposal') {
-	//
-	// 		if (nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
-	// 			console.log('INCREASE FOUND (ID: ' + n + ')')
-	// 			nodeList[n].baseValue = '0.5';
-	// 		}
-	// 		if (nodeList[n].baseValue === 'null' || nodeList[n].baseValue === null) {
-	// 			// var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
-	// 			// bootbox.alert(alert);
-	// 			// return 0;
-	// 			console.log('NULL BASE VALUE FOUND (ID: ' + n + ')')
-	// 			nodeList[n].baseValue = '0.5';
-	// 		}
-	// 	}
-	// }
+	var nodeList = await refreshNodeList(debateId, userId);
 
 	for (var n in nodeList) {
 		if(nodeList[n].type !== 'proposal') {
-			var result = await SF2(nodeList[n]);
+			var result = await SF2(nodeList[n], nodeList);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
 			nodeList[n].computedValueDFQuad = nresult;
-			if(isNaN(nresult)) {
-				console.log("BAD NODE: " + n);
-			}
+		}
+	}
+
+	const confidenceScore = await CS(nodeList);
+	CONFIDENCE_SCORE = confidenceScore;
+	await editConfidenceScore(debateId, confidenceScore, userId);
+	return confidenceScore;
+}
+
+async function computeAllValues(){
+
+	await refreshNodeList(null, null);
+
+	for (var n in nodeList) {
+		if(nodeList[n].type !== 'proposal') {
+			var result = await SF2(nodeList[n], null);
+			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
+			nodeList[n].computedValueDFQuad = nresult;
 		}
 	}
 
 	const confidenceScore = await CS(nodeList);
 	console.log('CONFIDENCE SCORE: ' + confidenceScore);
 	CONFIDENCE_SCORE = confidenceScore;
-	await editConfidenceScore(debateId, confidenceScore, userId);
+	await editConfidenceScore(thisDebateId, confidenceScore, null);
 	return confidenceScore;
 }
 
@@ -426,40 +428,55 @@ async function F2(S) {
     }
 }
 
-async function SF2(a){
+async function localReplaceRs(nodes, Rs, userId) {
+	if (nodes !== null) {
+		for (var i = 0; i < Rs.length; i++) {
+
+			// console.log(userId)
+			// console.log(Rs[i])
+			// console.log(nodes[Rs[i].id])
+
+			Rs[i] = nodes[Rs[i].id]
+		}
+	}
+	return Rs;
+}
+
+async function localReplaceRa(nodes, Ra, userId) {
+	if (nodes !== null) {
+		for (var i = 0; i < Ra.length; i++) {
+
+			// console.log(userId)
+			// console.log(Ra[i])
+			// console.log(nodes[Ra[i].id])
+
+			Ra[i] = nodes[Ra[i].id]
+		}
+	}
+	return Ra;
+}
+
+async function SF2(a, nodes, userId){
 
 	var Rs = await a.getSupporters();
 	var Ra = await a.getAttackers();
+	Rs = await localReplaceRs(nodes, Rs, userId);
+	Ra = await localReplaceRa(nodes, Ra, userId);
 
-	var attackers = "";
-
-	for (var i = 0; i<Rs.length; i++){
-		attackers += Rs[i].name + "\n";
-	}
-
-	var supporters = "";
-
-	for (var i = 0; i<Ra.length; i++){
-		supporters += Ra[i].name[i] + "\n";
-	}
-
-	if(a.id == 82) {
-		console.log("SUPPORTERS: ")
-		console.log(Rs);
-		console.log("ATTACKERS: ")
-		console.log(Ra)
-	}
+	console.log(a.id);
+	console.log(Rs);
+	console.log(Ra);
 
 	var FSseqSupp = [];
 
 	for (var i = 0; i<Rs.length; i++){
-		FSseqSupp.push(await SF2(Rs[i]));
+		FSseqSupp.push(await SF2(Rs[i], nodes));
 	}
 
 	var FSseqAtt = [];
 
 	for (var i = 0; i<Ra.length; i++){
-		FSseqAtt.push(await SF2(Ra[i]));
+		FSseqAtt.push(await SF2(Ra[i], nodes));
 	}
 
 	var va = await F2(FSseqAtt);

@@ -2,7 +2,7 @@ function graphMapping(){
 
 	// Execute computation on every node.
 	// alert(listLength(nodeList));
-	computeAllValues(null, null);
+	computeAllValues();
 
 	var matrixJSON = [];
 	matrixJSON.push([]);

@@ -245,7 +245,9 @@ async function getSupporters(){
 
   for (var s in edgeList){
     if (edgeList[s].target.id==this.id & edgeList[s].source.type=="pro") {
-    //  supporters[edgeList[s].source.id] = edgeList[s].source;
+        console.log('SUPPORTER FOUND!')
+
+        //  supporters[edgeList[s].source.id] = edgeList[s].source;
     supporters.push(edgeList[s].source);
     }
   }
@@ -258,6 +260,7 @@ async function getAttackers(){
 
   for (var a in edgeList){
     if (edgeList[a].target.id==this.id & edgeList[a].source.type=="con") {
+        console.log('ATTACKER FOUND!')
 
 
 
