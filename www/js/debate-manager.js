@@ -488,16 +488,19 @@ function editDebate(debate){
             });
 }
 
-async function editConfidenceScore(debateId, confidenceScore){
+async function editConfidenceScore(debateId, confidenceScore, userId){
+
+    var data = "id="+ debateId +"&c="+confidenceScore;
+
+    if(userId !== null) {
+        data += "&uid="+userId;
+    }
 
     await $.ajax({
         type: "POST",
         url: "edit-confidence-score.php",
-        data: "id="+ debateId +"&c="+confidenceScore,
-        cache: false,
-        success: function(dat) {
-
-        }
+        data: data,
+        cache: false
     });
 }
 

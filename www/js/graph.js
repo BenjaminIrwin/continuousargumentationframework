@@ -42,14 +42,11 @@ async function CS(nodeList){
 	for(var n in nodeList){
 
 		if(nodeList[n].type==='increase'){
-			console.log('i: ' + nodeList[n].computedValueDFQuad)
 			++increaseCount;
 			increaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
 
 		if(nodeList[n].type==='decrease'){
-			console.log('d: ' + nodeList[n].computedValueDFQuad)
-
 			++decreaseCount;
 			decreaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
@@ -74,9 +71,6 @@ async function CS(nodeList){
 
 		decreaseAverage = decreaseTotal/decreaseCount;
 	}
-
-	console.log('INCREASE: ' + increaseAverage)
-	console.log('DECREASE: ' + decreaseAverage)
 
 	return increaseAverage - decreaseAverage;
 }
@@ -120,7 +114,7 @@ async function submitForecast(forecast) {
 
 async function experiment1Helper() {
 
-	var questionIds = [2, 11, 12, 13]
+	var questionIds = [2]
 
 	for(var i = 0; i < questionIds.length; i++) {
 
@@ -156,22 +150,9 @@ async function experiment1Helper() {
 				var userid = obj1[j].userid;
 				var forecast = obj1[j].forecast;
 
-				console.log('UID: ' + userid)
+				const con_score = await computeAllValues(id, userid);
 
-				const computed = await computeAllValues(id, userid);
-				if(!computed) {
-					return;
-				}
-
-				const data2 = await $.ajax({
-					type: "GET",
-					data: "did="+id+"&uid="+userid,
-					url: "load-user-debate-score.php",
-					cache: false
-				});
-
-				const obj2 = JSON.parse(data2);
-				var con_score = obj2[0].confidence_score;
+				console.log('DID: ' + id + '\nUID: ' + userid + '\nCON_SCORE: ' + con_score + '\nPROPOSED: ' + pForecast + '\nFORECAST: ' + forecast)
 
 				if(con_score < 0 && forecast >= pForecast) {
 					irrationalForecasts.push(" H " + forecast);
@@ -191,46 +172,42 @@ async function experiment1Helper() {
 
 async function computeAllValues(debateId, userId){
 
-	nodeList = [];
-
 	await refreshNodeList(debateId, userId);
 
-	for (const n in nodeList) {
+	// for (var n in nodeList) {
+	//
+	// 	if(nodeList[n].type !== 'proposal') {
+	//
+	// 		if (nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
+	// 			console.log('INCREASE FOUND (ID: ' + n + ')')
+	// 			nodeList[n].baseValue = '0.5';
+	// 		}
+	// 		if (nodeList[n].baseValue === 'null' || nodeList[n].baseValue === null) {
+	// 			// var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
+	// 			// bootbox.alert(alert);
+	// 			// return 0;
+	// 			console.log('NULL BASE VALUE FOUND (ID: ' + n + ')')
+	// 			nodeList[n].baseValue = '0.5';
+	// 		}
+	// 	}
+	// }
 
+	for (var n in nodeList) {
 		if(nodeList[n].type !== 'proposal') {
-
-			//console.log(nodeList[n]);
-
-			if (nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
-				nodeList[n].baseValue = '0.5';
-			}
-
-			if (nodeList[n].baseValue === 'null') {
-				// var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
-				// bootbox.alert(alert);
-				// return false;
-				nodeList[n].baseValue = '0.5';
-			}
-
 			var result = await SF2(nodeList[n]);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
-			if(isNaN(nresult)) {
-				console.log('BAD ONE: ');
-				console.log(nodeList[n]);
-
-			} else {
-				console.log(nodeList[n]);
-			}
 			nodeList[n].computedValueDFQuad = nresult;
-			//console.log(nodeList[n].computedValueDFQuad + " ++++++ " + nresult);
+			if(isNaN(nresult)) {
+				console.log("BAD NODE: " + n);
+			}
 		}
 	}
 
 	const confidenceScore = await CS(nodeList);
-	//console.log('CONFIDENCE SCORE: ' + confidenceScore);
+	console.log('CONFIDENCE SCORE: ' + confidenceScore);
 	CONFIDENCE_SCORE = confidenceScore;
-	await editConfidenceScore(thisDebateId, confidenceScore);
-	return true;
+	await editConfidenceScore(debateId, confidenceScore, userId);
+	return confidenceScore;
 }
 
 function Fatt1(v0,S){
@@ -395,20 +372,18 @@ async function c(v0,va,vs){
         v0=parseFloat(v0);
         va=parseFloat(va);
         vs=parseFloat(vs);
-        
-        //console.log("v0: "+v0+" va: "+va+" and vs: "+vs);
-        
+
 	if (vs == va){
 		return v0;
 	}
 	else {
-                var res = v0+(0.5 + (vs-va)/(2*Math.abs(vs-va))-v0)*Math.abs(vs-va);
-                //console.log("Res c= "+ res + " temp: "+temp);
+		var res = v0+(0.5 + (vs-va)/(2*Math.abs(vs-va))-v0)*Math.abs(vs-va);
+		//console.log("Res c= "+ res + " temp: "+temp);
 		return res;
 	}
 }
 
-function f2(v1,v2) {
+async function f2(v1,v2) {
     v1 = parseFloat(v1);
     v2 = parseFloat(v2);
     
@@ -417,7 +392,7 @@ function f2(v1,v2) {
 
 async function F2(S) {
     if (S.length==0){
-	return 0;
+		return 0;
     }
     else if (S.length==1) {
         //console.log("S.length==1");
@@ -444,7 +419,7 @@ async function F2(S) {
         var vn = S.pop();
         //console.log("vn: "+ vn);
         
-        var fat = await f2(F2(S),vn);
+        var fat = await f2(await F2(S),vn);
         //console.log("fat: " + fat);
         return fat;
         
@@ -456,16 +431,23 @@ async function SF2(a){
 	var Rs = await a.getSupporters();
 	var Ra = await a.getAttackers();
 
-	var msg = "";
+	var attackers = "";
 
 	for (var i = 0; i<Rs.length; i++){
-		msg += Rs[i].name + "\n";
+		attackers += Rs[i].name + "\n";
 	}
 
-	var msg = "";
+	var supporters = "";
 
 	for (var i = 0; i<Ra.length; i++){
-		msg += Ra[i].name[i];
+		supporters += Ra[i].name[i] + "\n";
+	}
+
+	if(a.id == 82) {
+		console.log("SUPPORTERS: ")
+		console.log(Rs);
+		console.log("ATTACKERS: ")
+		console.log(Ra)
 	}
 
 	var FSseqSupp = [];

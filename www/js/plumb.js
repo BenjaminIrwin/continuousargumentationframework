@@ -293,7 +293,7 @@ function editForecast(conscore, forecast){
 
 async function refreshNodeList(debateId,userId){
 
-    nodeList=[]
+    var nodes = []
 
     var did;
 
