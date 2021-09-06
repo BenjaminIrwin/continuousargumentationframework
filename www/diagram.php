@@ -425,7 +425,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <!--    <button class="addCon btn btn-warning" onClick="modalInitNode('con');">Add con argument</button>-->
 
     <div class="pull-left graph-operations">
-    <button class="btn btn-default" onClick="computeAllValues(true)">Compute values</button>
+    <button class="btn btn-default" onClick="computeAllValues(null)">Compute values</button>
 
         <li class='name-modal'>Forecast: <input type='text' id='forecast' class='form-control' placeholder='Forecast'/><input type="submit" id="forecastSubmit" /></li><br>
 

@@ -123,7 +123,7 @@ async function initializeNode(){
     // }
     if(type==="proposal") {
 
-        const proposedForecast = await getProposedForecast();
+        const proposedForecast = await getProposedForecast(null);
 
         const lastForecast = await getLastForecast();
 

@@ -37,17 +37,19 @@ async function CS(nodeList){
 	var decreaseCount = 0;
 	var decreaseTotal= 0;
 
-	console.log(1);
+	// console.log(1);
 
 	for(var n in nodeList){
+
 		if(nodeList[n].type==='increase'){
-			console.log(2);
+			console.log('i: ' + nodeList[n].computedValueDFQuad)
 			++increaseCount;
 			increaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
 
 		if(nodeList[n].type==='decrease'){
-			console.log(3);
+			console.log('d: ' + nodeList[n].computedValueDFQuad)
+
 			++decreaseCount;
 			decreaseTotal += parseFloat(nodeList[n].computedValueDFQuad);
 		}
@@ -56,24 +58,19 @@ async function CS(nodeList){
 	var increaseAverage;
 	var decreaseAverage;
 
-	console.log(4);
-
 	if(increaseCount === 0) {
 		increaseAverage = 0;
-		console.log(5);
 
 	} else {
-		console.log(6);
-
 		increaseAverage = increaseTotal/increaseCount;
 	}
 
 	if(decreaseCount === 0) {
-		console.log(7);
+		// console.log(7);
 
 		decreaseAverage = 0;
 	} else {
-		console.log(8);
+		// console.log(8);
 
 		decreaseAverage = decreaseTotal/decreaseCount;
 	}
@@ -85,11 +82,11 @@ async function CS(nodeList){
 }
 
 async function submitForecast(forecast) {
-	const computed = await computeAllValues(false);
+	const computed = await computeAllValues(null, null);
 	if(!computed) {
 		return;
 	}
-	var pForecast = await getProposedForecast();
+	var pForecast = await getProposedForecast(null);
 
 	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
 
@@ -121,38 +118,116 @@ async function submitForecast(forecast) {
 
 }
 
-async function computeAllValues(message){
+async function experiment1Helper() {
 
-	await refreshNodeList();
+	var questionIds = [2, 11, 12, 13]
+
+	for(var i = 0; i < questionIds.length; i++) {
+
+		var questionid = questionIds[i];
+
+		var data = await $.ajax({
+			type: "POST",
+			url: "load-debates.php",
+			data: "qid="+questionid,
+			cache: false
+		});
+
+		var obj = JSON.parse(data);
+
+		for (var i = 0; i < obj.length; i++) {
+
+			var id = obj[i].id;
+			var name = obj[i].name;
+
+			var pForecast = await getProposedForecast(id);
+			var irrationalForecasts = [];
+
+			var data1 = await $.ajax({
+				type: "POST",
+				url: "load-ghost-forecast.php",
+				data: "did="+id,
+				cache: false
+			});
+			var obj1 = JSON.parse(data1);
+
+			for (var j = 0; j < obj1.length; j++) {
+
+				var userid = obj1[j].userid;
+				var forecast = obj1[j].forecast;
+
+				console.log('UID: ' + userid)
+
+				const computed = await computeAllValues(id, userid);
+				if(!computed) {
+					return;
+				}
+
+				const data2 = await $.ajax({
+					type: "GET",
+					data: "did="+id+"&uid="+userid,
+					url: "load-user-debate-score.php",
+					cache: false
+				});
+
+				const obj2 = JSON.parse(data2);
+				var con_score = obj2[0].confidence_score;
+
+				if(con_score < 0 && forecast >= pForecast) {
+					irrationalForecasts.push(" H " + forecast);
+				} else if(con_score > 0 && forecast <= pForecast) {
+					irrationalForecasts.push(" L " + forecast);
+				} else if((Math.abs(pForecast - forecast)/pForecast) > Math.abs(con_score)) {
+					irrationalForecasts.push(" S " + forecast);
+				}
+			}
+
+			console.log('ID: ' + name + '\n' + irrationalForecasts);
+
+			irrationalForecasts = [];
+		}
+	}
+}
+
+async function computeAllValues(debateId, userId){
+
+	nodeList = [];
+
+	await refreshNodeList(debateId, userId);
 
 	for (const n in nodeList) {
 
 		if(nodeList[n].type !== 'proposal') {
 
-			console.log(nodeList[n]);
+			//console.log(nodeList[n]);
 
 			if (nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
 				nodeList[n].baseValue = '0.5';
 			}
 
 			if (nodeList[n].baseValue === 'null') {
-				var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
-				bootbox.alert(alert);
-				return false;
+				// var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
+				// bootbox.alert(alert);
+				// return false;
+				nodeList[n].baseValue = '0.5';
 			}
 
 			var result = await SF2(nodeList[n]);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
-			console.log('nresult: ' + nresult);
+			if(isNaN(nresult)) {
+				console.log('BAD ONE: ');
+				console.log(nodeList[n]);
+
+			} else {
+				console.log(nodeList[n]);
+			}
 			nodeList[n].computedValueDFQuad = nresult;
-			console.log(nodeList[n].computedValueDFQuad + " ++++++ " + nresult);
+			//console.log(nodeList[n].computedValueDFQuad + " ++++++ " + nresult);
 		}
 	}
 
-	console.log(nodeList);
-
 	const confidenceScore = await CS(nodeList);
-	console.log('CONFIDENCE SCORE: ' + confidenceScore);
+	//console.log('CONFIDENCE SCORE: ' + confidenceScore);
 	CONFIDENCE_SCORE = confidenceScore;
 	await editConfidenceScore(thisDebateId, confidenceScore);
 	return true;
@@ -342,7 +417,6 @@ function f2(v1,v2) {
 
 async function F2(S) {
     if (S.length==0){
-        //console.log("S.length==0");
 	return 0;
     }
     else if (S.length==1) {
@@ -387,15 +461,12 @@ async function SF2(a){
 	for (var i = 0; i<Rs.length; i++){
 		msg += Rs[i].name + "\n";
 	}
-	//console.log("Supporters: " + msg);
 
 	var msg = "";
 
 	for (var i = 0; i<Ra.length; i++){
 		msg += Ra[i].name[i];
 	}
-
-	//console.log("Attackers: " + msg);
 
 	var FSseqSupp = [];
 
@@ -409,11 +480,10 @@ async function SF2(a){
 		FSseqAtt.push(await SF2(Ra[i]));
 	}
 
-	//console.log("FSseqSupp for " + a.name + " : " + FSseqSupp.toString());
-	//console.log("FSseqAtt for " + a.name + " : " + FSseqAtt.toString());
-
-	console.log('PARAMS: ' + a.baseValue)
-	return await c(a.baseValue, await F2(FSseqAtt), await F2(FSseqSupp));
+	var va = await F2(FSseqAtt);
+	var vs = await F2(FSseqSupp);
+	var res = await c(a.baseValue, va, vs);
+	return res;
         
 }
 

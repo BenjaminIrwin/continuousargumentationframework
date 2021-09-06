@@ -251,12 +251,22 @@ function getDefaultBaseValue(debateId){
  
  }
 
-async function getProposedForecast() {
+async function getProposedForecast(debateId) {
+
+    var dat;
+
+    if(debateId === null) {
+        // console.log('DEBATEID ---> ' + debateId);
+        dat = ""
+    } else {
+        dat = "did="+debateId
+    }
 
     var pForecast = 0;
     var data = await $.ajax({
         type: "POST",
         url: "get-proposal-node.php",
+        data: dat,
         cache: false,
     });
 
@@ -281,14 +291,29 @@ function editForecast(conscore, forecast){
 
 }
 
-async function refreshNodeList(){
+async function refreshNodeList(debateId,userId){
 
     nodeList=[]
+
+    var did;
+
+    if(debateId !== null) {
+        did = debateId
+    } else {
+        did = thisDebateId;
+    }
+
+    var d = "did="+did;
+
+
+    if(userId !== null) {
+        d += "&uid="+userId
+    }
 
     var dat = await $.ajax({
         type: "POST",
         url: "load-nodes.php",
-        data: "did="+thisDebateId,
+        data: d,
         cache: false
     });
 
@@ -351,7 +376,7 @@ async function loadNodes(){
 
                 setNodeColor(type);
 
-                console.log(obj[i]);
+                //console.log(obj[i]);
 
                 var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
 

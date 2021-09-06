@@ -13,19 +13,9 @@ if (!isset($_SESSION['id'])) {
 	die();
 }
 
-if(isset($_POST['did']) && !empty($_POST['did'])) {
-    $did = $_POST['did'];
-} else {
-    $did = $_SESSION['debate'];
-}
+$debateid = $_POST['did'];
 
-if(isset($_POST['uid']) && !empty($_POST['uid'])) {
-    $uid = $_POST['uid'];
-} else {
-    $uid = $_SESSION['id'];
-}
-
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "select * from user_debate_scores where debateId = $did and userId = $uid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM ghost_forecast WHERE debateid = '$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {
@@ -35,6 +25,5 @@ while($r = mysqli_fetch_assoc($sqldata)) {
 $json_encoded_string = json_encode($rows);
 
 echo $json_encoded_string;
-
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

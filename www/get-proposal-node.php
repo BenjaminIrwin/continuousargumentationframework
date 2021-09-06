@@ -14,7 +14,12 @@ if (!isset($_SESSION['id'])) {
 }
 
 $userid = $_SESSION['id'];
-$debateid = $_SESSION['debate'];
+
+if(isset($_POST['did']) && !empty($_POST['did']) && !is_null($_POST['did'])) {
+    $debateid = $_POST['did'];
+} else {
+    $debateid = $_SESSION['debate'];
+}
 
 //$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes n LEFT JOIN user_node_score uns on n.id = uns.node_id and uns.user_id = $userid WHERE debateid = $debateid ORDER BY type ASC") or die();
 $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes WHERE debateid = $debateid limit 1") or die();
