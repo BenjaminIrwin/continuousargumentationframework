@@ -36,6 +36,7 @@ $json_encoded_string = json_encode($rows);
 // manage percent symbol for json encoding
 //$json_encoded_string = escape_percentage_for_json($json_encoded_string);
 
+header('Content-Type: application/json', true);
 echo $json_encoded_string;
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

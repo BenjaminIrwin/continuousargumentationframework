@@ -240,33 +240,45 @@ function editTypeInfo(type, modifiedBy) {
     }
 }
 
-async function getSupporters(){
+async function getSupporters(edges){
   var supporters = [];
 
-  for (var s in edgeList){
-    if (edgeList[s].target.id==this.id & edgeList[s].source.type=="pro") {
-        console.log('SUPPORTER FOUND!')
-
-        //  supporters[edgeList[s].source.id] = edgeList[s].source;
-    supporters.push(edgeList[s].source);
-    }
+  if(edges !== null) {
+      for (var s in edges){
+          if (edges[s].target.id==this.id & edges[s].source.type=="pro") {
+              console.log('SUPPORTER FOUND!')
+              supporters.push(edges[s].source);
+          }
+      }
+  } else {
+      for (var s in edgeList){
+          if (edgeList[s].target.id==this.id & edgeList[s].source.type=="pro") {
+              console.log('SUPPORTER FOUND!')
+              supporters.push(edgeList[s].source);
+          }
+      }
   }
 
   return supporters;
 }
 
-async function getAttackers(){
+async function getAttackers(edges){
   var attackers = [];
 
-  for (var a in edgeList){
-    if (edgeList[a].target.id==this.id & edgeList[a].source.type=="con") {
-        console.log('ATTACKER FOUND!')
-
-
-
-//      attackers[edgeList[a].source.id] = edgeList[a].source;
-      attackers.push(edgeList[a].source);
-    }
+  if(edges !== null) {
+      for (var a in edges){
+          if (edges[a].target.id==this.id & edges[a].source.type=="con") {
+              console.log('ATTACKER FOUND!')
+              attackers.push(edges[a].source);
+          }
+      }
+  } else {
+      for (var a in edgeList){
+          if (edgeList[a].target.id==this.id & edgeList[a].source.type=="con") {
+              console.log('ATTACKER FOUND!')
+              attackers.push(edgeList[a].source);
+          }
+      }
   }
 
   return attackers;

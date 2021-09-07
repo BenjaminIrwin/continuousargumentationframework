@@ -177,11 +177,12 @@ async function experiment1Helper() {
 
 async function computeAllValuesExp(debateId, userId){
 
-	var nodeList = await refreshNodeList(debateId, userId);
+	var nodeList = await getNodes(debateId, userId);
+	var edges = await getEdges(nodeList, debateId)
 
 	for (var n in nodeList) {
 		if(nodeList[n].type !== 'proposal') {
-			var result = await SF2(nodeList[n], nodeList);
+			var result = await SF2(nodeList[n], nodeList, edges);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
 			nodeList[n].computedValueDFQuad = nresult;
 		}
@@ -195,11 +196,11 @@ async function computeAllValuesExp(debateId, userId){
 
 async function computeAllValues(){
 
-	await refreshNodeList(null, null);
+	await refreshNodeList(null);
 
 	for (var n in nodeList) {
 		if(nodeList[n].type !== 'proposal') {
-			var result = await SF2(nodeList[n], null);
+			var result = await SF2(nodeList[n], null, null);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
 			nodeList[n].computedValueDFQuad = nresult;
 		}
@@ -428,7 +429,7 @@ async function F2(S) {
     }
 }
 
-async function localReplaceRs(nodes, Rs, userId) {
+async function localReplaceRs(nodes, Rs) {
 	if (nodes !== null) {
 		for (var i = 0; i < Rs.length; i++) {
 
@@ -442,7 +443,7 @@ async function localReplaceRs(nodes, Rs, userId) {
 	return Rs;
 }
 
-async function localReplaceRa(nodes, Ra, userId) {
+async function localReplaceRa(nodes, Ra) {
 	if (nodes !== null) {
 		for (var i = 0; i < Ra.length; i++) {
 
@@ -456,27 +457,23 @@ async function localReplaceRa(nodes, Ra, userId) {
 	return Ra;
 }
 
-async function SF2(a, nodes, userId){
+async function SF2(a, nodes, edges){
 
-	var Rs = await a.getSupporters();
-	var Ra = await a.getAttackers();
-	Rs = await localReplaceRs(nodes, Rs, userId);
-	Ra = await localReplaceRa(nodes, Ra, userId);
-
-	console.log(a.id);
-	console.log(Rs);
-	console.log(Ra);
+	var Rs = await a.getSupporters(edges);
+	var Ra = await a.getAttackers(edges);
+	Rs = await localReplaceRs(nodes, Rs);
+	Ra = await localReplaceRa(nodes, Ra);
 
 	var FSseqSupp = [];
 
 	for (var i = 0; i<Rs.length; i++){
-		FSseqSupp.push(await SF2(Rs[i], nodes));
+		FSseqSupp.push(await SF2(Rs[i], nodes, edges));
 	}
 
 	var FSseqAtt = [];
 
 	for (var i = 0; i<Ra.length; i++){
-		FSseqAtt.push(await SF2(Ra[i], nodes));
+		FSseqAtt.push(await SF2(Ra[i], nodes, edges));
 	}
 
 	var va = await F2(FSseqAtt);

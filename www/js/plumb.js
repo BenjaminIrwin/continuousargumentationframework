@@ -291,7 +291,7 @@ function editForecast(conscore, forecast){
 
 }
 
-async function refreshNodeList(debateId,userId){
+async function getNodes(debateId,userId){
 
     var nodes = []
 
@@ -317,7 +317,72 @@ async function refreshNodeList(debateId,userId){
         cache: false
     });
 
-    var obj = JSON.parse(dat);
+    var obj
+    try {
+        // Parse a JSON
+        var obj = JSON.parse(dat);
+    } catch (e) {
+
+        obj = dat;
+    }
+
+
+    for (var i = 0; i < obj.length; i++) {
+
+        var id = obj[i].id;
+        var name = obj[i].name;
+        var baseValue = obj[i].basevalue;
+        var type = obj[i].type;
+        var typeValue = obj[i].typevalue;
+        var state = obj[i].state;
+        var attachment = obj[i].attachment;
+        var x = obj[i].x;
+        var y = obj[i].y;
+        var createdby = obj[i].createdby;
+        var modifiedby = obj[i].modifiedby;
+
+        setNodeColor(type);
+
+        var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(type),decodeURIComponent(typeValue),decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdby,modifiedby);
+
+        nodes[id] = node;
+
+    }
+
+    return nodes
+
+}
+
+async function refreshNodeList(debateId){
+
+    var nodes = []
+
+    var did;
+
+    if(debateId !== null) {
+        did = debateId
+    } else {
+        did = thisDebateId;
+    }
+
+    var d = "did="+did;
+
+    var dat = await $.ajax({
+        type: "POST",
+        url: "load-nodes.php",
+        data: d,
+        cache: false
+    });
+
+    var obj
+    try {
+        // Parse a JSON
+        var obj = JSON.parse(dat);
+    } catch (e) {
+
+        obj = dat;
+    }
+
 
     for (var i = 0; i < obj.length; i++) {
 
@@ -358,7 +423,16 @@ async function loadNodes(){
             data: "did="+thisDebateId,
             cache: false,
             success: function(dat) {
-              var obj = JSON.parse(dat);
+
+                var obj
+                try {
+                    // Parse a JSON
+                    var obj = JSON.parse(dat);
+                } catch (e) {
+
+                    obj = dat;
+                }
+
               var msg = "";
 
               for (var i = 0; i < obj.length; i++) {
@@ -680,6 +754,39 @@ function loadEdges(){
 
             }
             });
+
+}
+
+async function getEdges(nodes, debateId){
+
+    var edges=[];
+
+    var dat = await $.ajax({
+        type: "POST",
+        url: "load-edges.php",
+        data: "did="+debateId,
+        cache: false,
+    });
+
+    var obj = JSON.parse(dat);
+    var msg = "";
+
+    for (var i = 0; i < obj.length; i++) {
+
+        var id = obj[i].id;
+        var sourceId = obj[i].sourceid;
+        var targetId = obj[i].targetid;
+
+        var edge = new Edge(id, nodes[sourceId], nodes[targetId]);
+        edges[id] = edge;
+
+        // Update node source and target list.
+        nodes[targetId].sourceList[sourceId] = nodes[sourceId]; // Target node has as source list element the source node.
+        nodes[sourceId].targetList[targetId] = nodes[targetId]; // Source node has as target list element the target node.
+
+    }
+
+    return edges;
 
 }
 
