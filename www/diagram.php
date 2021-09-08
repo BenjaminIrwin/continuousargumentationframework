@@ -67,7 +67,8 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <html lang="en">
   <head>
     <title><?php echo $name; ?></title>
-        <script src="js/jquery-3.6.0.min.js"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="js/jquery-3.6.0.min.js"></script>
 
         <script src="js/go-debug.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

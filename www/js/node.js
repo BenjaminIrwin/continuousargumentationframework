@@ -82,6 +82,8 @@ async function initializeNode(){
 
     var type = this.type
 
+    console.log(type);
+
   // Creating new div.
     let value = $(("#"+type))[0].innerHTML;
 
