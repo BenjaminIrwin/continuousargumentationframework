@@ -15,7 +15,7 @@ if (!isset($_SESSION['id'])) {
 
 $debateid = $_POST['did'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM ghost_forecast WHERE debateid = '$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM ghost_forecast WHERE debateid = '$debateid' order by userId") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {

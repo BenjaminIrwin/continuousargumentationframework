@@ -314,7 +314,20 @@ async function getNodes(debateId,userId){
         type: "POST",
         url: "load-nodes.php",
         data: d,
-        cache: false
+        cache: false,
+        tryCount : 0,
+        retryLimit : 3,
+        error : function(xhr, textStatus, errorThrown ) {
+            console.log('BAD GATEWAY')
+            this.tryCount++;
+					console.log(this.tryCount);
+            if (this.tryCount <= this.retryLimit) {
+                $.ajax(this);
+                return;
+            }
+            return;
+
+        }
     });
 
     var obj
@@ -766,6 +779,18 @@ async function getEdges(nodes, debateId){
         url: "load-edges.php",
         data: "did="+debateId,
         cache: false,
+        tryCount : 0,
+        retryLimit : 3,
+        error : function(xhr, textStatus, errorThrown ) {
+            console.log('BAD GATEWAY')
+            this.tryCount++;
+					console.log(this.tryCount);
+                if (this.tryCount <= this.retryLimit) {
+                    $.ajax(this);
+                    return;
+                }
+                return;
+            }
     });
 
     var obj = JSON.parse(dat);

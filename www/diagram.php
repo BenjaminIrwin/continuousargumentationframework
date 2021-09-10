@@ -78,6 +78,8 @@ while($r3=mysqli_fetch_array($sqldata3)){
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <!-- Site custom css -->
+        <link rel="stylesheet" href="css/site.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootbox.min.js"></script>
@@ -156,13 +158,13 @@ while($r3=mysqli_fetch_array($sqldata3)){
   left: 100px;
   top: 100px;
 }
-    
+
 #state2 {
   position: absolute;
   left: 250px;
   top: 100px;
 }
-    
+
 #state3 {
   position: absolute;
   left: 100px;
@@ -333,12 +335,12 @@ while($r3=mysqli_fetch_array($sqldata3)){
       </script>
 
   </head>
-  
+
 
   <body>
 
 <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
+  <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header container">
       <a class="navbar-brand" href="questions.php">Questions</a>
@@ -346,20 +348,20 @@ while($r3=mysqli_fetch_array($sqldata3)){
     </div>
   </div>
 <div class="jumbotron">
-  <div class="container"  style="margin-left: 20px;">
-      <img src="gallery/left-arrow.png" onclick="getPreviousDebate()" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
-
-      <h1 style="float:left; text-align:center; margin-top: 0px; width: 89%;"><?php echo $name.'</br>';?>
-  </h1>
-      <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
+  <div id="header-slider" class="container">
+      <div class="slider-nav">
+        <img src="gallery/left-arrow.png" onclick="getPreviousDebate()" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
+        <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
+      </div>
+      <h1 style="float:left; text-align:center; margin-top: 0px; width: 89%;"><?php echo $name.'</br>';?></h1>
       <br style="clear:both;">
-      <h5>
+      <h5 class="text-center">
           <p>My Forecast: <p id="currentForecast" style="font-weight: bold;"></p></p>
       </h5>
-      <h5>
+      <h5 class="text-center">
           <p>Status: <p id="demo"></p></p>
       </h5>
-</div>
+  </div>
 </div>
 </nav>
 
@@ -431,7 +433,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
         <li class='name-modal'>Forecast: <input type='text' id='forecast' class='form-control' placeholder='Forecast'/><input type="submit" id="forecastSubmit" /></li><br>
 
         <?php
-    
+
     // MAPPING //
     // Only the user who create the mapping can see the mapping.
       $sql2 = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM mapping WHERE userid='$userid' AND debateid='$debateid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
@@ -481,7 +483,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <ul class="dropdown-menu" role="menu">
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-  
+
 <!--  <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
 <!--    <ul class="dropdown-menu">-->
@@ -491,7 +493,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Insoluble</a></li>-->
 <!--    </ul>-->
 <!--  </li>-->
-  
+
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -506,7 +508,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <ul class="dropdown-menu dropdown-wormholes" role="menu">
   </ul>
 
-    
+
     <img class="ep" src="gallery/Question.png" style="display:block;"></img>
     <span id="name" class="name-label" title="Issue" onDblClick="clickLabel(this);">Issue</span>
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
@@ -519,7 +521,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu" role="menu">
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-  
+
 <!--    <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
 <!--    <ul class="dropdown-menu">-->
@@ -543,7 +545,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu dropdown-wormholes" role="menu">
   </ul>
-    
+
     <img class="ep" src="gallery/Light.png" style="display:block;"></img>
     <span id="name" class="name-label" title="Issue" onDblClick="clickLabel(this);">Issue</span>
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
@@ -595,7 +597,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Vote</a></li>
       <li class="divider dropdown-divider"></li>
       <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-  
+
 <!--    <li class="dropdown-submenu">-->
 <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
 <!--    <ul class="dropdown-menu">-->
@@ -617,7 +619,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu dropdown-wormholes" role="menu">
   </ul>
-    
+
     <img class="ep" src="gallery/Plus.png" style="display:block;"></img>
     <span id="name" class="name-label" title="Pro" onDblClick="clickLabel(this);">Issue</span>
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
@@ -654,7 +656,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div>
   <ul class="dropdown-menu dropdown-wormholes" role="menu">
   </ul>
-    
+
     <img class="ep" src="gallery/Minus.png" style="display:block;"></img>
     <span id="name" class="name-label" title="Con" onDblClick="clickLabel(this);">Issue</span>
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>

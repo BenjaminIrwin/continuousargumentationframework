@@ -114,27 +114,36 @@ async function submitForecast(forecast) {
 
 }
 
-async function experiment1Helper() {
+async function experiment1Helper(debateid) {
 
-	var questionIds = [2]
 
-	for(var i = 0; i < questionIds.length; i++) {
+	// var data = await $.ajax({
+	// 	type: "POST",
+	// 	url: "load-debates.php",
+	// 	data: "qid="+questionid,
+	// 	cache: false,
+	// 	tryCount : 0,
+	// 	retryLimit : 3,
+	// 	error : function(xhr, textStatus, errorThrown ) {
+	// 		console.log('BAD GATEWAY')
+	// 		this.tryCount++;
+					console.log(this.tryCount);
+	// 		if (this.tryCount <= this.retryLimit) {
+	// 			$.ajax(this);
+	// 			return;
+	// 		}
+	// 		return;
+	// 	}
+	// });
 
-		var questionid = questionIds[i];
+		// var data = await $.ajax({
+		// 	type: "POST",
+		// 	url: "load-debates.php",
+		// 	data: "qid="+questionid,
+		// 	cache: false
+		// });
 
-		var data = await $.ajax({
-			type: "POST",
-			url: "load-debates.php",
-			data: "qid="+questionid,
-			cache: false
-		});
-
-		var obj = JSON.parse(data);
-
-		for (var i = 0; i < obj.length; i++) {
-
-			var debateid = obj[i].id;
-			var name = obj[i].name;
+		// var obj = JSON.parse(data);
 
 			var pForecast = await getProposedForecast(debateid);
 			var irrationalForecasts = [];
@@ -143,8 +152,21 @@ async function experiment1Helper() {
 				type: "POST",
 				url: "load-ghost-forecast.php",
 				data: "did="+debateid,
-				cache: false
+				cache: false,
+				tryCount : 0,
+				retryLimit : 3,
+				error : function(xhr, textStatus, errorThrown ) {
+					console.log('BAD GATEWAY')
+					this.tryCount++;
+					console.log(this.tryCount);
+					if (this.tryCount <= this.retryLimit) {
+						$.ajax(this);
+						return;
+					}
+					return;
+				}
 			});
+
 			var obj1 = JSON.parse(data1);
 
 			for (var j = 0; j < obj1.length; j++) {
@@ -152,7 +174,7 @@ async function experiment1Helper() {
 				var userid = obj1[j].userid;
 				var forecast = obj1[j].forecast;
 
-				// console.log('DID: ' + debateid + ' UID: ' + userid);
+				console.log('FID: ' + obj1[j].id);
 
 				// console.log('DID: ' + debateid + '\nUID: ' + userid + '\nCON_SCORE: ' + con_score + '\nPROPOSED: ' + pForecast + '\nFORECAST: ' + forecast)
 
@@ -167,12 +189,11 @@ async function experiment1Helper() {
 						irrationalForecasts.push(" S " + forecast);
 					}
 				}
-			}
 
-			console.log('ID: ' + name + '\n' + irrationalForecasts);
+			console.log('ID: ' + debateid + '\n' + irrationalForecasts);
 
 			irrationalForecasts = [];
-		}
+
 }
 
 async function computeAllValuesExp(debateId, userId){
