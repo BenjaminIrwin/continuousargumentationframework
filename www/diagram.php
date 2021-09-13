@@ -79,7 +79,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
         <!-- Optional theme -->
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <!-- Site custom css -->
-        <link rel="stylesheet" href="css/site.css">
+        <link rel="stylesheet" href="css/site.css?v=1">
         <!-- Latest compiled and minified JavaScript -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/bootbox.min.js"></script>
@@ -176,7 +176,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   bottom: 36%;
   left: 3%;
   width:20%;
-  /*height:41%;//REMOVED THIS*/
+  /*height:41%;*/
   cursor:pointer;
   padding: 2px 2px 2px 2px;
   box-shadow: 0px 0px 3px black;
@@ -235,7 +235,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
 </style>
 
-  <div id="debate-modal" class="modal fade">
+<div id="debate-modal" class="modal fade">
   <div id="draggable" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -252,7 +252,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-  <div id="node-modal" class="modal fade">
+<div id="node-modal" class="modal fade">
   <div id="draggable" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -339,31 +339,31 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
   <body>
 
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header container">
-      <a class="navbar-brand" href="questions.php">Questions</a>
-      <a class="navbar-brand" href="logout.php">Logout</a>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header container">
+                <a class="navbar-brand" href="questions.php">Questions</a>
+                <a class="navbar-brand" href="logout.php">Logout</a>
+            </div>
+        </div>
+    <div class="jumbotron">
+        <div id="header-slider" class="container">
+            <div class="slider-nav">
+                <img src="gallery/left-arrow.png" onclick="getPreviousDebate()" height="42">
+                <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42">
+            </div>
+            <h1 class="text-center"><?php echo $name.'</br>';?></h1>
+            <br style="clear:both;">
+            <h5 class="text-center">
+                <p>My Forecast: <p id="currentForecast" style="font-weight: bold;"></p></p>
+            </h5>
+            <h5 class="text-center">
+                <p>Status: <p id="demo"></p></p>
+            </h5>
+        </div>
     </div>
-  </div>
-<div class="jumbotron">
-  <div id="header-slider" class="container">
-      <div class="slider-nav">
-        <img src="gallery/left-arrow.png" onclick="getPreviousDebate()" height="42" style="margin-top:10px;float:left; margin-right:50px; margin-left;10px;">
-        <img src="gallery/right-arrow.png" onclick="getNextDebate()" height="42" style="margin-top:10px;float:right; margin-left;50px;text-align:right;">
-      </div>
-      <h1 style="float:left; text-align:center; margin-top: 0px; width: 89%;"><?php echo $name.'</br>';?></h1>
-      <br style="clear:both;">
-      <h5 class="text-center">
-          <p>My Forecast: <p id="currentForecast" style="font-weight: bold;"></p></p>
-      </h5>
-      <h5 class="text-center">
-          <p>Status: <p id="demo"></p></p>
-      </h5>
-  </div>
-</div>
-</nav>
+    </nav>
 
 <div class="container">
   <a href="debates.php?id=<?php echo $questionid?>" style="float: right;"> Back </a>
@@ -470,9 +470,12 @@ while($r3=mysqli_fetch_array($sqldata3)){
 
 </div>
 
-<div class="container diagramm" style="height: 650px;">
+<div>
+  <div class="container diagramm" style="height: 650px;">
+  </div>
 </div>
-<div class="container diagram" style="height: 650px;">
+<!-- <div class="container diagram" style="height: 650px;"> -->
+
 <div style="display: none;">
 
   <div id="proposal" class="item" style="text-align: center;"><!-- Single button -->
@@ -484,15 +487,15 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
 
-<!--  <li class="dropdown-submenu">-->
-<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
-<!--    <ul class="dropdown-menu">-->
-<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Resolved</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Insoluble</a></li>-->
-<!--    </ul>-->
-<!--  </li>-->
+    <!--  <li class="dropdown-submenu">-->
+    <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+    <!--    <ul class="dropdown-menu">-->
+    <!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Resolved</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Insoluble</a></li>-->
+    <!--    </ul>-->
+    <!--  </li>-->
 
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
@@ -522,16 +525,16 @@ while($r3=mysqli_fetch_array($sqldata3)){
   <ul class="dropdown-menu" role="menu">
     <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-<!--    <li class="dropdown-submenu">-->
-<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
-<!--    <ul class="dropdown-menu">-->
-<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Accepted</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Likely</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Unlikely</a></li>-->
-<!--    </ul>-->
-<!--  </li>-->
+    <!--    <li class="dropdown-submenu">-->
+    <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+    <!--    <ul class="dropdown-menu">-->
+    <!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Accepted</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Rejected</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Likely</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Unlikely</a></li>-->
+    <!--    </ul>-->
+    <!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -598,14 +601,14 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <li class="divider dropdown-divider"></li>
       <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-<!--    <li class="dropdown-submenu">-->
-<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
-<!--    <ul class="dropdown-menu">-->
-<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
-<!--    </ul>-->
-<!--  </li>-->
+    <!--    <li class="dropdown-submenu">-->
+    <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+    <!--    <ul class="dropdown-menu">-->
+    <!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
+    <!--    </ul>-->
+    <!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -635,14 +638,14 @@ while($r3=mysqli_fetch_array($sqldata3)){
       <li class="divider dropdown-divider"></li>
       <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
 
-<!--    <li class="dropdown-submenu">-->
-<!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
-<!--    <ul class="dropdown-menu">-->
-<!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
-<!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
-<!--    </ul>-->
-<!--  </li>-->
+    <!--    <li class="dropdown-submenu">-->
+    <!--    <a tabindex="-1" href="javascript:void(0)">Edit state</a>-->
+    <!--    <ul class="dropdown-menu">-->
+    <!--      <li><a tabindex="-1" href="javascript:void(0)" onClick="setState(this)">Basic</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Dominant</a></li>-->
+    <!--      <li><a href="javascript:void(0)" onClick="setState(this)">Fails</a></li>-->
+    <!--    </ul>-->
+    <!--  </li>-->
 
     <li><a id="wormhole-copy-button" class="wormhole-copy-button" href="javascript:void(0)" onClick="">Copy wormhole</a></li>
         <li><a id="wormhole-paste-button" class="wormhole-paste-button" href="javascript:void(0)" onClick="">Paste wormhole</a></li>
@@ -662,32 +665,23 @@ while($r3=mysqli_fetch_array($sqldata3)){
     <textarea id="name_entry" style="display: none;" onBlur="blurLabel(this);"></textarea>
   </div>
 
-
-
-
-
-
-
-
-
-
     <div id="por" class="item" style="text-align: center;">
       <!--
-<div class="btn-group" id="dropdown-button">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-    <span class="glyphicon glyphicon-cog"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
-    <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
-    <li class="divider"></li>
-    <li><a href="javascript:void(0)" onClick="deleteNode(this)">Delete node</a></li>
-  </ul>
-</div>
--->
+        <div class="btn-group" id="dropdown-button">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-cog"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a id="info-button" href="javascript:void(0)" onClick="">Information</a></li>
+            <li><a id="edit-button" class="edit-button" href="javascript:void(0)" onClick="">Edit</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:void(0)" onClick="deleteNode(this)">Delete node</a></li>
+          </ul>
+        </div>
+        -->
 
-  <!--  <div id="myDiagramDiv"
-     style="width:800px; height:600px; background-color: #DAE4E4;"></div> -->
+      <!--  <div id="myDiagramDiv"
+        style="width:800px; height:600px; background-color: #DAE4E4;"></div> -->
 
   <script>
   $('.selectpicker').selectpicker({
