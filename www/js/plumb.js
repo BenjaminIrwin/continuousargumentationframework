@@ -156,6 +156,7 @@ function addNode(attachment_path){
                       var node = new Node(id,decodeURIComponent(name),decodeURIComponent(baseValue),decodeURIComponent(computedValueQuad),
                                             decodeURIComponent(computedValueDFQuad),decodeURIComponent(type),decodeURIComponent(typeValue),
                                             decodeURIComponent(state),decodeURIComponent(attachment),{},{},x,y,createdBy,modifiedBy);
+                      node.type = type
                       node.initializeNode();
 
                       //console.log(node);

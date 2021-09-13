@@ -56,7 +56,7 @@ $.ajax({
                 msg += '</li><br><br></div>';
 
                 // The end 'o' means in owner tab, because is been created by this user and owned by him or her.
-              $("#debate-list-o").append(msg);
+              $("#debate-list").append(msg);
               debateList[id] = debate;
 
             }

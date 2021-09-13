@@ -176,7 +176,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
   bottom: 36%;
   left: 3%;
   width:20%;
-  height:41%;
+  /*height:41%;//REMOVED THIS*/
   cursor:pointer;
   padding: 2px 2px 2px 2px;
   box-shadow: 0px 0px 3px black;

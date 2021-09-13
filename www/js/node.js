@@ -142,6 +142,7 @@ async function initializeNode(){
             $('#' + this.id).find('img').before("<span style='text-align:center;font-size:30px;font-weight:bold;color:#E82E25'>" + pForecastSummary + "</span><span style='text-align:center;font-size:13px;color:#E82E25'>" + forecastDiffSummary + "</span>")
         } else {
             $('#' + this.id).find('img').before("<span style='text-align:center;font-size:30px;font-weight:bold;color:#17A300'>" + pForecastSummary + "</span><span style='text-align:center;font-size:13px;color:#17A300'>" + forecastDiffSummary + "</span>")
+            $('#' + this.id+ " #name").css("height","65%")
         }
         $('#' + this.id).find('img').css('height', '29%')
         $('#' + this.id).find('ep').css('box-shadow', 'none')
