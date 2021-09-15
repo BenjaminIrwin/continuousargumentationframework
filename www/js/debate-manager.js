@@ -288,7 +288,7 @@ function isADebateOpen(questionId) {
     return open;
 }
 
-function debateModifiedCheck() {
+function debateModifiedCheckOld() {
 
     // var x = setInterval(function() {
     //
@@ -305,6 +305,30 @@ function debateModifiedCheck() {
     //
     //     });
     // }, 1500)
+
+
+
+}
+
+async function longPollGraph() {
+
+    try {
+        let dat =  await $.ajax({
+            type: "POST",
+            url: "load-just-modified-debate.php",
+            cache: false,
+        });
+
+        if(JSON.parse(dat).length !== 0) {
+            await loadNodes();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    await longPollGraph();
 }
 
 function proposalNodeCheck() {

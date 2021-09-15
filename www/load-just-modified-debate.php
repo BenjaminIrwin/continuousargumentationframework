@@ -17,7 +17,7 @@ $userid = $_SESSION['id'];
 $username = $_SESSION['username'];
 $debateid = $_SESSION['debate'];
 
-$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE id = '$debateid' and lastmodifiedby <> '$username' and lastmodified > now() - interval 2 second") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates WHERE id = '$debateid' and lastmodifiedby <> '$username' and lastmodified > now() - interval 3 second") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
 $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {

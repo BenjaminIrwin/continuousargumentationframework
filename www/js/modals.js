@@ -34,7 +34,6 @@ function modalInitNode(type, debateCloseDate){
         msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
     } else {
         msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
-        msg += "<li class='computedvalue-dfquad-modal'>Computed value DF-Quad: &nbsp; <input type='text' class='form-control' placeholder='0'></input></li><br>";
     }
 
     //console.log('3');
@@ -228,7 +227,6 @@ async function modalInitDebate(questionid){
     msg += "<li class='questionid-modal' style='display: block;'>questionid: &nbsp; <b>"+questionid+"</b></li><br>";
     msg += "<li class='name-modal'>Name: <input type='text' class='form-control' placeholder='Name'></input></li><br>";
 //    msg += "<li class='participants-modal'>Participants: &nbsp; <input type='text' class='form-control' placeholder='Participants'></input></li><br>";
-    msg += "<li class='typevalue-modal'>Content: &nbsp; <input type='text' class='form-control' placeholder='Type value'></input></li><br>";
     msg += "<li class='Opening date'>Opening date: <input type='text' class='form-control' id='openDate' placeholder='Opening date'></input></li><br>";
     msg += "<li class='Closing date'>Closing date: <input type='text' class='form-control' id='closeDate' placeholder='Closing date'></input></li><br>";
     msg += "</ul>";

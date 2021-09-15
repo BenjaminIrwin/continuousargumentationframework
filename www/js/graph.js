@@ -97,13 +97,13 @@ async function submitForecast(forecast) {
 
 		if(CONFIDENCE_SCORE < 0) {
 			direction = 'minimum';
-			limit = (pForecast - (CONFIDENCE_SCORE * pForecast)).toFixed(2);
+			limit = (pForecast - (Math.abs(CONFIDENCE_SCORE) * pForecast)).toFixed(0);
 		} else {
 			direction = 'maximum'
-			limit = (pForecast + (CONFIDENCE_SCORE * pForecast)).toFixed(2);
+			limit = (pForecast + (Math.abs(CONFIDENCE_SCORE) * pForecast)).toFixed(0);
 		}
 
-		var msg = 'Irrational forecast. According to your voting, the ' + direction + ' you may forecast is ' + limit + '%.';
+		var msg = 'Irrational forecast. According to your confidence score (' + CONFIDENCE_SCORE + '), the ' + direction + ' you may forecast is ' + limit + '%.';
 
 		bootbox.alert(msg);
 

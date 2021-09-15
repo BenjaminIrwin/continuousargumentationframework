@@ -307,7 +307,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
           $(document).ready(function(){
               getDebateCountdownTimer('<?php echo $close; ?>');
               getMyForecast();
-              debateModifiedCheck();
+              longPollGraph();
               $('#forecast').on('keyup', function(e) {
                   if (e.keyCode === 13) {
                       $('#forecastSubmit').click();
