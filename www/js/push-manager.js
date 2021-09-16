@@ -111,7 +111,6 @@ function pushNodeEdit(data){
 	$("#"+data.nodeid+" > #name").html(text);
 	$("#"+data.nodeid+" > #name").attr('title',data.name);
         
-        //console.log("pushEditNode: "+data.name+" "+data.createdby+" "+data.modifiedby);
 	nodeList[data.nodeid].editInfo(decodeURIComponent(data.name), decodeURIComponent(data.basevalue), decodeURIComponent(data.computedvaluequad), decodeURIComponent(data.computedvaluedfquad), decodeURIComponent(data.typevalue), decodeURIComponent(data.state), decodeURIComponent(data.attachment), decodeURIComponent(data.modifiedby));
 
 

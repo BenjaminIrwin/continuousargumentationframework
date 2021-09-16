@@ -7,6 +7,10 @@ include "dbUtilities.php";
 
 $connection=dbConnect();
 
+/*
+    This PHP script and HTML page was significantly edited for Arg&Forecast.
+*/
+
 if (!isset($_SESSION['id'])) {
 //  echo "Your session expired...";
   header("Location: index.php");
@@ -36,14 +40,6 @@ while($r = mysqli_fetch_assoc($sql1)) {
 
 for($i=0; $i<count($rows); $i++) {
 
-//    $sqlAllUsers = mysqli_query($GLOBALS["___mysqli_ston"], "Select * From users where id in (select userid from rights where questionid = $qid and accessright = 'o' or accessright = 'r')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-//    while($userR1 = mysqli_fetch_assoc($sqlAllUsers)) {
-//        $userRows[] = $userR1;
-//    }
-//    for($j=0; $j<count($userRows); $j++) {
-//        userRows[j]['brierScore'];
-//    }
-
     $did = $rows[$i]['id'];
     $totalBrierScore = 0;
     $weightedTotal = 0;
@@ -59,16 +55,9 @@ for($i=0; $i<count($rows); $i++) {
         }
         $forecast = $rows1[$j]['forecast'];
 
-//        echo 'Round'.$j;
-//
-//        echo $invbrierScore;
-//        echo $forecast;
-
         $totalBrierScore += $invbrierScore;
         $weightedTotal += $invbrierScore * $forecast;
     }
-
-//    echo ' debateId '.$did.' weightedTotal: '.$weightedTotal.' totalBrierScore: '.$totalBrierScore.'\n';
 
     $aggregatedForecast = $weightedTotal/$totalBrierScore;
 

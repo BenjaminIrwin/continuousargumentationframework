@@ -1,6 +1,9 @@
 <?php
 
 include 'dbUtilities.php';
+/*
+    This PHP script was implemented for Arg&Forecast.
+*/
 
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);

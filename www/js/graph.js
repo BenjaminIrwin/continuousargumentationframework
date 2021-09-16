@@ -30,14 +30,15 @@ function g(v0,va,vs){
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function CS(nodeList){
 
 	var increaseCount = 0;
 	var increaseTotal = 0;
 	var decreaseCount = 0;
 	var decreaseTotal= 0;
-
-	// console.log(1);
 
 	for(var n in nodeList){
 
@@ -63,28 +64,23 @@ async function CS(nodeList){
 	}
 
 	if(decreaseCount === 0) {
-		// console.log(7);
-
 		decreaseAverage = 0;
 	} else {
-		// console.log(8);
-
 		decreaseAverage = decreaseTotal/decreaseCount;
 	}
-
-	console.log('INCREASE: ' + increaseAverage + '|| DECREASE: ' + decreaseAverage);
 
 	return increaseAverage - decreaseAverage;
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function submitForecast(forecast) {
 	const computed = await computeAllValues();
 	if(!computed) {
 		return;
 	}
 	var pForecast = await getProposedForecast(null);
-
-	console.log(forecast + ' ' + CONFIDENCE_SCORE + ' ' + pForecast);
 
 	if(CONFIDENCE_SCORE < 0 && forecast >= pForecast) {
 		bootbox.alert('Irrational forecast. You have a negative confidence score so must provide a forecast lower than the proposed one.');
@@ -114,36 +110,10 @@ async function submitForecast(forecast) {
 
 }
 
+/*
+    This function was implemented for Arg&Forecast Experiment 1
+*/
 async function experiment1Helper(debateid) {
-
-
-	// var data = await $.ajax({
-	// 	type: "POST",
-	// 	url: "load-debates.php",
-	// 	data: "qid="+questionid,
-	// 	cache: false,
-	// 	tryCount : 0,
-	// 	retryLimit : 3,
-	// 	error : function(xhr, textStatus, errorThrown ) {
-	// 		console.log('BAD GATEWAY')
-	// 		this.tryCount++;
-					console.log(this.tryCount);
-	// 		if (this.tryCount <= this.retryLimit) {
-	// 			$.ajax(this);
-	// 			return;
-	// 		}
-	// 		return;
-	// 	}
-	// });
-
-		// var data = await $.ajax({
-		// 	type: "POST",
-		// 	url: "load-debates.php",
-		// 	data: "qid="+questionid,
-		// 	cache: false
-		// });
-
-		// var obj = JSON.parse(data);
 
 			var pForecast = await getProposedForecast(debateid);
 			var irrationalForecasts = [];
@@ -176,8 +146,6 @@ async function experiment1Helper(debateid) {
 
 				console.log('FID: ' + obj1[j].id);
 
-				// console.log('DID: ' + debateid + '\nUID: ' + userid + '\nCON_SCORE: ' + con_score + '\nPROPOSED: ' + pForecast + '\nFORECAST: ' + forecast)
-
 				const con_score = await computeAllValuesExp(debateid, userid);
 
 
@@ -196,6 +164,9 @@ async function experiment1Helper(debateid) {
 
 }
 
+/*
+    This function was implemented for Arg&Forecast Experiment 1
+*/
 async function computeAllValuesExp(debateId, userId){
 
 	var nodeList = await getNodes(debateId, userId);
@@ -215,6 +186,9 @@ async function computeAllValuesExp(debateId, userId){
 	return confidenceScore;
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function computeAllValues(){
 
 	await refreshNodeList(null);
@@ -387,10 +361,9 @@ function rankNodes(nodes, nAlg){
         return msg;
 }
 
-////////////////////////////////////////
-// ******* DF-QUAD ******** //
-// SF2, F, SEQ (c'è già?), c
-
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function c(v0,va,vs){
         
         v0=parseFloat(v0);
@@ -407,6 +380,9 @@ async function c(v0,va,vs){
 	}
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function f2(v1,v2) {
     v1 = parseFloat(v1);
     v2 = parseFloat(v2);
@@ -414,6 +390,9 @@ async function f2(v1,v2) {
     return v1+v2-v1*v2;
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function F2(S) {
     if (S.length==0){
 		return 0;
@@ -450,13 +429,12 @@ async function F2(S) {
     }
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function localReplaceRs(nodes, Rs) {
 	if (nodes !== null) {
 		for (var i = 0; i < Rs.length; i++) {
-
-			// console.log(userId)
-			// console.log(Rs[i])
-			// console.log(nodes[Rs[i].id])
 
 			Rs[i] = nodes[Rs[i].id]
 		}
@@ -464,20 +442,21 @@ async function localReplaceRs(nodes, Rs) {
 	return Rs;
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function localReplaceRa(nodes, Ra) {
 	if (nodes !== null) {
 		for (var i = 0; i < Ra.length; i++) {
-
-			// console.log(userId)
-			// console.log(Ra[i])
-			// console.log(nodes[Ra[i].id])
-
 			Ra[i] = nodes[Ra[i].id]
 		}
 	}
 	return Ra;
 }
 
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
 async function SF2(a, nodes, edges){
 
 	var Rs = await a.getSupporters(edges);

@@ -19,12 +19,6 @@ $questionid = $_POST['qid'];
 $sql = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT users.username, rights.accessright FROM rights INNER JOIN "
         . "users ON rights.userid=users.id WHERE rights.questionid='$questionid'") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
-/*SELECT Customers.CustomerName, Orders.OrderID
-FROM Customers
-INNER JOIN Orders
-ON Customers.CustomerID=Orders.CustomerID
-ORDER BY Customers.CustomerName;*/
-
 $num=mysqli_num_rows($sql);
 
 $str='Participants: <b>';

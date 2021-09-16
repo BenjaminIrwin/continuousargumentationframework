@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script was implemented for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -25,16 +29,6 @@ if(isset($_POST['uid']) && !empty($_POST['uid']) && !is_null($_POST['uid'])) {
 }
 
 $result = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM user_debate_scores WHERE debateid = '$id' and userid='$userid'");
-//
-//if ($result) {
-//    if (mysqli_num_rows($result) > 0) {
-//        $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE user_debate_scores SET confidence_score='$confidencescore' WHERE debateId=$id and userId=$userid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-//    } else {
-//        $sql2 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_debate_scores (userid, debateid, confidence_score) Values ($userid, '$id', '$confidencescore')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-//    }
-//} else {
-//    echo 'Error: '.mysqli_error($GLOBALS["___mysqli_ston"]);
-//}
 
 try {
 

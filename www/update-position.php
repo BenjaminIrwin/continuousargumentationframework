@@ -37,20 +37,4 @@ echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ?
 $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$debateid'");
 
 
-/*
-$app_id = '104765';
-$app_key = '4a093e77bfac049910cf';
-$app_secret = '3525036469c1d8f547c8';
-
-$pusher = new Pusher($app_key, $app_secret, $app_id);
-
-$data['push']='update-position';
-$data['userid']=$userid;
-$data['debateid']=$debateid;
-$data['nodeid']=$nodeid;
-$data['x']=$x;
-$data['y']=$y;
-
-$pusher->trigger('test_channel', 'my_event', $data);
-*/
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

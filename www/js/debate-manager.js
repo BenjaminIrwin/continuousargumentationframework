@@ -1,130 +1,137 @@
 var debateList = {};
 var iddebate;
 
-function addDebate(){
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
+function addDebate() {
 
-	// Modal initialized in modal.js file.
+    // Modal initialized in modal.js file.
 //  var id = $("#debate-modal").find(".id-modal > b").html();
-  var questionId = $("#debate-modal").find(".questionid-modal > b").html();
-  var name = $("#debate-modal").find(".name-modal > input").val();
-  var participants = $("#debate-modal").find(".participants-modal > input").val();
-  var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
+    var questionId = $("#debate-modal").find(".questionid-modal > b").html();
+    var name = $("#debate-modal").find(".name-modal > input").val();
+    var participants = $("#debate-modal").find(".participants-modal > input").val();
+    var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
     var openDate = $("#openDate").val();
     var closeDate = $("#closeDate").val();
 
-    if (closeDate=="") {
+    if (closeDate == "") {
         bootbox.alert('You must specify a closing date when you create a new debate!')
         return;
-    };
+    }
+    ;
 
-    if (openDate=="") {
+    if (openDate == "") {
         bootbox.alert('You must specify an opening date when you create a new debate!')
         return;
-    };
+    }
+    ;
 
-if (name=="") {
-    name = "Unknown Debate";
-  };
-  
+    if (name == "") {
+        name = "Unknown Debate";
+    }
+    ;
+
 
     var initialBaseRate = 0.5;
 
 
-$.ajax({
-            type: "POST",
-            url: "add-debate.php",
-            data: "qid="+questionId+"&n="+name+"&dbv="+initialBaseRate+"&p="+participants+"&tv="+typeValue+"&od="+openDate+"&cd="+closeDate,
-            cache: false,
-            success: function(dat) {
-              var id = dat;
+    $.ajax({
+        type: "POST",
+        url: "add-debate.php",
+        data: "qid=" + questionId + "&n=" + name + "&dbv=" + initialBaseRate + "&p=" + participants + "&tv=" + typeValue + "&od=" + openDate + "&cd=" + closeDate,
+        cache: false,
+        success: function (dat) {
+            var id = dat;
 
-              var debate = new Debate(id,questionId,name,initialBaseRate,participants,typeValue);
+            var debate = new Debate(id, questionId, name, initialBaseRate, participants, typeValue);
 
-              var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
-                  msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
-                  msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
-                  msg += '<span class="caret"></span>';
-                  msg += '<span class="sr-only">Toggle Dropdown</span>';
-                  msg += '</button>';
-                  msg += '<ul class="dropdown-menu" role="menu">';
-                  msg += '<li><a href="#" onClick="debateList['+id+'].displayInfo();">Info</a></li>';
-                  msg += '<li><a href="#" onClick="modalEditDebate(debateList['+id+'])">Edit</a></li>';
-                  msg += '<li><a href="#" onClick="modalAccess('+id+',debateList['+id+'].name)">Access control</a></li>';
-                  msg += '<li class="divider"></li>';
-                  msg += '<li><a href="#" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
-                  msg += '</ul>';
-                msg += '</li><br><br></div>';
+            var msg = '<div id="debate' + id + '"><li class="btn-group debate">';
+            msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id=' + id + '\'">' + name + '</button>';
+            msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
+            msg += '<span class="caret"></span>';
+            msg += '<span class="sr-only">Toggle Dropdown</span>';
+            msg += '</button>';
+            msg += '<ul class="dropdown-menu" role="menu">';
+            msg += '<li><a href="#" onClick="debateList[' + id + '].displayInfo();">Info</a></li>';
+            msg += '<li><a href="#" onClick="modalEditDebate(debateList[' + id + '])">Edit</a></li>';
+            msg += '<li><a href="#" onClick="modalAccess(' + id + ',debateList[' + id + '].name)">Access control</a></li>';
+            msg += '<li class="divider"></li>';
+            msg += '<li><a href="#" onClick="deleteDebate(debateList[' + id + '])">Delete</a></li>';
+            msg += '</ul>';
+            msg += '</li><br><br></div>';
 
-                // The end 'o' means in owner tab, because is been created by this user and owned by him or her.
-              $("#debate-list").append(msg);
-              debateList[id] = debate;
+            // The end 'o' means in owner tab, because is been created by this user and owned by him or her.
+            $("#debate-list").append(msg);
+            debateList[id] = debate;
 
-            }
+        }
     });
 
 }
 
-function addSubDebate(){
+function addSubDebate() {
 
-  // Modal initialized in modal.js file.
+    // Modal initialized in modal.js file.
 //  var id = $("#debate-modal").find(".id-modal > b").html();
-  var ownerId = $("#debate-modal").find(".ownerId-modal > b").html();
-  var name = $("#debate-modal").find(".name-modal > input").val();
-  var defaultBaseValue = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
-  var participants = $("#debate-modal").find(".participants-modal > input").val();
-  var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
+    var ownerId = $("#debate-modal").find(".ownerId-modal > b").html();
+    var name = $("#debate-modal").find(".name-modal > input").val();
+    var defaultBaseValue = $("#debate-modal").find(".defaultbasevalue-modal > input").val();
+    var participants = $("#debate-modal").find(".participants-modal > input").val();
+    var typeValue = $("#debate-modal").find(".typevalue-modal > input").val();
 
 
+    if (name == "") {
+        name = "Unknown Debate";
+    }
+    ;
 
+    $.ajax({
+        type: "POST",
+        url: "add-debate.php",
+        data: "on=" + ownerId + "&n=" + name + "&dbv=" + defaultBaseValue + "&p=" + participants + "&tv=" + typeValue,
+        cache: false,
+        success: function (dat) {
+            var id = dat;
+            var debate = new Debate(id, ownerId, name, defaultBaseValue, participants, typeValue);
+            debateList[id] = debate;
+            // Node creation.
+            var baseValue = defaultBaseValue;
+            var computedValueQuad = 0;
+            var computedValueDFQuad = 0;
+            var type = 'por';
+            var typeValue = '';
+            var state = '';
+            var attachment = '';
+            $.ajax({
+                type: "POST",
+                url: "add-node.php",
+                data: "n=" + name + "&bv=" + baseValue + "&cvq=" + computedValueQuad + "&cvdfq=" + computedValueDFQuad + "&t=" + type + "&tv=" + typeValue + "&s=" + state + "&a=" + attachment + "&ld" + id,
+                cache: false,
+                success: function (dat) {
+                    var nid = dat;
+                    var node = new Node(nid, name, baseValue, computedValueQuad, computedValueDFQuad, type, typeValue, state, attachment, {}, {}, id);
+                    node.initializeDebateNode();
+                    nodeList[id] = node;
 
-if (name=="") {
-    name = "Unknown Debate";
-  };
-
-$.ajax({
-            type: "POST",
-            url: "add-debate.php",
-            data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
-            cache: false,
-            success: function(dat) {
-                //console.log('hola');
-                var id = dat;
-              var debate = new Debate(id,ownerId,name,defaultBaseValue,participants,typeValue);
-              debateList[id] = debate;
-                // Node creation.
-                var baseValue = defaultBaseValue;
-                var computedValueQuad = 0;
-                var computedValueDFQuad = 0;
-                var type = 'por';
-                var typeValue = '';
-                var state='';
-                var attachment = '';
-                  $.ajax({
-                    type: "POST",
-                    url: "add-node.php",
-                    data: "n="+name+"&bv="+baseValue+"&cvq="+computedValueQuad+"&cvdfq="+computedValueDFQuad+"&t="+type+"&tv="+typeValue+"&s="+state+"&a="+attachment+"&ld"+id,
-                    cache: false,
-                    success: function(dat) {
-                      var nid = dat;
-                      var node = new Node(nid,name,baseValue,computedValueQuad,computedValueDFQuad,type,typeValue,state,attachment,{},{},id);
-                      node.initializeDebateNode();
-                      nodeList[id] = node;
-
-            }
+                }
             });
 
-            }
-            });
+        }
+    });
 
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function getMyForecast() {
     var forecast = await getCurrentForecast();
 
     var fString;
 
-    if(forecast == null) {
+    if (forecast == null) {
         fString = "-";
     } else {
         fString = forecast + "%";
@@ -133,6 +140,9 @@ async function getMyForecast() {
     document.getElementById("currentForecast").innerHTML = fString;
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function getCurrentForecast() {
 
     const data = await $.ajax({
@@ -142,7 +152,7 @@ async function getCurrentForecast() {
     });
 
     const obj = JSON.parse(data);
-    if(obj.length === 0) {
+    if (obj.length === 0) {
         return null;
     }
 
@@ -150,6 +160,9 @@ async function getCurrentForecast() {
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function getLastForecast() {
 
     var forecast = 0;
@@ -162,7 +175,7 @@ async function getLastForecast() {
 
     const obj = JSON.parse(data);
 
-    if(obj.length === 0) {
+    if (obj.length === 0) {
         const data1 = await $.ajax({
             type: "GET",
             url: "load-this-question.php",
@@ -182,6 +195,9 @@ async function getLastForecast() {
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function isDebateOpen() {
 
     var open = false;
@@ -192,7 +208,7 @@ async function isDebateOpen() {
         cache: false
     });
 
-    data.done(function(dat) {
+    data.done(function (dat) {
         var obj = JSON.parse(dat);
         var msg = "";
 
@@ -210,12 +226,15 @@ async function isDebateOpen() {
     return open;
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function isQuestionOpen() {
 
     const data = await $.ajax({
-            type: "GET",
-            url: "load-this-question.php",
-            cache: false
+        type: "GET",
+        url: "load-this-question.php",
+        cache: false
     });
     const obj = JSON.parse(data);
 
@@ -229,35 +248,11 @@ async function isQuestionOpen() {
         }
     }
     return false;
-
-    // var open;
-    //
-    // var data = $.ajax({
-    //     type: "GET",
-    //     url: "load-this-question.php",
-    //     cache: false
-    // });
-    //
-    // data.done(function(dat) {
-    //     var obj = JSON.parse(dat);
-    //     var msg = "";
-    //
-    //     for (var i = 0; i < obj.length; i++) {
-    //
-    //         let closingDate = Date.parse(obj[i].close);
-    //         let openingDate = Date.parse(obj[i].open);
-    //
-    //         if (closingDate > Date.now() && openingDate < Date.now()) {
-    //             open = true;
-    //         } else {
-    //             open = false;
-    //         }
-    //     }
-    // });
-    //
-    // return open;
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function isADebateOpen(questionId) {
 
     var open = false;
@@ -265,10 +260,10 @@ function isADebateOpen(questionId) {
     $.ajax({
         type: "POST",
         url: "load-debates.php",
-        data: "qid="+questionId,
+        data: "qid=" + questionId,
         async: false,
         cache: false,
-        success: function(dat) {
+        success: function (dat) {
 
             var obj = JSON.parse(dat);
             var msg = "";
@@ -277,7 +272,7 @@ function isADebateOpen(questionId) {
 
                 let closingDate = Date.parse(obj[i].close);
 
-                if(closingDate > Date.now()) {
+                if (closingDate > Date.now()) {
                     open = true;
                     return;
                 }
@@ -288,38 +283,19 @@ function isADebateOpen(questionId) {
     return open;
 }
 
-function debateModifiedCheckOld() {
-
-    // var x = setInterval(function() {
-    //
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "load-just-modified-debate.php",
-    //         cache: false,
-    //         success: function (dat) {
-    //
-    //             if(JSON.parse(dat).length !== 0) {
-    //                 loadNodes();
-    //             }
-    //         }
-    //
-    //     });
-    // }, 1500)
-
-
-
-}
-
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function longPollGraph() {
 
     try {
-        let dat =  await $.ajax({
+        let dat = await $.ajax({
             type: "POST",
             url: "load-just-modified-debate.php",
             cache: false,
         });
 
-        if(JSON.parse(dat).length !== 0) {
+        if (JSON.parse(dat).length !== 0) {
             await loadNodes();
         }
     } catch (error) {
@@ -331,6 +307,9 @@ async function longPollGraph() {
     await longPollGraph();
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function proposalNodeCheck() {
 
     var present = false;
@@ -342,7 +321,7 @@ function proposalNodeCheck() {
         cache: false,
         success: function (dat) {
 
-            if(JSON.parse(dat).length !== 0) {
+            if (JSON.parse(dat).length !== 0) {
                 present = true;
             }
         }
@@ -352,6 +331,9 @@ function proposalNodeCheck() {
     return present;
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function getPreviousDebate() {
 
     const dat = await $.ajax({
@@ -370,8 +352,9 @@ async function getPreviousDebate() {
     }
 }
 
-
-
+/*
+    This function was implemented for Arg&Forecast.
+*/
 async function getNextDebate() {
 
     const dat = await $.ajax({
@@ -393,18 +376,21 @@ async function getNextDebate() {
 
 }
 
-function loadDebates(questionid){
-  $.ajax({
-            type: "POST",
-            url: "load-debates.php",
-            data: "qid="+questionid,
-            cache: false,
-            success: function(dat) {
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
+function loadDebates(questionid) {
+    $.ajax({
+        type: "POST",
+        url: "load-debates.php",
+        data: "qid=" + questionid,
+        cache: false,
+        success: function (dat) {
 
-                var obj = JSON.parse(dat);
-                var msg = "";
+            var obj = JSON.parse(dat);
+            var msg = "";
 
-              for (var i = 0; i < obj.length; i++) {
+            for (var i = 0; i < obj.length; i++) {
 
                 var id = obj[i].id;
                 var questionid = obj[i].questionid;
@@ -415,83 +401,81 @@ function loadDebates(questionid){
                 var open = obj[i].open;
                 var close = obj[i].close;
 
-                var debate = new Debate(id,questionid,name,defaultBaseValue,participants,typeValue);
+                var debate = new Debate(id, questionid, name, defaultBaseValue, participants, typeValue);
 
+                var msg = '<div id="debate' + id + '"><li class="btn-group debate">';
 
-              //      <button class="addIncrease btn btn-success" onClick="modalInitNode('increase');">Add increase argument</button>
+                let now = new Date();
 
-              var msg = '<div id="debate'+id+'"><li class="btn-group debate">';
+                if (Date.parse(close) > now) {
+                    msg += '<button type="button" class="btn btn-success" onClick="parent.location=\'diagram.php?id=' + id + '\'">' + ' ' + name + '</button>';
+                    msg += '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">';
+                    msg += '<span class="caret"></span>';
+                    msg += '<span class="sr-only">Toggle Dropdown</span>';
+                    msg += '</button>';
+                    msg += '<ul class="dropdown-menu" role="menu">';
+                    msg += '<li><a href="#" onClick="debateList[' + id + '].displayInfo();">Info</a></li>';
+                    msg += '<li class="divider"></li>';
+                    msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList[' + id + '])">Delete</a></li>';
+                    msg += '</ul>';
+                    msg += '</li><br><br></div>';
 
-              let now = new Date();
+                } else {
+                    msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id=' + id + '\'">' + name + '</button>';
+                    msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
+                    msg += '<span class="caret"></span>';
+                    msg += '<span class="sr-only">Toggle Dropdown</span>';
+                    msg += '</button>';
+                    msg += '<ul class="dropdown-menu" role="menu">';
+                    msg += '<li><a href="#" onClick="debateList[' + id + '].displayInfo();">Info</a></li>';
+                    msg += '<li class="divider"></li>';
+                    msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList[' + id + '])">Delete</a></li>';
+                    msg += '</ul>';
+                    msg += '</li><br><br></div>';
+                }
 
-              if(Date.parse(close) > now) {
-                  //console.log('ID:'+id+' is in the future');
-                  msg += '<button type="button" class="btn btn-success" onClick="parent.location=\'diagram.php?id='+id+'\'">' + ' ' + name+'</button>';
-                  msg += '<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">';
-                  msg += '<span class="caret"></span>';
-                  msg += '<span class="sr-only">Toggle Dropdown</span>';
-                  msg += '</button>';
-                  msg += '<ul class="dropdown-menu" role="menu">';
-                  msg += '<li><a href="#" onClick="debateList['+id+'].displayInfo();">Info</a></li>';
-                  msg += '<li class="divider"></li>';
-                  msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
-                  msg += '</ul>';
-                  msg += '</li><br><br></div>';
+                $("#debate-list").append(msg);
 
-              } else {
-                  //console.log('ID:'+id+' is not in the future');
-                  msg += '<button type="button" class="btn btn-info" onClick="parent.location=\'diagram.php?id='+id+'\'">'+name+'</button>';
-                  msg += '<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">';
-                  msg += '<span class="caret"></span>';
-                  msg += '<span class="sr-only">Toggle Dropdown</span>';
-                  msg += '</button>';
-                  msg += '<ul class="dropdown-menu" role="menu">';
-                  msg += '<li><a href="#" onClick="debateList['+id+'].displayInfo();">Info</a></li>';
-                  msg += '<li class="divider"></li>';
-                  msg += '<li><a href="#" id="delete-debate-button" onClick="deleteDebate(debateList['+id+'])">Delete</a></li>';
-                  msg += '</ul>';
-                  msg += '</li><br><br></div>';
-              }
-
-              $("#debate-list").append(msg);
-
-              debateList[id] = debate;
-
-              }
-
+                debateList[id] = debate;
 
             }
 
-  });
+
+        }
+
+    });
 
 }
 
-function deleteDebate(debate){
+function deleteDebate(debate) {
 
-  bootbox.confirm("<h3>Delete debate " + debate.name + "?</h3>", function(result){
-        if(result){
+    bootbox.confirm("<h3>Delete debate " + debate.name + "?</h3>", function (result) {
+        if (result) {
 
-          $.ajax({
-            type: "POST",
-            url: "delete-debate.php",
-            data: "id="+debate.id,
-            cache: false,
-            success: function(dat) {
-              $("#debate"+debate.id).fadeOut(300, function(){
+            $.ajax({
+                type: "POST",
+                url: "delete-debate.php",
+                data: "id=" + debate.id,
+                cache: false,
+                success: function (dat) {
+                    $("#debate" + debate.id).fadeOut(300, function () {
 
-                delete debateList['debate.id'];
+                        delete debateList['debate.id'];
 
-              });
+                    });
 
-            }
+                }
             });
 
         }
-      });
+    });
 
 }
 
-function editDebate(debate){
+/*
+    This function was significantly edited for Arg&Forecast.
+*/
+function editDebate(debate) {
 
     var newName = $('#debate-modal').find(".name-modal > input").val();
     var newDefaultBaseValue = $('#debate-modal').find(".defaultbasevalue-modal > input").val();
@@ -499,25 +483,28 @@ function editDebate(debate){
     var newTypeValue = $('#debate-modal').find(".typevalue-modal > input").val();
 
     $.ajax({
-            type: "POST",
-            url: "edit-debate.php",
-            data: "id="+debate.id+"&n="+newName+"&dbv="+newDefaultBaseValue+"&p="+newParticipants+"&tv="+newTypeValue,
-            cache: false,
-            success: function(dat) {
+        type: "POST",
+        url: "edit-debate.php",
+        data: "id=" + debate.id + "&n=" + newName + "&dbv=" + newDefaultBaseValue + "&p=" + newParticipants + "&tv=" + newTypeValue,
+        cache: false,
+        success: function (dat) {
 
-              $("#debate"+debate.id+" > .debate > .btn:eq(0)").html(newName);
-              debate.editInfo(newName, newDefaultBaseValue, newParticipants, newTypeValue);
+            $("#debate" + debate.id + " > .debate > .btn:eq(0)").html(newName);
+            debate.editInfo(newName, newDefaultBaseValue, newParticipants, newTypeValue);
 
-            }
-            });
+        }
+    });
 }
 
-async function editConfidenceScore(debateId, confidenceScore, userId){
+/*
+    This function was implemented for Arg&Forecast.
+*/
+async function editConfidenceScore(debateId, confidenceScore, userId) {
 
-    var data = "id="+ debateId +"&c="+confidenceScore;
+    var data = "id=" + debateId + "&c=" + confidenceScore;
 
-    if(userId !== null) {
-        data += "&uid="+userId;
+    if (userId !== null) {
+        data += "&uid=" + userId;
     }
 
     await $.ajax({
@@ -529,31 +516,31 @@ async function editConfidenceScore(debateId, confidenceScore, userId){
 }
 
 function unsubscribeDebate(debate) {
-  
-    bootbox.confirm("<h3>Do you want to unsubscribe from " + debate.name + "?</h3>", function(result){
-        if(result){
-          $.ajax({
-            type: "POST",
-            url: "unsubscribe-debate.php",
-            data: "did="+debate.id,
-            cache: false,
-            success: function(dat) {
-                
-                    $("#debate"+debate.id).fadeOut(300, function(){
+
+    bootbox.confirm("<h3>Do you want to unsubscribe from " + debate.name + "?</h3>", function (result) {
+        if (result) {
+            $.ajax({
+                type: "POST",
+                url: "unsubscribe-debate.php",
+                data: "did=" + debate.id,
+                cache: false,
+                success: function (dat) {
+
+                    $("#debate" + debate.id).fadeOut(300, function () {
 
                         delete debateList['debate.id'];
 
-              });
+                    });
 
-            }
+                }
             });
 
         }
-      });
-   
+    });
+
 }
 
-function getDebateScoreChart(questionId, questionOpen, questionClose, initialForecast){
+function getDebateScoreChart(questionId, questionOpen, questionClose, initialForecast) {
 
     // x-axis label and label in tooltip
     var X_AXIS = 'Date';
@@ -573,9 +560,9 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
     $.ajax({
         type: "POST",
         url: "load-debate-scores.php",
-        data: "qid="+questionId,
+        data: "qid=" + questionId,
         cache: false,
-        success: function(data) {
+        success: function (data) {
             var obj = JSON.parse(data);
             var msg = "";
 
@@ -587,7 +574,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
             for (var i = 0; i < obj.length; i++) {
                 forecastDate[i] = obj[i].close;
                 groupForecast[i] = obj[i].groupforecast;
-                if(obj[i].userforecast === null) {
+                if (obj[i].userforecast === null) {
                     userForecast[i] = obj[i].groupforecast;
                 } else {
                     userForecast[i] = obj[i].userforecast;
@@ -616,8 +603,6 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                 }
             )
 
-            //console.log(datasets);
-
             // Get container for the chart
             var ctx = document.getElementById('chart-container').getContext('2d');
 
@@ -630,11 +615,6 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                 },
 
                 options: {
-                    // title: {
-                    //     display: true,
-                    //     text: TITLE,
-                    //     fontSize: 14,
-                    // },
                     legend: {
                         display: SHOW_LEGEND,
                     },
@@ -656,7 +636,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                             },
                             ticks: {
                                 maxTicksLimit: 10,
-                                callback: function(value, index, values) {
+                                callback: function (value, index, values) {
                                     return value.toLocaleString();
                                 }
                             }
@@ -675,7 +655,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                                 min: 0,
                                 max: 100,
                                 beginAtZero: BEGIN_AT_ZERO,
-                                callback: function(value, index, values) {
+                                callback: function (value, index, values) {
                                     return value.toLocaleString()
                                 }
                             }
@@ -684,7 +664,7 @@ function getDebateScoreChart(questionId, questionOpen, questionClose, initialFor
                     tooltips: {
                         displayColors: false,
                         callbacks: {
-                            label: function(tooltipItem, all) {
+                            label: function (tooltipItem, all) {
                                 return all.datasets[tooltipItem.datasetIndex].label
                                     + ': ' + tooltipItem.yLabel.toLocaleString();
                             }

@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script was implemented for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -23,11 +27,6 @@ $rows = array();
 while($r = mysqli_fetch_assoc($sqldata)) {
   $rows[] = $r;
 }
-
-//if (mysqli_num_rows($r) == 0) {
-//    $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM debates where id = $debateid") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
-//
-//}
 
 $json_encoded_string = json_encode($rows);
 

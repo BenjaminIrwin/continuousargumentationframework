@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script was significantly edited for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -22,8 +26,6 @@ $typevalue = $_POST['tv'];
 $questionid = $_POST['qid'];
 $opendate = $_POST['od'];
 $closedate = $_POST['cd'];
-
-//echo "'<script>console.log(\"$userid\")</script>'";
 
 $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into debates (questionId,name,defaultbasevalue,participants,typevalue,open,close) Values ('$questionid','$name','$defaultbasevalue','$participants','$typevalue','$opendate','$closedate')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 

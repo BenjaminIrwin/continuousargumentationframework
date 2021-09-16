@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script was implemented for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -45,10 +49,5 @@ try {
     http_response_code(400);
 }
 
-//echo ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
-
-
-// update lastmodified(by) in debates
-//$sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$username'  WHERE id='$debateid'");
 
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);

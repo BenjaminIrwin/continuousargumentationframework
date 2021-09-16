@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script was implemented for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -21,7 +25,6 @@ if(isset($_POST['did']) && !empty($_POST['did']) && !is_null($_POST['did'])) {
     $debateid = $_SESSION['debate'];
 }
 
-//$sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes n LEFT JOIN user_node_score uns on n.id = uns.node_id and uns.user_id = $userid WHERE debateid = $debateid ORDER BY type ASC") or die();
 $sqldata = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM nodes WHERE debateid = $debateid limit 1") or die();
 
 $rows = array();

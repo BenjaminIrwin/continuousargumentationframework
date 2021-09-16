@@ -1,5 +1,7 @@
 // This file represents the JavaScript Debate object.
-
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function Question(id, ownerid, name, accessRight){
 
 	// Attributes.
@@ -13,7 +15,9 @@ function Question(id, ownerid, name, accessRight){
         this.editInfo = editInfo;
 }
 
-
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function displayInfo(){
 
   var msg = "<h3> Info </h3>";
@@ -25,7 +29,9 @@ function displayInfo(){
   bootbox.alert(msg);
 
 }
-
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function editInfo(name){
   this.name = name;
 }

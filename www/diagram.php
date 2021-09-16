@@ -2,6 +2,10 @@
 
 include 'dbUtilities.php';
 
+/*
+    This PHP script and HTML page was significantly edited for Arg&Forecast.
+*/
+
 $session_expiration = time() + 3600 * 24 * 2; // +2 days
 session_set_cookie_params($session_expiration);
 session_start();
@@ -359,7 +363,7 @@ while($r3=mysqli_fetch_array($sqldata3)){
                 <p>My Forecast: <p id="currentForecast" style="font-weight: bold;"></p></p>
             </h5>
             <h5 class="text-center">
-                <p>Status: <p id="demo"></p></p>
+                <p>Status: <p id="clock"></p></p>
             </h5>
         </div>
     </div>

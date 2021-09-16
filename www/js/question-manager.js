@@ -1,10 +1,13 @@
 var questionList = {};
 var idquestion;
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function addQuestion(){
 
-	// Modal initialized in modal.js file.
-//  var id = $("#question-modal").find(".id-modal > b").html();
+    // Modal initialized in modal.js file.
+    //  var id = $("#question-modal").find(".id-modal > b").html();
   var ownerId = $("#question-modal").find(".ownerId-modal > b").html();
   var name = $("#question-modal").find(".name-modal > input").val();
   var participants = $("#question-modal").find(".participants-modal > input").val();
@@ -79,6 +82,9 @@ $.ajax({
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function addSubQuestion(){
 
   // Modal initialized in modal.js file.
@@ -102,7 +108,6 @@ $.ajax({
             data: "on="+ownerId+"&n="+name+"&dbv="+defaultBaseValue+"&p="+participants+"&tv="+typeValue,
             cache: false,
             success: function(dat) {
-                //console.log('hola');
                 var id = dat;
               var question = new Question(id,ownerId,name,defaultBaseValue,participants,typeValue);
               questionList[id] = question;
@@ -134,6 +139,9 @@ $.ajax({
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function loadQuestions(){
   $.ajax({
             type: "POST",
@@ -172,20 +180,6 @@ function loadQuestions(){
 
               $("#question-list-"+right).append(msg);
 
-              // // Hiding button in fuction of the right value.
-              // if (right!=='o'){
-              //   $('#question'+id).find('#modal-access-button').fadeOut(100);
-              //   $('#question'+id).find('.divider').fadeOut(100);
-              //   $('#question'+id).find('#delete-question-button').fadeOut(100);
-              // }
-              //
-              // if(right!=='o' && right!=='w'){
-              //   $('#question'+id).find('#modal-edit-question').fadeOut(100);
-              // }
-              // if(right==='o') {
-              //     $('#question'+id).find('#unsubscribe-question').fadeOut(100);
-              // }
-
               questionList[id] = question;
 
               }
@@ -197,6 +191,9 @@ function loadQuestions(){
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function deleteQuestion(question){
 
   bootbox.confirm("<h3>Delete question " + question.name + "?</h3>", function(result){
@@ -222,6 +219,9 @@ function deleteQuestion(question){
 
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function editQuestion(question){
 
     var newName = $('#question-modal').find(".name-modal > input").val();
@@ -243,6 +243,9 @@ function editQuestion(question){
             });
 }
 
+/*
+    This function was implemented for Arg&Forecast.
+*/
 function unsubscribeQuestion(question) {
   
     bootbox.confirm("<h3>Do you want to unsubscribe from " + question.name + "?</h3>", function(result){
