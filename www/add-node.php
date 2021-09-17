@@ -24,6 +24,9 @@ include 'dbUtilities.php';
 
     $name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['n']);
     $basevalue = $_POST['bv'];
+    if($basevalue == "null") {
+        $basevalue = null;
+    }
 
     $type = $_POST['t'];
     $typevalue = $_POST['tv'];
@@ -41,9 +44,11 @@ include 'dbUtilities.php';
 
     $nodeid=((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 
-    $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_node_score (user_id, node_id, base_score) Values ($userid, '$nodeid', '$basevalue')") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
 
-// update lastmodified(by) in debates
+    if($basevalue != null) {
+        $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "Insert Into user_node_score (user_id, node_id, base_score) Values ($userid, '$nodeid', $basevalue)") or die(mysqli_error($GLOBALS["___mysqli_ston"]));
+    }
+
     $sql1 = mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE debates SET lastmodified=CURRENT_TIMESTAMP, lastmodifiedby='$createdby'  WHERE id='$debateid'");
 
     echo json_encode(array("nodeid"=>$nodeid,"createdby"=>$createdby));

@@ -31,12 +31,12 @@ function modalInitNode(type, debateCloseDate) {
 
 
     if (type === 'proposal') {
-        msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
-    } else {
-        msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='0.5'></input></li><br>";
+        msg += "<li class='typevalue-modal'>Proposed forecast: &nbsp; <input type='text' class='form-control' placeholder='Proposed forecast'></input></li><br>";
+    } else if (type === 'pro' || type === 'con'){
+        msg += "<li class='basevalue-modal'>Your vote: &nbsp; <input type='text' class='form-control' placeholder='Vote'></input></li><br>";
     }
 
-    msg += "<li class='attachment-modal'>Attachment: &nbsp; \n\ <input id=\"url_attachment\" type='text' class='form-control' placeholder='Put here a valid URL'></input>\n\
+    msg += "<li class='attachment-modal'>Attachment: &nbsp; \n\ <input id=\"url_attachment\" type='text' class='form-control' placeholder='URL'></input>\n\
                 <form id=\"attachment_form\" enctype=\"multipart/form-data\" action=\"\" method=\"POST\"> \n\
                             <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"10000000\">Or upload a file: \n\
                             <input name=\"userfile\" type=\"file\" accept=\"application/pdf, application/x-pdf, application/acrobat, applications/vnd.pdf, text/pdf, text/x-pdf\"></br> \n\

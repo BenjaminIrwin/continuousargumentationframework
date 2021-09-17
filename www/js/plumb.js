@@ -93,11 +93,9 @@ async function addNode(attachment_path) {
         name = 'Node ' + type;
     }
 
-    if (type === 'proposal') {
+    if (type === 'proposal' || type === 'increase' || type === 'decrease') {
         baseValue = "0.5";
     }
-
-    var baseValue = await getDefaultBaseValue(thisDebateId);
 
     if (computedValueQuad == "") {
         computedValueQuad = '0';
@@ -117,6 +115,11 @@ async function addNode(attachment_path) {
 
     checkOverlap();
 
+    if(baseValue === '' || (!isNaN(baseValue) && !isNaN(parseFloat(baseValue)))) {
+        console.log('IN HERE!')
+        baseValue = null;
+    }
+
     let data1 = "did=" + thisDebateId + "&n=" + name + "&bv=" + baseValue + "&cvq=" + computedValueQuad + "&cvdfq=" + computedValueDFQuad + "&t=" + type + "&tv=" + typeValue + "&s=" + state + "&a=" + attachment + "&x=" + x + "&y=" + y;
 
     try {
@@ -126,10 +129,6 @@ async function addNode(attachment_path) {
             data: data1,
             cache: false
         });
-        var obj = JSON.parse(response);
-        var id = obj["nodeid"];
-        var createdBy = obj["createdby"];
-        var modifiedBy = '';
 
         var obj = JSON.parse(response);
         var id = obj["nodeid"];
@@ -343,7 +342,7 @@ async function refreshNodeList(debateId) {
 
     }
 
-    return nodes
+    return true;
 
 }
 
@@ -478,6 +477,9 @@ async function editNode(node, new_attachment_path) {
             // $("#"+id+" > #name").html(text);
             // $("#"+id+" > #name").attr('title',newName);
             // node.editInfo(decodeURIComponent(newName), decodeURIComponent(newBaseValue), decodeURIComponent(newComputedValueQuad), decodeURIComponent(newComputedValueDFQuad), decodeURIComponent(newTypeValue), decodeURIComponent(newState), decodeURIComponent(newAttachment),decodeURIComponent(modifiedBy));
+            node.editUserBaseValue(decodeURIComponent(newBaseValue))
+
+            node.baseValue = newBaseValue
             $('#' + id).find("#edit-button").attr('onclick', 'modalEditNode(nodeList["' + id + '"], "' + newBaseValue + '")');
 
             // node.editUserBaseValue(decodeURIComponent(newBaseValue))

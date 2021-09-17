@@ -190,11 +190,26 @@ async function computeAllValuesExp(debateId, userId){
     This function was significantly edited for Arg&Forecast.
 */
 async function computeAllValues(){
-
-	await refreshNodeList(null);
+	// await refreshNodeList(null);
 
 	for (var n in nodeList) {
+
+
+
 		if(nodeList[n].type !== 'proposal') {
+
+			if (nodeList[n].baseValue === 'null') {
+				if(nodeList[n].type === 'increase' || nodeList[n].type === 'decrease') {
+					nodeList[n].baseValue = "0.5";
+				} else {
+					var alert = '<h3>ALL arguments must be voted on to proceed.</h3>';
+					bootbox.alert(alert);
+					return false;
+				}
+			}
+
+			console.log(nodeList[n]);
+
 			var result = await SF2(nodeList[n], null, null);
 			var nresult = Math.round(result * Math.pow(10, decimals)) / Math.pow(10, decimals);
 			nodeList[n].computedValueDFQuad = nresult;
