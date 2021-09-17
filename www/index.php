@@ -127,7 +127,7 @@
     <footer style="padding-left:5px;">
   <p>Posted by: Benjamin Irwin</p>
   <p>Contact information: <a href="mailto:benjamintdirwin@gmail.com">
-  benjamintdirwin@gmail.com@gmail.com</a>.</p>
+  benjamintdirwin@gmail.com</a>.</p>
   <p>Code available on Github <a href="https://github.com/dariopellegrini/arganddec" target="_blank">here</a>.</p>
 </footer>
 

@@ -213,7 +213,7 @@ $(document).ready(function(){
     <footer>
   <p>Posted by: Benjamin Irwin</p>
   <p>Contact information: <a href="mailto:benjamintdirwin@gmail.com">
-  benjamintdirwin@gmail.com@gmail.com</a>.</p>
+  benjamintdirwin@gmail.com</a>.</p>
 </footer>
 
   </div>
