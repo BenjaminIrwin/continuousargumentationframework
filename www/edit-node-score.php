@@ -37,16 +37,3 @@ if ($result) {
 }
 
 echo json_encode(array("nodeid"=>$id,"modifiedby"=>$username));
-
-$app_id = '104765';
-$app_key = '4a093e77bfac049910cf';
-$app_secret = '3525036469c1d8f547c8';
-
-$pusher = new Pusher($app_key, $app_secret, $app_id);
-
-$data['push'] = 'edit-node';
-$data['userid']=$userid;
-$data['basevalue']=$basevalue;
-$data['createdby']=$username;
-
-$pusher->trigger('test_channel', 'my_event', $data);

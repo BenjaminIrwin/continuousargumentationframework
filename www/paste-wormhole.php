@@ -68,20 +68,6 @@ while($r = mysqli_fetch_assoc($sql4)) {
 $encodedrows=json_encode($rows);
 echo $encodedrows;
 
-$app_id = '104765';
-$app_key = '4a093e77bfac049910cf';
-$app_secret = '3525036469c1d8f547c8';
-
-$pusher = new Pusher($app_key, $app_secret, $app_id);
-
-$data['push']='paste-wormhole';
-$data['userid']=$userid;
-$data['debateid']=$dstdebate;
-$data['dstnode']=$dstnode;
-$data['json']=$encodedrows;
-
-$pusher->trigger('test_channel', 'my_event', $data);
-
 ((is_null($___mysqli_res = mysqli_close($connection))) ? false : $___mysqli_res);
 
 //	echo $srcdebate;
