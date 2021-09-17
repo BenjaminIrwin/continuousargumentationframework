@@ -67,9 +67,9 @@ jsPlumb.ready(function () {
 /*
     This function was significantly edited for Arg&Forecast.
 */
-function addNode(attachment_path) {
+async function addNode(attachment_path) {
 
-// Modal initialized in modal.js file.
+    // Modal initialized in modal.js file.
     var id = $("#node-modal").find(".id-modal > b").html();
     var name = encodeURIComponent($("#node-modal").find(".name-modal > input").val());
     var baseValue = encodeURIComponent($("#node-modal").find(".basevalue-modal > input").val());
@@ -97,72 +97,71 @@ function addNode(attachment_path) {
         baseValue = "0.5";
     }
 
-    var result = getDefaultBaseValue(thisDebateId);
-    var defaultBaseValue = result.success(function (data) {
+    var baseValue = await getDefaultBaseValue(thisDebateId);
 
-        var result = JSON.parse(data);
-        baseValue = result.basevalue;
+    if (computedValueQuad == "") {
+        computedValueQuad = '0';
+    }
 
-        if (computedValueQuad == "") {
-            computedValueQuad = '0';
-        }
+    if (computedValueDFQuad == "") {
+        computedValueDFQuad = '0';
+    }
 
-        if (computedValueDFQuad == "") {
-            computedValueDFQuad = '0';
-        }
+    if (typeValue == "") {
+        typeValue = "";
+    }
 
-        if (typeValue == "") {
-            typeValue = "";
-        }
+    // Experimantal x and y values.
+    x = 20;
+    y = 471;
 
-        // Experimantal x and y values.
-        x = 20;
-        y = 471;
+    checkOverlap();
 
-        checkOverlap();
+    let data1 = "did=" + thisDebateId + "&n=" + name + "&bv=" + baseValue + "&cvq=" + computedValueQuad + "&cvdfq=" + computedValueDFQuad + "&t=" + type + "&tv=" + typeValue + "&s=" + state + "&a=" + attachment + "&x=" + x + "&y=" + y;
 
-        let data1 = "did=" + thisDebateId + "&n=" + name + "&bv=" + baseValue + "&cvq=" + computedValueQuad + "&cvdfq=" + computedValueDFQuad + "&t=" + type + "&tv=" + typeValue + "&s=" + state + "&a=" + attachment + "&x=" + x + "&y=" + y;
-
-        $.ajax({
+    try {
+        let response = await $.ajax({
             type: "POST",
             url: "add-node.php",
             data: data1,
-            cache: false,
-            success: function (dat) {
-
-                var obj = JSON.parse(dat);
-                var id = obj["nodeid"];
-                var createdBy = obj["createdby"];
-                var modifiedBy = '';
-
-                var node = new Node(id, decodeURIComponent(name), decodeURIComponent(baseValue), decodeURIComponent(computedValueQuad),
-                    decodeURIComponent(computedValueDFQuad), decodeURIComponent(type), decodeURIComponent(typeValue),
-                    decodeURIComponent(state), decodeURIComponent(attachment), {}, {}, x, y, createdBy, modifiedBy);
-                node.type = type
-                node.initializeNode();
-
-                nodeList[id] = node;
-
-                // Automatic show of the help popover for edges creation.
-                var element_count = 0;
-
-                for (var e in nodeList)
-                    element_count++;
-
-                if (element_count == 2) {
-                    $('#advice').popover({content: $("#advice").parent().html()}).popover('show');
-                }
-
-            }
+            cache: false
         });
+        var obj = JSON.parse(response);
+        var id = obj["nodeid"];
+        var createdBy = obj["createdby"];
+        var modifiedBy = '';
 
-    });
+        var obj = JSON.parse(response);
+        var id = obj["nodeid"];
+        var createdBy = obj["createdby"];
+        var modifiedBy = '';
 
+        var node = new Node(id, decodeURIComponent(name), decodeURIComponent(baseValue), decodeURIComponent(computedValueQuad),
+            decodeURIComponent(computedValueDFQuad), decodeURIComponent(type), decodeURIComponent(typeValue),
+            decodeURIComponent(state), decodeURIComponent(attachment), {}, {}, x, y, createdBy, modifiedBy);
+        node.type = type
+        node.initializeNode();
+
+        nodeList[id] = node;
+
+        // Automatic show of the help popover for edges creation.
+        var element_count = 0;
+
+        for (var e in nodeList)
+            element_count++;
+
+        if (element_count === 2) {
+            $('#advice').popover({content: $("#advice").parent().html()}).popover('show');
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-function getDefaultBaseValue(debateId) {
 
-    return $.ajax({
+async function getDefaultBaseValue(debateId) {
+
+    const data = await $.ajax({
         type: "POST",
         url: "get-default-basevalue.php",
         data: "did=" + debateId,
@@ -171,6 +170,9 @@ function getDefaultBaseValue(debateId) {
 
         }
     });
+
+    var result = JSON.parse(data);
+    return result.basevalue;
 
 }
 
@@ -768,6 +770,7 @@ async function deleteEdge(id) {
 /*
 The funciton check if the thisRight variable is equal to 'r'. This means that the user can only read the graph. So proceeds with the disabling of tools for graph editing.
 */
+
 /*
     This function was significantly edited for Arg&Forecast.
 */
