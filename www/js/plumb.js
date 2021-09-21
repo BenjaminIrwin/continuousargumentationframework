@@ -115,7 +115,7 @@ async function addNode(attachment_path) {
 
     checkOverlap();
 
-    if(baseValue === '' || (!isNaN(baseValue) && !isNaN(parseFloat(baseValue)))) {
+    if(baseValue === '' || (isNaN(baseValue) && isNaN(parseFloat(baseValue)))) {
         console.log('IN HERE!')
         baseValue = null;
     }
